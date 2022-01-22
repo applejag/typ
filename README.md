@@ -1,3 +1,9 @@
+<!--
+SPDX-FileCopyrightText: 2022 Kalle Fagerberg
+
+SPDX-License-Identifier: CC-BY-4.0
+-->
+
 # go-typ
 
 Generic types that are missing from Go, including sets, trees, sorted lists, etc. 
@@ -16,7 +22,15 @@ go get -u gopkg.in/typ.v0
 
 ## License
 
-This project is licensed under the MIT (Expat) license. See the
-[LICENSE][./LICENSE] file for details.
+This project is primarily licensed under the MIT license:
+
+- The Go code in this project is licensed under the MIT license:
+  [LICENSES/MIT.txt](LICENSES/MIT.txt)
+
+- Documentation is licensed under the Creative Commons Attribution 4.0
+  International (CC-BY-4.0) license: [LICENSES](LICENSES/CC-BY-4.0.txt)
+
+- Miscellanious files are licensed under the Creative Commons Zero Universal
+  license (CC0-1.0): [LICENSES](LICENSES/CC0-1.0.txt)
 
 Copyright &copy; Kalle Fagerberg
