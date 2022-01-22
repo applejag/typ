@@ -6,7 +6,9 @@ SPDX-License-Identifier: CC-BY-4.0
 
 # go-typ
 
-Generic types that are missing from Go, including sets, trees, sorted lists, etc. 
+[![REUSE status](https://api.reuse.software/badge/github.com/go-typ/typ)](https://api.reuse.software/info/github.com/go-typ/typ)
+
+Generic types that are missing from Go, including sets, trees, sorted lists, etc.
 
 All code is implemented with 0 dependencies and in pure Go code (no CGo).
 
