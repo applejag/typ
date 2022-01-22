@@ -20,6 +20,11 @@ Requires Go v1.18beta1 or later as the code makes use of generics.
 go get -u gopkg.in/typ.v0
 ```
 
+## Development
+
+Please read the [CONTRIBUTING.md](CONTRIBUTING.md) for information about
+development environment and guidelines.
+
 ## License
 
 This project is primarily licensed under the MIT license:

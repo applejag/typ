@@ -1,4 +1,5 @@
 # SPDX-FileCopyrightText: 2021 Wharf (Iver Sverige AB) <https://github.com/iver-wharf>
+#
 # SPDX-License-Identifier: MIT
 
 name: Go format

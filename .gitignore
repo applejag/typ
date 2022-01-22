@@ -1,0 +1,7 @@
+# SPDX-FileCopyrightText: 2022 Kalle Fagerberg
+#
+# SPDX-License-Identifier: CC0-1.0
+
+# NPM
+node_modules/
+package-lock.json

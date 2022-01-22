@@ -1,0 +1,17 @@
+# SPDX-FileCopyrightText: 2022 Kalle Fagerberg
+#
+# SPDX-License-Identifier: CC0-1.0
+
+root = true
+
+[*]
+charset = utf-8
+indent_style = tab
+indent_size = 4
+tab_width = 4
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+[*.{json,yaml,yml,md,toml}]
+indent_size = 2
+indent_style = space

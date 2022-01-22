@@ -1,0 +1,9 @@
+{
+    "recommendations": [
+        "golang.go",
+        "yzhang.markdown-all-in-one",
+        "drewbourne.vscode-remark-lint",
+        "redhat.vscode-yaml",
+        "editorconfig.editorconfig"
+    ]
+}

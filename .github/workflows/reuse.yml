@@ -1,4 +1,5 @@
 # SPDX-FileCopyrightText: 2020 Free Software Foundation Europe e.V. <https://fsfe.org>
+#
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 name: REUSE Compliance Check
@@ -12,7 +13,7 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-    steps: 
+    steps:
     - uses: actions/checkout@v2
     - name: REUSE Compliance Check
       uses: fsfe/reuse-action@v1
