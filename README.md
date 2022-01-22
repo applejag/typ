@@ -33,7 +33,7 @@ This project is primarily licensed under the MIT license:
 - Miscellanious files are licensed under the Creative Commons Zero Universal
   license (CC0-1.0): [LICENSES](LICENSES/CC0-1.0.txt)
 
-- GitHub Action for Reuse linting (and not any of go-typ's code) is licensed
+- GitHub Action for REUSE linting (and not any of go-typ's code) is licensed
   under GNU General Public License 3.0 or later (GPL-3.0-or-later):
   [LICENSES/GPL-3.0-or-later.txt](LICENSES/GPL-3.0-or-later.txt)
 
