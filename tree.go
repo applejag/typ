@@ -9,24 +9,46 @@ import (
 	"fmt"
 )
 
-// Tree is an AVL tree (Adelson-Velsky and Landis tree), a type of
-// self-balancing binary search tree (BST). This guarantees O(log n) operations
-// on insertion, selection, and deletion.
-type Tree[T constraints.Ordered] struct {
+// OrderedTree is a binary search tree (BST) for ordered Go types
+// (numbers & strings), implemented as an AVL tree
+// (Adelson-Velsky and Landis tree), a type of self-balancing BST. This
+// guarantees O(log n) operations on insertion, searching, and deletion.
+type OrderedTree[T constraints.Ordered] struct {
 	root  *avlNode[T]
 	count int
 }
 
 // Len returns the number of nodes in this tree.
-func (n Tree[T]) Len() int {
+func (n *OrderedTree[T]) Len() int {
 	return n.count
 }
 
-func (n Tree[T]) Contains(value T) bool {
+func (n *OrderedTree[T]) Contains(value T) bool {
 	if n.root == nil {
 		return false
 	}
-	return n.root.contains(value)
+	return n.root.contains(value, compare[T])
+}
+
+func (n *OrderedTree[T]) Add(value T) {
+	if n.root == nil {
+		n.root = &avlNode[T]{
+			value: value,
+		}
+	} else {
+		n.root = n.root.add(value, compare[T])
+	}
+	n.count++
+}
+
+func (n *OrderedTree[T]) Remove(value T) bool {
+	if n.root == nil {
+		return false
+	}
+	newRoot, ok := n.root.remove(value, compare[T])
+	n.root = newRoot
+	n.count--
+	return ok
 }
 
 type balanceFactor int8
@@ -44,26 +66,86 @@ type avlNode[T comparable] struct {
 	height int
 }
 
-func (n avlNode[T]) String() string {
+func (n *avlNode[T]) String() string {
 	return fmt.Sprint(n.value)
 }
 
-func (n avlNode[T]) contains(value T) bool {
-	// TODO: Change to binary searching
-	return n.value == value ||
-		(n.left != nil && n.left.contains(value)) ||
-		(n.right != nil && n.right.contains(value))
+func (n *avlNode[T]) contains(value T, compare func(a, b T) int) bool {
+	return n.find(value, compare) != nil
 }
 
-func (n avlNode[T]) add(value T, compare func(a, b T) int) avlNode[T] {
+func (n *avlNode[T]) find(value T, compare func(a, b T) int) *avlNode[T] {
+	current := n
+	for {
+		switch {
+		case current.value == value:
+			return current
+		case current.left != nil && compare(value, current.value) < 0:
+			current = current.left
+		case current.right != nil:
+			current = current.right
+		default:
+			return nil
+		}
+	}
+}
+
+func (n *avlNode[T]) remove(value T, compare func(a, b T) int) (*avlNode[T], bool) {
+	if n.value == value {
+		switch {
+		case n.left == nil && n.right == nil:
+			// Leaf node. No special behavior needed
+			return nil, true
+		case n.left == nil:
+			// Single child: right
+			return n.right, true
+		case n.right == nil:
+			// Single child: left
+			return n.left, true
+		default:
+			// Two children
+			newRight, leftMost := n.right.popLeftMost()
+			leftMost.left = n.left
+			leftMost.right = newRight
+			leftMost.height = leftMost.calcHeight()
+			return leftMost.rebalance(), true
+		}
+	}
+	if n.left != nil && compare(value, n.value) < 0 {
+		if newNode, ok := n.left.remove(value, compare); ok {
+			n.left = newNode
+			n.height = n.calcHeight()
+			return n.rebalance(), true
+		}
+	} else if n.right != nil {
+		if newNode, ok := n.right.remove(value, compare); ok {
+			n.right = newNode
+			n.height = n.calcHeight()
+			return n.rebalance(), true
+		}
+	}
+	return n, false
+}
+
+func (n *avlNode[T]) popLeftMost() (child, leftMost *avlNode[T]) {
+	if n.left == nil {
+		// Found leftmost node
+		return n.right, n
+	}
+	newLeft, popped := n.left.popLeftMost()
+	n.left = newLeft
+	n.height = n.calcHeight()
+	return n, popped
+}
+
+func (n *avlNode[T]) add(value T, compare func(a, b T) int) *avlNode[T] {
 	if compare(value, n.value) < 0 {
 		if n.left == nil {
 			n.left = &avlNode[T]{
 				value: value,
 			}
 		} else {
-			newLeft := n.left.add(value, compare)
-			n.left = &newLeft
+			n.left = n.left.add(value, compare)
 		}
 	} else {
 		if n.right == nil {
@@ -71,19 +153,13 @@ func (n avlNode[T]) add(value T, compare func(a, b T) int) avlNode[T] {
 				value: value,
 			}
 		} else {
-			newRight := n.right.add(value, compare)
-			n.right = &newRight
+			n.right = n.right.add(value, compare)
 		}
 	}
 	return n.rebalance()
 }
 
-func (n avlNode[T]) remove(value T) avlNode[T] {
-	// TODO: implement this
-	return n
-}
-
-func (n avlNode[T]) rebalance() avlNode[T] {
+func (n *avlNode[T]) rebalance() *avlNode[T] {
 	if n.balance() == balanceRightHeavy {
 		if n.right != nil && n.right.balance() == balanceLeftHeavy {
 			return n.rotateLeftRight()
@@ -98,7 +174,7 @@ func (n avlNode[T]) rebalance() avlNode[T] {
 	return n
 }
 
-func (n avlNode[T]) balance() balanceFactor {
+func (n *avlNode[T]) balance() balanceFactor {
 	leftHeight := n.leftHeight()
 	rightHeight := n.rightHeight()
 	if leftHeight-rightHeight > 1 {
@@ -110,21 +186,21 @@ func (n avlNode[T]) balance() balanceFactor {
 	return balanceBalanced
 }
 
-func (n avlNode[T]) leftHeight() int {
+func (n *avlNode[T]) leftHeight() int {
 	if n.left == nil {
 		return 0
 	}
 	return n.left.height
 }
 
-func (n avlNode[T]) rightHeight() int {
+func (n *avlNode[T]) rightHeight() int {
 	if n.right == nil {
 		return 0
 	}
 	return n.right.height
 }
 
-func (n avlNode[T]) calcHeight() int {
+func (n *avlNode[T]) calcHeight() int {
 	switch {
 	case n.left == nil && n.right == nil:
 		return 0
@@ -137,38 +213,38 @@ func (n avlNode[T]) calcHeight() int {
 	}
 }
 
-func (n avlNode[T]) rotateLeft() avlNode[T] {
-	newRoot := *n.right
-	n.right = newRoot.left
-	if n.right != nil {
-		n.right.height = n.right.calcHeight()
+func (n *avlNode[T]) rotateLeft() *avlNode[T] {
+	prevRoot := *n
+	newRoot := prevRoot.right
+	prevRoot.right = newRoot.left
+	if prevRoot.right != nil {
+		prevRoot.right.height = prevRoot.right.calcHeight()
 	}
-	n.height = n.calcHeight()
-	newRoot.left = &n
+	prevRoot.height = prevRoot.calcHeight()
+	newRoot.left = &prevRoot
 	newRoot.height = newRoot.calcHeight()
 	return newRoot
 }
 
-func (n avlNode[T]) rotateRight() avlNode[T] {
-	newRoot := *n.left
-	n.left = newRoot.right
-	if n.left != nil {
-		n.left.height = n.left.calcHeight()
+func (n *avlNode[T]) rotateRight() *avlNode[T] {
+	prevRoot := *n
+	newRoot := prevRoot.left
+	prevRoot.left = newRoot.right
+	if prevRoot.left != nil {
+		prevRoot.left.height = prevRoot.left.calcHeight()
 	}
-	n.height = n.calcHeight()
-	newRoot.right = &n
+	prevRoot.height = prevRoot.calcHeight()
+	newRoot.right = &prevRoot
 	newRoot.height = newRoot.calcHeight()
 	return newRoot
 }
 
-func (n avlNode[T]) rotateLeftRight() avlNode[T] {
-	newRight := n.right.rotateRight()
-	n.right = &newRight
+func (n *avlNode[T]) rotateLeftRight() *avlNode[T] {
+	n.right = n.right.rotateRight()
 	return n.rotateLeft()
 }
 
-func (n avlNode[T]) rotateRightLeft() avlNode[T] {
-	newLeft := n.left.rotateLeft()
-	n.left = &newLeft
+func (n *avlNode[T]) rotateRightLeft() *avlNode[T] {
+	n.left = n.left.rotateLeft()
 	return n.rotateRight()
 }

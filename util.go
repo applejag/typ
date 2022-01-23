@@ -4,7 +4,9 @@
 
 package typ
 
-import "constraints"
+import (
+	"constraints"
+)
 
 func max[T constraints.Ordered](a, b T) T {
 	if a > b {
@@ -13,6 +15,8 @@ func max[T constraints.Ordered](a, b T) T {
 	return b
 }
 
+// compare checks if either value is greater or equal to the other.
+// The result will be 0 if a == b, -1 if a < b, and +1 if a > b.
 func compare[T constraints.Ordered](a, b T) int {
 	if a > b {
 		return 1
