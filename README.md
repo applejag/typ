@@ -71,8 +71,24 @@ development environment and guidelines.
 
 ## Similar projects
 
+All the below include multiple data structure implementations each, all with
+Go 1.18 generics support.
+
 - <https://github.com/zyedidia/generic>: An experimental collection of generic
   data structures written in Go.
+
+- <https://github.com/marstr/collection>: Generic Golang implementation of a few
+  basic data structures.
+
+- <https://github.com/Kytabyte/go2-generic-containers>: Some container data
+  structures written in the next generation of Golang with generics.
+
+- <https://github.com/tomyl/collection>: Generic data structures for Go.
+
+- <https://github.com/gabstv/container>: Generic data structures now that
+  Go 1.18+ supports generics.
+
+- <https://github.com/go-generics/collections>: Go generic collections
 
 ## License
 
