@@ -143,12 +143,7 @@ func (s Set[T]) SetDiff(other Set[T]) Set[T] {
 // the order of the operands. In other words:
 // 	A.SymDiff(B) == B.SymDiff(A)
 func (s Set[T]) SymDiff(other Set[T]) Set[T] {
-	result := make(Set[T])
-	for v := range s {
-		if !other.Has(v) {
-			result.Set(v)
-		}
-	}
+	result := s.SetDiff(other)
 	for v := range other {
 		if !s.Has(v) {
 			result.Set(v)
