@@ -321,7 +321,7 @@ func (n *avlNode[T]) calcHeight() int {
 	case n.right == nil:
 		return 1 + n.leftHeight()
 	default:
-		return 1 + max(n.leftHeight(), n.rightHeight())
+		return 1 + Max(n.leftHeight(), n.rightHeight())
 	}
 }
 
