@@ -18,11 +18,21 @@ type OrderedTree[T constraints.Ordered] struct {
 	count int
 }
 
+// Clone will return a copy of this tree, with a new set of nodes. The values
+// are copied as-is, so no pointers inside your value type gets a deep clone.
+func (n *OrderedTree[T]) Clone() OrderedTree[T] {
+	var clone OrderedTree[T]
+	n.WalkPreOrder(clone.Add)
+	return clone
+}
+
 // Len returns the number of nodes in this tree.
 func (n *OrderedTree[T]) Len() int {
 	return n.count
 }
 
+// Contains checks if a value exists in this tree by iterating the binary
+// search tree.
 func (n *OrderedTree[T]) Contains(value T) bool {
 	if n.root == nil {
 		return false
@@ -30,6 +40,8 @@ func (n *OrderedTree[T]) Contains(value T) bool {
 	return n.root.contains(value, compare[T])
 }
 
+// Add will add another value to this tree. Duplicate values are allowed and
+// are not dismissed.
 func (n *OrderedTree[T]) Add(value T) {
 	if n.root == nil {
 		n.root = &avlNode[T]{
@@ -41,6 +53,7 @@ func (n *OrderedTree[T]) Add(value T) {
 	n.count++
 }
 
+// Remove will try to remove the first occurrence of a value from the tree.
 func (n *OrderedTree[T]) Remove(value T) bool {
 	if n.root == nil {
 		return false
@@ -49,6 +62,75 @@ func (n *OrderedTree[T]) Remove(value T) bool {
 	n.root = newRoot
 	n.count--
 	return ok
+}
+
+// Clear will reset this tree to an empty tree.
+func (n *OrderedTree[T]) Clear() {
+	n.root = nil
+	n.count = 0
+}
+
+// WalkPreOrder will iterate all values in this tree by first visiting each
+// node's value, followed by the its left branch, and then its right branch.
+//
+// This is useful when copying binary search trees, as inserting back in this
+// order will guarantee the clone will have the exact same layout.
+func (n *OrderedTree[T]) WalkPreOrder(walker func(value T)) {
+	if n.root == nil {
+		return
+	}
+	n.root.walkPreOrder(walker)
+}
+
+// WalkInOrder will iterate all values in this tree by first visiting each
+// node's left branch, followed by the its own value, and then its right branch.
+//
+// This is useful when reading a tree's values in order, as this guarantees
+// iterating them in a sorted order.
+func (n *OrderedTree[T]) WalkInOrder(walker func(value T)) {
+	if n.root == nil {
+		return
+	}
+	n.root.walkInOrder(walker)
+}
+
+// WalkPostOrder will iterate all values in this tree by first visiting each
+// node's left branch, followed by the its right branch, and then its own value.
+//
+// This is useful when deleting values from a tree, as this guarantees to always
+// delete leaf nodes.
+func (n *OrderedTree[T]) WalkPostOrder(walker func(value T)) {
+	if n.root == nil {
+		return
+	}
+	n.root.walkPostOrder(walker)
+}
+
+// SlicePreOrder returns a slice of values by walking the tree in pre-order.
+// See WalkPreOrder for more details.
+func (n *OrderedTree[T]) SlicePreOrder() []T {
+	return n.slice(n.WalkPreOrder)
+}
+
+// SliceInOrder returns a slice of values by walking the tree in in-order.
+// This returns all values in sorted order.
+// See WalkInOrder for more details.
+func (n *OrderedTree[T]) SliceInOrder() []T {
+	return n.slice(n.WalkInOrder)
+}
+
+// SlicePostOrder returns a slice of values by walking the tree in post-order.
+// See WalkPostOrder for more details.
+func (n *OrderedTree[T]) SlicePostOrder() []T {
+	return n.slice(n.WalkPostOrder)
+}
+
+func (n *OrderedTree[T]) slice(f func(f func(value T))) []T {
+	slice := make([]T, 0, n.count)
+	f(func(v T) {
+		slice = append(slice, v)
+	})
+	return slice
 }
 
 type balanceFactor int8
@@ -68,6 +150,36 @@ type avlNode[T comparable] struct {
 
 func (n *avlNode[T]) String() string {
 	return fmt.Sprint(n.value)
+}
+
+func (n *avlNode[T]) walkPreOrder(f func(v T)) {
+	f(n.value)
+	if n.left != nil {
+		n.left.walkPreOrder(f)
+	}
+	if n.right != nil {
+		n.right.walkPreOrder(f)
+	}
+}
+
+func (n *avlNode[T]) walkInOrder(f func(v T)) {
+	if n.left != nil {
+		n.left.walkInOrder(f)
+	}
+	f(n.value)
+	if n.right != nil {
+		n.right.walkInOrder(f)
+	}
+}
+
+func (n *avlNode[T]) walkPostOrder(f func(v T)) {
+	if n.left != nil {
+		n.left.walkPostOrder(f)
+	}
+	if n.right != nil {
+		n.right.walkPostOrder(f)
+	}
+	f(n.value)
 }
 
 func (n *avlNode[T]) contains(value T, compare func(a, b T) int) bool {
