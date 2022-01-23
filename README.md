@@ -23,6 +23,26 @@ Requires Go v1.18beta1 or later as the code makes use of generics.
 go get -u gopkg.in/typ.v0
 ```
 
+## Features
+
+### Types
+
+- `typ.List[T]`: Linked list, forked from [`container/list`](https://pkg.go.dev/container/list)
+- `typ.Set[T]`: Set, based on set theory
+- `typ.Tree[T]`: AVL-tree (auto-balancing binary search tree) implementation
+
+### Utility functions
+
+- `typ.Clamp01[T](v T) T`: Clamp a value between `0` and `1`.
+- `typ.Clamp[T](v, min, max T) T`: Clamp a value inside a range.
+- `typ.ContainsValue[K, V](m map[K]V, value V) bool`: Does map contain value?
+- `typ.Contains[T](slice []T, value T) bool`: Does slice contain value?
+- `typ.Max[T](v ...T) T`: Return the largest value.
+- `typ.Min[T](v ...T) T`: Return the smallest value.
+- `typ.Reverse[T](slice []T)`: Reverse the order of a slice.
+- `typ.SortDesc[T](slice []T)`: Sort ordered slices in descending order.
+- `typ.Sort[T](slice []T)`: Sort ordered slices in ascending order.
+
 ## Development
 
 Please read the [CONTRIBUTING.md](CONTRIBUTING.md) for information about
