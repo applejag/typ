@@ -20,6 +20,12 @@ func compare[T constraints.Ordered](a, b T) int {
 	return 0
 }
 
+// Zero returns the zero value for a given type.
+func Zero[T any]() T {
+	var zero T
+	return zero
+}
+
 // Distinct returns a new slice of only unique values.
 func Distinct[T comparable](slice []T) []T {
 	result := make([]T, 0, len(slice))
