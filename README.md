@@ -32,8 +32,11 @@ development environment and guidelines.
 
 This project is primarily licensed under the MIT license:
 
-- The Go code in this project is licensed under the MIT license:
+- My Go code in this project is licensed under the MIT license:
   [LICENSES/MIT.txt](LICENSES/MIT.txt)
+
+- Some Go code in this project is forked from Go's source code, which is
+  licensed under the BSD license: [LICENSES/LicenseRef-Go-BSD.txt](LICENSES/LicenseRef-Go-BSD.txt)
 
 - Documentation is licensed under the Creative Commons Attribution 4.0
   International (CC-BY-4.0) license: [LICENSES](LICENSES/CC-BY-4.0.txt)
