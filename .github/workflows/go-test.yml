@@ -28,9 +28,6 @@ jobs:
       - name: checkout
         uses: actions/checkout@v2
 
-      - name: Setup repo
-        run: make deps swag
-
       - name: Run tests
         run: |
           # One for GitHub Action logging purposes
