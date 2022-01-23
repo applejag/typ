@@ -30,6 +30,7 @@ go get -u gopkg.in/typ.v0
 
 - `typ.List[T]`: Linked list, forked from [`container/list`](https://pkg.go.dev/container/list)
 - `typ.Number`: Type constraint for any number: integers, floats, & complex.
+- `typ.Pool[T]`: Object pool, wrapper around [`sync.Pool`](https://pkg.go.dev/sync#Pool)
 - `typ.Real`: Type constraint for real numbers: integers & floats.
 - `typ.Ring[T]`: Circular list, forked from [`container/ring`](https://pkg.go.dev/container/ring)
 - `typ.Set[T]`: Set, based on set theory
