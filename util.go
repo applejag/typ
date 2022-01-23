@@ -9,19 +9,39 @@ import (
 )
 
 // Min returns the smallest value.
-func Min[T constraints.Ordered](a, b T) T {
-	if a < b {
-		return a
+func Min[T constraints.Ordered](v ...T) T {
+	switch len(v) {
+	case 0:
+		panic("typ.Min: at least one argument is required")
+	case 1:
+		return v[0]
+	default:
+		min := v[0]
+		for _, v := range v[1:] {
+			if v < min {
+				min = v
+			}
+		}
+		return min
 	}
-	return b
 }
 
 // Max returns the largest value.
-func Max[T constraints.Ordered](a, b T) T {
-	if a > b {
-		return a
+func Max[T constraints.Ordered](v ...T) T {
+	switch len(v) {
+	case 0:
+		panic("typ.Max: at least one argument is required")
+	case 1:
+		return v[0]
+	default:
+		max := v[0]
+		for _, v := range v[1:] {
+			if v > max {
+				max = v
+			}
+		}
+		return max
 	}
-	return b
 }
 
 // Clamp returns the value clamped between the minimum and maximum values.
