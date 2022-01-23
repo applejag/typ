@@ -133,8 +133,8 @@ func (m *SyncMap[K, V]) Load(key K) (value V, ok bool) {
 	return e.load()
 }
 
-func (e *entry[T]) load() (value T, ok bool) {
-	p := atomic.LoadPointer(&e.p)
+func (m *entry[T]) load() (value T, ok bool) {
+	p := atomic.LoadPointer(&m.p)
 	if p == nil || p == expunged {
 		return Zero[T](), false
 	}
@@ -175,13 +175,13 @@ func (m *SyncMap[K, V]) Store(key K, value V) {
 //
 // If the entry is expunged, tryStore returns false and leaves the entry
 // unchanged.
-func (e *entry[T]) tryStore(i *T) bool {
+func (m *entry[T]) tryStore(i *T) bool {
 	for {
-		p := atomic.LoadPointer(&e.p)
+		p := atomic.LoadPointer(&m.p)
 		if p == expunged {
 			return false
 		}
-		if atomic.CompareAndSwapPointer(&e.p, p, unsafe.Pointer(i)) {
+		if atomic.CompareAndSwapPointer(&m.p, p, unsafe.Pointer(i)) {
 			return true
 		}
 	}
@@ -191,15 +191,15 @@ func (e *entry[T]) tryStore(i *T) bool {
 //
 // If the entry was previously expunged, it must be added to the dirty map
 // before m.mu is unlocked.
-func (e *entry[T]) unexpungeLocked() (wasExpunged bool) {
-	return atomic.CompareAndSwapPointer(&e.p, expunged, nil)
+func (m *entry[T]) unexpungeLocked() (wasExpunged bool) {
+	return atomic.CompareAndSwapPointer(&m.p, expunged, nil)
 }
 
 // storeLocked unconditionally stores a value to the entry.
 //
 // The entry must be known not to be expunged.
-func (e *entry[T]) storeLocked(i *T) {
-	atomic.StorePointer(&e.p, unsafe.Pointer(i))
+func (m *entry[T]) storeLocked(i *T) {
+	atomic.StorePointer(&m.p, unsafe.Pointer(i))
 }
 
 // LoadOrStore returns the existing value for the key if present.
@@ -245,8 +245,8 @@ func (m *SyncMap[K, V]) LoadOrStore(key K, value V) (actual V, loaded bool) {
 //
 // If the entry is expunged, tryLoadOrStore leaves the entry unchanged and
 // returns with ok==false.
-func (e *entry[T]) tryLoadOrStore(i T) (actual T, loaded, ok bool) {
-	p := atomic.LoadPointer(&e.p)
+func (m *entry[T]) tryLoadOrStore(i T) (actual T, loaded, ok bool) {
+	p := atomic.LoadPointer(&m.p)
 	if p == expunged {
 		return Zero[T](), false, false
 	}
@@ -259,10 +259,10 @@ func (e *entry[T]) tryLoadOrStore(i T) (actual T, loaded, ok bool) {
 	// shouldn't bother heap-allocating.
 	ic := i
 	for {
-		if atomic.CompareAndSwapPointer(&e.p, nil, unsafe.Pointer(&ic)) {
+		if atomic.CompareAndSwapPointer(&m.p, nil, unsafe.Pointer(&ic)) {
 			return i, false, true
 		}
-		p = atomic.LoadPointer(&e.p)
+		p = atomic.LoadPointer(&m.p)
 		if p == expunged {
 			return Zero[T](), false, false
 		}
@@ -302,13 +302,13 @@ func (m *SyncMap[K, V]) Delete(key K) {
 	m.LoadAndDelete(key)
 }
 
-func (e *entry[T]) delete() (value T, ok bool) {
+func (m *entry[T]) delete() (value T, ok bool) {
 	for {
-		p := atomic.LoadPointer(&e.p)
+		p := atomic.LoadPointer(&m.p)
 		if p == nil || p == expunged {
 			return Zero[T](), false
 		}
-		if atomic.CompareAndSwapPointer(&e.p, p, nil) {
+		if atomic.CompareAndSwapPointer(&m.p, p, nil) {
 			return *(*T)(p), true
 		}
 	}
@@ -381,13 +381,13 @@ func (m *SyncMap[K, V]) dirtyLocked() {
 	}
 }
 
-func (e *entry[T]) tryExpungeLocked() (isExpunged bool) {
-	p := atomic.LoadPointer(&e.p)
+func (m *entry[T]) tryExpungeLocked() (isExpunged bool) {
+	p := atomic.LoadPointer(&m.p)
 	for p == nil {
-		if atomic.CompareAndSwapPointer(&e.p, nil, expunged) {
+		if atomic.CompareAndSwapPointer(&m.p, nil, expunged) {
 			return true
 		}
-		p = atomic.LoadPointer(&e.p)
+		p = atomic.LoadPointer(&m.p)
 	}
 	return p == expunged
 }
