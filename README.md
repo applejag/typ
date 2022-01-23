@@ -31,6 +31,7 @@ go get -u gopkg.in/typ.v0
 - `typ.List[T]`: Linked list, forked from [`container/list`](https://pkg.go.dev/container/list).
 - `typ.Number`: Type constraint for any number: integers, floats, & complex.
 - `typ.Pool[T]`: Object pool, wrapper around [`sync.Pool`](https://pkg.go.dev/sync#Pool).
+- `typ.Publisher[T]`: Publish-subscribe pattern (pubsub) using channels.
 - `typ.Real`: Type constraint for real numbers: integers & floats.
 - `typ.Ring[T]`: Circular list, forked from [`container/ring`](https://pkg.go.dev/container/ring).
 - `typ.Set[T]`: Set, based on set theory.
@@ -39,18 +40,24 @@ go get -u gopkg.in/typ.v0
 
 ### Utility functions
 
-- `typ.Clamp01[T](v T) T`: Clamp a value between `0` and `1`.
-- `typ.Clamp[T](v, min, max T) T`: Clamp a value inside a range.
-- `typ.ContainsValue[K, V](m map[K]V, value V) bool`: Does map contain value?
-- `typ.Contains[T](slice []T, value T) bool`: Does slice contain value?
-- `typ.Max[T](v ...T) T`: Return the largest value.
-- `typ.Min[T](v ...T) T`: Return the smallest value.
-- `typ.Product[T](v ...T) T`: Multiplies together numbers.
-- `typ.Reverse[T](slice []T)`: Reverse the order of a slice.
-- `typ.SortDesc[T](slice []T)`: Sort ordered slices in descending order.
-- `typ.Sort[T](slice []T)`: Sort ordered slices in ascending order.
-- `typ.Sum[T](v ...T) T`: Sums up numbers (addition).
+<!-- lint disable maximum-line-length -->
+
+- `typ.Clamp01[T](T) T`: Clamp a value between `0` and `1`.
+- `typ.Clamp[T](T, T, T) T`: Clamp a value inside a range.
+- `typ.ContainsValue[K, V](map[K]V, V) bool`: Does map contain value?
+- `typ.Contains[T]([]T, T) bool`: Does slice contain value?
+- `typ.Max[T](...T) T`: Return the largest value.
+- `typ.Min[T](...T) T`: Return the smallest value.
+- `typ.Product[T](...T) T`: Multiplies together numbers.
+- `typ.RecvTimeout[T](chan<- T, time.Duration)`: Receive from channel with timeout.
+- `typ.Reverse[T]([]T)`: Reverse the order of a slice.
+- `typ.SendTimeout[T](<-chan T, T, time.Duration)`: Send to channel with timeout.
+- `typ.SortDesc[T]([]T)`: Sort ordered slices in descending order.
+- `typ.Sort[T]([]T)`: Sort ordered slices in ascending order.
+- `typ.Sum[T](...T) T`: Sums up numbers (addition).
 - `typ.Zero[T]()`: Returns the zero value for a type.
+
+<!-- lint enable maximum-line-length -->
 
 ## Development
 
