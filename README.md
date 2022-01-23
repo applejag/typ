@@ -15,6 +15,23 @@ linked lists, etc.
 
 All code is implemented with 0 dependencies and in pure Go code (no CGo).
 
+## Background
+
+Go v1.18 is about to be released now in February 2022, and with it comes some
+features that has been talked about for a really long time. One of which being
+**generics!**
+
+They have moved generics from the Go v2.0 milestone over to Go v1.18, which
+means they have to stay backwards compatible. On top of this, they are not
+planning on releasing any generic data types in the Go standard library until
+Go v1.19.
+
+This repository includes those generic functions and types that I find are
+missing from the release of Go v1.18-beta1, as well as a number of other
+data structures and utility functions I think should've been included in the
+standard library a long time ago. But now with generics, we can finally have
+sensible implementations of sets, trees, stacks, etc without excessive casting.
+
 ## Compatibility
 
 Requires Go v1.18beta1 or later as the code makes use of generics.
