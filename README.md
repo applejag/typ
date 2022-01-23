@@ -41,6 +41,17 @@ go get -u gopkg.in/typ.v0
 - `typ.SyncMap[K,V]`: Concurrent map, forked from [`sync.Map`](https://pkg.go.dev/sync#Map).
 - `typ.Tree[T]`: AVL-tree (auto-balancing binary search tree) implementation.
 
+> Explanation:
+>
+> - Forked type: Copied their code and modified it so it uses generic types down
+>   to the backing struct layer. This benefits the most from generics support.
+>
+> - Wrapped type: Code depends on the underlying non-generic type, and adds
+>   abstraction to hide the type casting. Less performant than full generic
+>   support, but is done to reduce excessive complexity in this repository.
+>
+> - Neither forked nor wrapped: Original code written by yours truly.
+
 ### Utility functions
 
 <!-- lint disable maximum-line-length -->
