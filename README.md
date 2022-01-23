@@ -28,6 +28,7 @@ go get -u gopkg.in/typ.v0
 
 ### Types
 
+- `typ.AtomicValue[T]`: Atomic value store, wrapper around [`sync/atomic.Value`](https://pkg.go.dev/sync/atomic#Value).
 - `typ.List[T]`: Linked list, forked from [`container/list`](https://pkg.go.dev/container/list).
 - `typ.Number`: Type constraint for any number: integers, floats, & complex.
 - `typ.Pool[T]`: Object pool, wrapper around [`sync.Pool`](https://pkg.go.dev/sync#Pool).
@@ -36,6 +37,7 @@ go get -u gopkg.in/typ.v0
 - `typ.Ring[T]`: Circular list, forked from [`container/ring`](https://pkg.go.dev/container/ring).
 - `typ.Set[T]`: Set, based on set theory.
 - `typ.Stack[T]`: First-in-last-out collection.
+- `typ.SyncMap[K,V]`: Concurrent map, forked from [`sync.Map`](https://pkg.go.dev/sync#Map).
 - `typ.Tree[T]`: AVL-tree (auto-balancing binary search tree) implementation.
 
 ### Utility functions
