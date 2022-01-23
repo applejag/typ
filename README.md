@@ -22,9 +22,11 @@ features that has been talked about for a really long time. One of which being
 **generics!** [(Go 1.18 beta release notes)](https://tip.golang.org/doc/go1.18)
 
 They have moved generics from the Go v2.0 milestone over to Go v1.18, which
-means they have to stay backwards compatible. On top of this, they are not
-planning on releasing any generic data types in the Go standard library until
-Go v1.19.
+means they have to stay backwards compatible and cannot alter any existing
+types. On top of this, they do not seem to plan on releasing any generic data
+types in the Go standard library until Go v1.19. All in all, to use generic
+data types with Go v1.18, you'll have to either write your own, or use a
+third-party package, like this one :)
 
 This repository includes those generic functions and types that I find are
 missing from the release of Go v1.18-beta1, as well as a number of other
