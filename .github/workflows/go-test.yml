@@ -1,0 +1,41 @@
+# SPDX-FileCopyrightText: 2021 Wharf (Iver Sverige AB) <https://github.com/iver-wharf>
+#
+# SPDX-License-Identifier: MIT
+
+name: Go test
+
+on:
+  pull_request:
+    branches: [ '**' ]
+
+jobs:
+  run_tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Setup Go
+        uses: actions/setup-go@v2
+        with:
+          stable: 'false'
+          go-version: '1.18.0-beta1'
+
+      - name: Set up gotestfmt
+        uses: haveyoudebuggedit/gotestfmt-action@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          version: v1.0.0
+
+      - name: checkout
+        uses: actions/checkout@v2
+
+      - name: Run tests
+        run: |
+          # One for GitHub Action logging purposes
+          go test -v ./... 2>&1 | gotestfmt
+          # One for golang-test-annotations
+          go test -json ./... > test-results.json
+      - name: Annotate tests
+        if: always()
+        uses: guyarb/golang-test-annotations@v0.5.0
+        with:
+          test-results: test-results.json
