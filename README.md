@@ -66,7 +66,8 @@ development environment and guidelines.
 
 ## Similar projects
 
-- <https://github.com/zyedidia/generic>
+- <https://github.com/zyedidia/generic>: An experimental collection of generic
+  data structures written in Go.
 
 ## License
 
