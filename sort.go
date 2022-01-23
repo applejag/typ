@@ -60,3 +60,13 @@ func ShuffleRand[T any](slice []T, rand *rand.Rand) {
 		slice[i], slice[j] = slice[j], slice[i]
 	})
 }
+
+// Search performs a binary search to find the index of a value in a sorted
+// slice of ordered values. The index of the first match is returned, or the
+// index where it insert the value if the value is not present.
+// The slice must be sorted in ascending order.
+func Search[T constraints.Ordered](slice []T, value T) int {
+	return sort.Search(len(slice), func(i int) bool {
+		return slice[i] >= value
+	})
+}

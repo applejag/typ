@@ -53,6 +53,7 @@ go get -u gopkg.in/typ.v0
 - `typ.Product[T](...T) T`: Multiplies together numbers.
 - `typ.RecvTimeout[T](chan<- T, time.Duration)`: Receive from channel with timeout.
 - `typ.Reverse[T]([]T)`: Reverse the order of a slice.
+- `typ.Search[T]([]T, T)`: Searches for element index or insertion index in slice.
 - `typ.SendTimeout[T](<-chan T, T, time.Duration)`: Send to channel with timeout.
 - `typ.ShuffleRand[T]([]T, *rand.Rand)`: Randomizes the order of a slice.
 - `typ.Shuffle[T]([]T)`: Randomizes the order of a slice.
