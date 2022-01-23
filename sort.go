@@ -6,6 +6,7 @@ package typ
 
 import (
 	"constraints"
+	"math/rand"
 	"sort"
 )
 
@@ -40,4 +41,22 @@ func Reverse[T any](slice []T) {
 	for i, j := 0, len(slice)-1; i < len(slice)/2; i, j = i+1, j-1 {
 		slice[i], slice[j] = slice[j], slice[i]
 	}
+}
+
+// Shuffle will randomize the order of all elements inside a slice. It uses the
+// rand package for random number generation, so you are expected to have called
+// rand.Seed beforehand.
+func Shuffle[T any](slice []T) {
+	rand.Shuffle(len(slice), func(i, j int) {
+		slice[i], slice[j] = slice[j], slice[i]
+	})
+}
+
+// ShuffleRand will randomize the order of all elements inside a slice using the
+// Fisher-Yates shuffle algoritm. It uses the rand argument for random number
+// generation.
+func ShuffleRand[T any](slice []T, rand *rand.Rand) {
+	rand.Shuffle(len(slice), func(i, j int) {
+		slice[i], slice[j] = slice[j], slice[i]
+	})
 }
