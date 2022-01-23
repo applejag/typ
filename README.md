@@ -28,6 +28,9 @@ go get -u gopkg.in/typ.v0
 ### Types
 
 - `typ.List[T]`: Linked list, forked from [`container/list`](https://pkg.go.dev/container/list)
+- `typ.Number`: Type constraint for any number: integers, floats, & complex.
+- `typ.Real`: Type constraint for real numbers: integers & floats.
+- `typ.Ring[T]`: Circular list, forked from [`container/ring`](https://pkg.go.dev/container/ring)
 - `typ.Set[T]`: Set, based on set theory
 - `typ.Tree[T]`: AVL-tree (auto-balancing binary search tree) implementation
 
@@ -39,9 +42,11 @@ go get -u gopkg.in/typ.v0
 - `typ.Contains[T](slice []T, value T) bool`: Does slice contain value?
 - `typ.Max[T](v ...T) T`: Return the largest value.
 - `typ.Min[T](v ...T) T`: Return the smallest value.
+- `typ.Product[T](v ...T) T`: Multiplies together numbers.
 - `typ.Reverse[T](slice []T)`: Reverse the order of a slice.
 - `typ.SortDesc[T](slice []T)`: Sort ordered slices in descending order.
 - `typ.Sort[T](slice []T)`: Sort ordered slices in ascending order.
+- `typ.Sum[T](v ...T) T`: Sums up numbers (addition).
 
 ## Development
 
