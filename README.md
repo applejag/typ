@@ -19,7 +19,7 @@ All code is implemented with 0 dependencies and in pure Go code (no CGo).
 
 Go v1.18 is about to be released now in February 2022, and with it comes some
 features that has been talked about for a really long time. One of which being
-**generics!**
+**generics!** [(Go 1.18 beta release notes)](https://tip.golang.org/doc/go1.18)
 
 They have moved generics from the Go v2.0 milestone over to Go v1.18, which
 means they have to stay backwards compatible. On top of this, they are not
