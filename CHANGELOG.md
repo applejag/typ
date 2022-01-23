@@ -1,3 +1,9 @@
+<!--
+SPDX-FileCopyrightText: 2022 Kalle Fagerberg
+
+SPDX-License-Identifier: CC-BY-4.0
+-->
+
 # go-typ changelog
 
 This project tries to follow [SemVer 2.0.0](https://semver.org/).
