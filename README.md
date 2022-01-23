@@ -64,6 +64,10 @@ go get -u gopkg.in/typ.v0
 Please read the [CONTRIBUTING.md](CONTRIBUTING.md) for information about
 development environment and guidelines.
 
+## Similar projects
+
+- <https://github.com/zyedidia/generic>
+
 ## License
 
 This project is primarily licensed under the MIT license:
