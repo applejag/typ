@@ -37,7 +37,7 @@ func (n *OrderedTree[T]) Contains(value T) bool {
 	if n.root == nil {
 		return false
 	}
-	return n.root.contains(value, compare[T])
+	return n.root.contains(value, Compare[T])
 }
 
 // Add will add another value to this tree. Duplicate values are allowed and
@@ -48,7 +48,7 @@ func (n *OrderedTree[T]) Add(value T) {
 			value: value,
 		}
 	} else {
-		n.root = n.root.add(value, compare[T])
+		n.root = n.root.add(value, Compare[T])
 	}
 	n.count++
 }
@@ -58,7 +58,7 @@ func (n *OrderedTree[T]) Remove(value T) bool {
 	if n.root == nil {
 		return false
 	}
-	newRoot, ok := n.root.remove(value, compare[T])
+	newRoot, ok := n.root.remove(value, Compare[T])
 	n.root = newRoot
 	n.count--
 	return ok
