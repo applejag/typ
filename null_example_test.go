@@ -22,7 +22,7 @@ func ExampleNull() {
 		FirstName:   "John",
 		MiddleName:  Null[string]{},
 		LastName:    "Doe",
-		DateOfBirth: NullFrom(time.Date(1980, 5, 13, 0, 0, 0, 0, time.Local)),
+		DateOfBirth: NullFrom(time.Date(1980, 5, 13, 0, 0, 0, 0, time.UTC)),
 		DateOfDeath: Null[time.Time]{},
 	}
 
@@ -34,7 +34,7 @@ func ExampleNull() {
 	//   "firstName": "John",
 	//   "middleName": null,
 	//   "lastName": "Doe",
-	//   "dob": "1980-05-13T00:00:00+02:00",
+	//   "dob": "1980-05-13T00:00:00Z",
 	//   "dod": null
 	// }
 }
