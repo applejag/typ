@@ -7,7 +7,7 @@ package typ_test
 import (
 	"fmt"
 
-	"gopkg.in/typ.v0"
+	"gopkg.in/typ.v1"
 )
 
 func ExampleDistinct() {

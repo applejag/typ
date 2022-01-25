@@ -8,7 +8,7 @@ import (
 	"fmt"
 	"sync"
 
-	"gopkg.in/typ.v0"
+	"gopkg.in/typ.v1"
 )
 
 func printMessages(prefix string, ch <-chan string, wg *sync.WaitGroup) {

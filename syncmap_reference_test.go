@@ -9,7 +9,7 @@ package typ_test
 import (
 	"sync"
 
-	"gopkg.in/typ.v0"
+	"gopkg.in/typ.v1"
 )
 
 // This file contains reference map implementations for unit-tests.

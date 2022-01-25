@@ -12,7 +12,7 @@ import (
 	"sync/atomic"
 	"testing"
 
-	"gopkg.in/typ.v0"
+	"gopkg.in/typ.v1"
 )
 
 type bench[K comparable, V any] struct {

@@ -10,7 +10,7 @@ import (
 	"os"
 	"time"
 
-	"gopkg.in/typ.v0"
+	"gopkg.in/typ.v1"
 )
 
 var bufPool = typ.Pool[*bytes.Buffer]{
