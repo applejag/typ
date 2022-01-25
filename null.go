@@ -26,7 +26,31 @@ var nullBytes = []byte("null")
 var trueBytes = []byte("true")
 var falseBytes = []byte("false")
 
-// Null is a nullable value.
+// Null is a nullable value that stores its nullable state inside its struct,
+// meaning you never have to deal with pointers and possible nil dereferences.
+//
+// It also means the types can live on the stack and never require to be
+// allocated on the heap and managed by the garbage collector, which is
+// unnecessary optimization for most, but requirement for others.
+//
+// The type implements the following interfaces, making it possible to use in
+// serialization:
+// 	encoding.TextMarshaler
+// 	encoding.TextUnmarshaler
+// 	encoding/json.Marshaler
+// 	encoding/json.Unmarshaler
+//
+// Note that while the type is generic, the JSON serialization logic still uses
+// reflection and interface{} casting, as it relies on the built in
+// encoding/json package.
+//
+// The type also implements the following types, making it possible to be used
+// in place of sql.NullXXX:
+// 	database/sql.Scanner
+// 	database/sql/driver.Valuer
+//
+// This Null implementation is forked from github.com/volatiletech/null/v9 to
+// make it generic.
 type Null[T any] struct {
 	Val   T
 	Valid bool
