@@ -23,12 +23,12 @@ func TestIsNil(t *testing.T) {
 
 func assertIsTrue(t *testing.T, name string, b bool) {
 	if !b {
-		t.Errorf("%s: expected true, got false", name)
+		t.Errorf("%s: want true, got false", name)
 	}
 }
 
 func assertIsFalse(t *testing.T, name string, b bool) {
 	if b {
-		t.Errorf("%s: expected false, got true", name)
+		t.Errorf("%s: want false, got true", name)
 	}
 }

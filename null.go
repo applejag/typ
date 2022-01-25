@@ -42,14 +42,14 @@ func NewNull[T any](value T, valid bool) Null[T] {
 	}
 }
 
-// NewNullFrom creates a new nullable value that will be marked invalid if nil,
+// NullFrom creates a new nullable value that will be marked invalid if nil,
 // and will always be valid if type is not nullable.
-func NewNullFrom[T any](value T) Null[T] {
+func NullFrom[T any](value T) Null[T] {
 	return NewNull(value, !IsNil(value))
 }
 
-// NewNullFromPtr creates a new nullable value that will be marked invalid if nil.
-func NewNullFromPtr[T any](ptr *T) Null[T] {
+// NullFromPtr creates a new nullable value that will be marked invalid if nil.
+func NullFromPtr[T any](ptr *T) Null[T] {
 	if ptr == nil {
 		return NewNull(Zero[T](), false)
 	}
@@ -123,41 +123,71 @@ func parseText[T any](text []byte) (any, error) {
 		return b, nil
 	case float32:
 		res, err := strconv.ParseFloat(string(text), 32)
-		return TernCast[float32](err != nil, res, 0), err
+		if err != nil {
+			return nil, err
+		}
+		return float32(res), nil
 	case float64:
 		res, err := strconv.ParseFloat(string(text), 64)
+		if err != nil {
+			return nil, err
+		}
 		return res, err
 	case int:
 		res, err := strconv.ParseInt(string(text), 10, 0)
-		return TernCast(err != nil, res, int(0)), err
+		if err != nil {
+			return nil, err
+		}
+		return int(res), nil
 	case int8:
 		res, err := strconv.ParseInt(string(text), 10, 8)
-		return TernCast(err != nil, res, int8(0)), err
+		if err != nil {
+			return nil, err
+		}
+		return int8(res), nil
 	case int16:
 		res, err := strconv.ParseInt(string(text), 10, 16)
-		return TernCast(err != nil, res, int16(0)), err
+		if err != nil {
+			return nil, err
+		}
+		return int16(res), nil
 	case int32:
 		res, err := strconv.ParseInt(string(text), 10, 32)
-		return TernCast(err != nil, res, int32(0)), err
+		if err != nil {
+			return nil, err
+		}
+		return int32(res), nil
 	case int64:
 		res, err := strconv.ParseInt(string(text), 10, 64)
-		return TernCast(err != nil, res, int64(0)), err
+		if err != nil {
+			return nil, err
+		}
+		return int64(res), nil
 	case uint:
 		res, err := strconv.ParseInt(string(text), 10, 0)
-		return TernCast(err != nil, res, uint(0)), err
-	// Collides with byte.
-	//case uint8:
-	//	res, err := strconv.ParseInt(string(text), 10, 8)
-	//	return TernCast(err != nil, res, uint8(0)), err
+		if err != nil {
+			return nil, err
+		}
+		return uint(res), nil
+	// Skipping uint8 as it collides with byte.
 	case uint16:
 		res, err := strconv.ParseInt(string(text), 10, 16)
-		return TernCast(err != nil, res, uint16(0)), err
+		if err != nil {
+			return nil, err
+		}
+		return uint16(res), nil
 	case uint32:
 		res, err := strconv.ParseInt(string(text), 10, 32)
-		return TernCast(err != nil, res, uint32(0)), err
+		if err != nil {
+			return nil, err
+		}
+		return uint32(res), nil
 	case uint64:
 		res, err := strconv.ParseInt(string(text), 10, 64)
-		return TernCast(err != nil, res, uint64(0)), err
+		if err != nil {
+			return nil, err
+		}
+		return uint64(res), nil
 	case string:
 		return string(text), nil
 	default:
@@ -166,7 +196,7 @@ func parseText[T any](text []byte) (any, error) {
 }
 
 // MarshalJSON implements json.Marshaler.
-func (n *Null[T]) MarshalJSON() ([]byte, error) {
+func (n Null[T]) MarshalJSON() ([]byte, error) {
 	if !n.Valid {
 		return nullBytes, nil
 	}
@@ -187,9 +217,9 @@ func (n *Null[T]) MarshalJSON() ([]byte, error) {
 }
 
 // MarshalText implements encoding.TextMarshaler.
-func (n *Null[T]) MarshalText() ([]byte, error) {
+func (n Null[T]) MarshalText() ([]byte, error) {
 	if !n.Valid {
-		return nullBytes, nil
+		return []byte{}, nil
 	}
 	var asAny any = n.Val
 	switch val := asAny.(type) {
