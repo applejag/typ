@@ -12,7 +12,6 @@ This project tries to follow [SemVer 2.0.0](https://semver.org/).
 
 ## v0.2.0 (WIP)
 
-
 - Added utility functions:
 
   - `typ.Coal[T](...T) T`: Coalesce operator, returns first non-zero value. (#20)
