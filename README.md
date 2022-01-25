@@ -49,6 +49,7 @@ go get -u gopkg.in/typ.v0
 
 - `typ.AtomicValue[T]`: Atomic value store, wrapper around [`sync/atomic.Value`](https://pkg.go.dev/sync/atomic#Value).
 - `typ.List[T]`: Linked list, forked from [`container/list`](https://pkg.go.dev/container/list).
+- `typ.Null[T]`: Nullable type without needing pointers, forked from [`github.com/volatiletech/null/v9`](https://github.com/volatiletech/null)
 - `typ.Pool[T]`: Object pool, wrapper around [`sync.Pool`](https://pkg.go.dev/sync#Pool).
 - `typ.Publisher[T]`: Publish-subscribe pattern (pubsub) using channels.
 - `typ.Ring[T]`: Circular list, forked from [`container/ring`](https://pkg.go.dev/container/ring).
@@ -82,6 +83,7 @@ go get -u gopkg.in/typ.v0
 - `typ.Coal[T](...T) T`: Coalesce operator, returns first non-zero value.
 - `typ.ContainsValue[K, V](map[K]V, V) bool`: Does map contain value?
 - `typ.Contains[T]([]T, T) bool`: Does slice contain value?
+- `typ.IsNil[T](T) bool`: Returns true if the generic value is nil.
 - `typ.Max[T](...T) T`: Return the largest value.
 - `typ.Min[T](...T) T`: Return the smallest value.
 - `typ.Product[T](...T) T`: Multiplies together numbers.
@@ -94,8 +96,9 @@ go get -u gopkg.in/typ.v0
 - `typ.SortDesc[T]([]T)`: Sort ordered slices in descending order.
 - `typ.Sort[T]([]T)`: Sort ordered slices in ascending order.
 - `typ.Sum[T](...T) T`: Sums up numbers (addition).
+- `typ.TernCast[T](bool, any, T) T`: Conditionally cast a value.
 - `typ.Tern[T](bool, T, T) T`: Ternary operator, return based on conditional.
-- `typ.Zero[T]()`: Returns the zero value for a type.
+- `typ.Zero[T]() T`: Returns the zero value for a type.
 
 <!-- lint enable maximum-line-length -->
 
@@ -134,6 +137,10 @@ This project is primarily licensed under the MIT license:
 
 - Some Go code in this project is forked from Go's source code, which is
   licensed under the 3-Clause BSD license: [LICENSES/BSD-3-Clause.txt](LICENSES/BSD-3-Clause.txt)
+
+- Some Go code in this project is forked from Volatile Tech's source code
+  (<https://github.com/volatiletech/null>), which is licensed under the
+  2-Clause BSD license: [LICENSES/BSD-2-Clause.txt](LICENSES/BSD-2-Clause.txt)
 
 - Documentation is licensed under the Creative Commons Attribution 4.0
   International (CC-BY-4.0) license: [LICENSES](LICENSES/CC-BY-4.0.txt)
