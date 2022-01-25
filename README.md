@@ -99,6 +99,9 @@ go get -u gopkg.in/typ.v1
 - `typ.Sum[T](...T) T`: Sums up numbers (addition).
 - `typ.TernCast[T](bool, any, T) T`: Conditionally cast a value.
 - `typ.Tern[T](bool, T, T) T`: Ternary operator, return based on conditional.
+- `typ.TrimLeft[T]([]T, []T)`: Trim away unwanted elements from start.
+- `typ.TrimRight[T]([]T, []T)`: Trim away unwanted elements from end.
+- `typ.Trim[T]([]T, []T)`: Trim away unwanted elements from start and end.
 - `typ.Zero[T]() T`: Returns the zero value for a type.
 
 <!-- lint enable maximum-line-length -->
