@@ -190,6 +190,11 @@ func parseText[T any](text []byte) (any, error) {
 		return uint64(res), nil
 	case string:
 		return string(text), nil
+	case time.Time:
+		if err := val.UnmarshalText(text); err != nil {
+			return nil, err
+		}
+		return val, nil
 	default:
 		return nil, fmt.Errorf("unsupported type: %T", val)
 	}
