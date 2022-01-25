@@ -14,6 +14,12 @@ This project tries to follow [SemVer 2.0.0](https://semver.org/).
 
 - Fixed package reference in docs and tests. (2e1eb32)
 
+- Added utility functions:
+
+  - `typ.TrimLeft[T]([]T, []T)`: Trim away unwanted elements from start. (2286b5c)
+  - `typ.TrimRight[T]([]T, []T)`: Trim away unwanted elements from end. (2286b5c)
+  - `typ.Trim[T]([]T, []T)`: Trim away unwanted elements from start and end. (2286b5c)
+
 ## v1.0.0 (2022-01-25)
 
 - Added types:
