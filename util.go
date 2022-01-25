@@ -9,9 +9,9 @@ import (
 	"time"
 )
 
-// compare checks if either value is greater or equal to the other.
+// Compare checks if either value is greater or equal to the other.
 // The result will be 0 if a == b, -1 if a < b, and +1 if a > b.
-func compare[T constraints.Ordered](a, b T) int {
+func Compare[T constraints.Ordered](a, b T) int {
 	if a > b {
 		return 1
 	}
@@ -89,4 +89,29 @@ func RecvTimeout[T any](ch <-chan T, timeout time.Duration) (T, bool) {
 	case <-timer.C:
 		return Zero[T](), false
 	}
+}
+
+// Coal will return the first non-zero value. Equivalent to the "null coalescing"
+// operator from other languages, or the SQL "COALESCE(...)" expression.
+// 	var result = null ?? myDefaultValue;       // C#, JavaScript, PHP, etc
+// 	var result = typ.Coal(nil, myDefaultValue) // Go
+func Coal[T comparable](values ...T) T {
+	var zero T
+	for _, v := range values {
+		if v != zero {
+			return v
+		}
+	}
+	return zero
+}
+
+// Tern returns different values depending on the given conditional boolean.
+// Equivalent to the "ternary" operator from other languages.
+// 	var result = 1 > 2 ? "yes" : "no";        // C#, JavaScript, PHP, etc
+// 	var result = typ.Tern(1 > 2, "yes", "no") // Go
+func Tern[T any](cond bool, ifTrue, ifFalse T) T {
+	if cond {
+		return ifTrue
+	}
+	return ifFalse
 }

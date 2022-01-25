@@ -4,9 +4,18 @@ SPDX-FileCopyrightText: 2022 Kalle Fagerberg
 SPDX-License-Identifier: CC-BY-4.0
 -->
 
+<!-- lint disable maximum-line-length -->
+
 # go-typ changelog
 
 This project tries to follow [SemVer 2.0.0](https://semver.org/).
+
+## v0.2.0 (WIP)
+
+- Added utility functions:
+
+  - `typ.Coal[T](...T) T`: Coalesce operator, returns first non-zero value. (#20)
+  - `typ.Tern[T](bool, T, T) T`: Ternary operator, return based on conditional. (#20)
 
 ## v0.1.0 (2022-01-23)
 
@@ -26,8 +35,6 @@ This project tries to follow [SemVer 2.0.0](https://semver.org/).
 
 - Added utility functions:
 
-  <!-- lint disable maximum-line-length -->
-
   - `typ.Clamp01[T](T) T`: Clamp a value between `0` and `1`.
   - `typ.Clamp[T](T, T, T) T`: Clamp a value inside a range.
   - `typ.ContainsValue[K, V](map[K]V, V) bool`: Does map contain value?
@@ -45,5 +52,3 @@ This project tries to follow [SemVer 2.0.0](https://semver.org/).
   - `typ.Sort[T]([]T)`: Sort ordered slices in ascending order.
   - `typ.Sum[T](...T) T`: Sums up numbers (addition).
   - `typ.Zero[T]()`: Returns the zero value for a type.
-
-  <!-- lint enable maximum-line-length -->
