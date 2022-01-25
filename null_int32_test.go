@@ -33,7 +33,7 @@ func TestNullInt32From(t *testing.T) {
 func TestNullInt32FromPtr(t *testing.T) {
 	n := int32(2147483646)
 	iptr := &n
-	i := NullFromPtr[int32](iptr)
+	i := NullFromPtr(iptr)
 	assertInt32(t, i, "NullFromPtr[int32]()")
 
 	null := NullFromPtr[int32](nil)
