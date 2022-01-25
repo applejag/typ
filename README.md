@@ -8,7 +8,7 @@ SPDX-License-Identifier: CC-BY-4.0
 
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/6b0289f204c044c2911a53c67a4833d9)](https://app.codacy.com/gh/go-typ/typ?utm_source=github.com&utm_medium=referral&utm_content=go-typ/typ&utm_campaign=Badge_Grade_Settings)
 [![REUSE status](https://api.reuse.software/badge/github.com/go-typ/typ)](https://api.reuse.software/info/github.com/go-typ/typ)
-[![Go Reference](https://pkg.go.dev/badge/gopkg.in/typ.v0.svg)](https://pkg.go.dev/gopkg.in/typ.v0)
+[![Go Reference](https://pkg.go.dev/badge/gopkg.in/typ.v1.svg)](https://pkg.go.dev/gopkg.in/typ.v1)
 
 Generic types and functions that are missing from Go, including sets, trees,
 linked lists, etc.
@@ -41,7 +41,7 @@ Requires Go v1.18beta1 or later as the code makes use of generics.
 ## Installation and usage
 
 ```sh
-go get -u gopkg.in/typ.v0
+go get -u gopkg.in/typ.v1
 ```
 
 ## Features
@@ -52,6 +52,7 @@ go get -u gopkg.in/typ.v0
 - `typ.Null[T]`: Nullable type without needing pointers, forked from [`github.com/volatiletech/null/v9`](https://github.com/volatiletech/null)
 - `typ.Pool[T]`: Object pool, wrapper around [`sync.Pool`](https://pkg.go.dev/sync#Pool).
 - `typ.Publisher[T]`: Publish-subscribe pattern (pubsub) using channels.
+- `typ.Queue[T]`: First-in-first-out collection.
 - `typ.Ring[T]`: Circular list, forked from [`container/ring`](https://pkg.go.dev/container/ring).
 - `typ.Set[T]`: Set, based on set theory.
 - `typ.Stack[T]`: First-in-last-out collection.

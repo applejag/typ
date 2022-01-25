@@ -69,7 +69,7 @@ func TestNullInt32Unmarshal(t *testing.T) {
 	assertNull(t, invalid, "invalid json")
 }
 
-func TestNullInt32UnmarshalNonIntegerNumber32(t *testing.T) {
+func TestNullInt32UnmarshalNonIntegerNumber32(_ *testing.T) {
 	var i Null[int32]
 	err := json.Unmarshal(float64JSON, &i)
 	if err == nil {
@@ -77,7 +77,7 @@ func TestNullInt32UnmarshalNonIntegerNumber32(t *testing.T) {
 	}
 }
 
-func TestNullInt32UnmarshalOverflow(t *testing.T) {
+func TestNullInt32UnmarshalOverflow(_ *testing.T) {
 	int32Overflow := uint32(math.MaxInt32)
 
 	// Max int32 should decode successfully
