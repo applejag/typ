@@ -12,9 +12,15 @@ This project tries to follow [SemVer 2.0.0](https://semver.org/).
 
 ## v0.2.0 (WIP)
 
+- Added types:
+
+  - `typ.Null[T]`: Nullable type without needing pointers, forked from [`github.com/volatiletech/null/v9`](https://github.com/volatiletech/null) (#22)
+
 - Added utility functions:
 
   - `typ.Coal[T](...T) T`: Coalesce operator, returns first non-zero value. (#20)
+  - `typ.IsNil[T](T) bool`: Returns true if the generic value is nil. (#22)
+  - `typ.TernCast[T](bool, any, T) T`: Conditionally cast a value. (#22)
   - `typ.Tern[T](bool, T, T) T`: Ternary operator, return based on conditional. (#20)
 
 ## v0.1.0 (2022-01-23)

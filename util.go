@@ -115,3 +115,18 @@ func Tern[T any](cond bool, ifTrue, ifFalse T) T {
 	}
 	return ifFalse
 }
+
+// TernCast will cast the value if condition is true. Otherwise the last
+// argument is returned.
+func TernCast[T any](cond bool, value any, ifFalse T) T {
+	if cond {
+		return value.(T)
+	}
+	return ifFalse
+}
+
+// IsNil checks if the generic value is nil.
+func IsNil[T any](value T) bool {
+	var asAny any = value
+	return asAny == nil
+}
