@@ -70,3 +70,15 @@ func Search[T constraints.Ordered](slice []T, value T) int {
 		return slice[i] >= value
 	})
 }
+
+// Index returns the index of a value, or -1 if none found.
+//
+// This differs from Search as Index doesn't require the slice to be sorted.
+func Index[T comparable](slice []T, value T) int {
+	for i, v := range slice {
+		if v == value {
+			return i
+		}
+	}
+	return -1
+}

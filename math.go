@@ -6,16 +6,6 @@ package typ
 
 import "constraints"
 
-// Real is a type constraint for any real numbers. That being integers or floats.
-type Real interface {
-	constraints.Integer | constraints.Float
-}
-
-// Number is a type constraint for any Go numbers, including complex numbers.
-type Number interface {
-	constraints.Integer | constraints.Float | constraints.Complex
-}
-
 // Min returns the smallest value.
 func Min[T constraints.Ordered](v ...T) T {
 	switch len(v) {

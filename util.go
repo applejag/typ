@@ -27,6 +27,14 @@ func Zero[T any]() T {
 	return zero
 }
 
+// ZeroOf returns the zero value for a given type. The first argument is unused,
+// but using Go's type inference can be useful to create the zero value for an
+// anonymous type without needing to declare the full type.
+func ZeroOf[T any](T) T {
+	var zero T
+	return zero
+}
+
 // Repeat creates a new slice with the given value repeated across it.
 func Repeat[T any](value T, count int) []T {
 	result := make([]T, count)
@@ -162,4 +170,144 @@ func TernCast[T any](cond bool, value any, ifFalse T) T {
 func IsNil[T any](value T) bool {
 	var asAny any = value
 	return asAny == nil
+}
+
+// NewOf returns the result of new() for the same type as the first argument.
+// Useful when wanting to call new() on an anonymous type.
+func NewOf[T any](*T) *T {
+	return new(T)
+}
+
+// MakeSliceOf returns the result of make([]T) for the same type as the first
+// argument.
+//
+// Useful when wanting to call make() on a slice of anonymous types by making
+// use of type inference to skip having to declare the full anonymous type
+// multiple times, which is quite common when writing tests.
+func MakeSliceOf[T any](_ T, size ...int) []T {
+	if len(size) > 2 {
+		panic("MakeSliceOf: max 2 size arguments")
+	}
+	return make([]T, SafeGet(size, 0), SafeGet(size, 1))
+}
+
+// MakeSliceOfSlice returns the result of make([]T) for the same type as the
+// slice element type of the first argument.
+//
+// Useful when wanting to call make() on a slice of anonymous types by making
+// use of type inference to skip having to declare the full anonymous type
+// multiple times, which is quite common when writing tests.
+func MakeSliceOfSlice[T any](_ []T, size ...int) []T {
+	if len(size) > 2 {
+		panic("MakeSliceOfSlice: max 2 size arguments")
+	}
+	return make([]T, SafeGet(size, 0), SafeGet(size, 1))
+}
+
+// MakeSliceOfKey returns the result of make([]T) for the same type as the
+// map key type of the first argument.
+//
+// Useful when wanting to call make() on a slice of anonymous types by making
+// use of type inference to skip having to declare the full anonymous type
+// multiple times, which is quite common when writing tests.
+func MakeSliceOfKey[K comparable, V any](_ map[K]V, size ...int) []K {
+	if len(size) > 2 {
+		panic("MakeSliceOfSlice: max 2 size arguments")
+	}
+	return make([]K, SafeGet(size, 0), SafeGet(size, 1))
+}
+
+// MakeSliceOfValue returns the result of make([]T) for the same type as the
+// map value type of the first argument.
+//
+// Useful when wanting to call make() on a slice of anonymous types by making
+// use of type inference to skip having to declare the full anonymous type
+// multiple times, which is quite common when writing tests.
+func MakeSliceOfValue[K comparable, V any](_ map[K]V, size ...int) []V {
+	if len(size) > 2 {
+		panic("MakeSliceOfSlice: max 2 size arguments")
+	}
+	return make([]V, SafeGet(size, 0), SafeGet(size, 1))
+}
+
+// MakeMapOf returns the result of make(map[K]V) for the same type as the first
+// arguments.
+//
+// Useful when wanting to call make() on a map of anonymous types by making
+// use of type inference to skip having to declare the full anonymous type
+// multiple times, which is quite common when writing tests.
+func MakeMapOf[K comparable, V any](_ K, _ V, size ...int) map[K]V {
+	if len(size) > 1 {
+		panic("MakeMapOf: max 1 size argument")
+	}
+	return make(map[K]V, SafeGet(size, 0))
+}
+
+// MakeMapOfMap returns the result of make(map[K]V) for the same type as the
+// key and value types of the first argument.
+//
+// Useful when wanting to call make() on a map of anonymous types by making
+// use of type inference to skip having to declare the full anonymous type
+// multiple times, which is quite common when writing tests.
+func MakeMapOfMap[K comparable, V any](_ map[K]V, size ...int) map[K]V {
+	if len(size) > 1 {
+		panic("MakeMapOf: max 1 size argument")
+	}
+	return make(map[K]V, SafeGet(size, 0))
+}
+
+// MakeChanOf returns the result of make(chan T) for the same type as the first
+// argument.
+//
+// Useful when wanting to call make() on a channel of anonymous types by making
+// use of type inference to skip having to declare the full anonymous type
+// multiple times, which is quite common when writing tests.
+func MakeChanOf[T any](_ T, size ...int) chan T {
+	if len(size) > 1 {
+		panic("MakeChanOf: max 1 size argument")
+	}
+	return make(chan T, SafeGet(size, 0))
+}
+
+// MakeChanOfChan returns the result of make(chan T) for the same type as the
+// channel type in the first argument.
+//
+// Useful when wanting to call make() on a channel of anonymous types by making
+// use of type inference to skip having to declare the full anonymous type
+// multiple times, which is quite common when writing tests.
+func MakeChanOfChan[T any](_ chan T, size ...int) chan T {
+	if len(size) > 1 {
+		panic("MakeChanOf: max 1 size argument")
+	}
+	return make(chan T, SafeGet(size, 0))
+}
+
+// TryGet will get a value from a slice, or return false on the second return
+// value if the index is outside the bounds of the slice. Passing a nil slice is
+// equivalent to passing an empty slice.
+func TryGet[T any](slice []T, index int) (T, bool) {
+	if index < 0 || index >= len(slice) {
+		return Zero[T](), false
+	}
+	return slice[index], true
+}
+
+// SafeGet will get a value from a slice, or the zero value for the type if
+// the index is outside the bounds of the slice. Passing a nil slice is
+// equivalent to passing an empty slice.
+func SafeGet[T any](slice []T, index int) T {
+	if index < 0 || index >= len(slice) {
+		return Zero[T]()
+	}
+	return slice[index]
+}
+
+// SafeGetOr will get a value from a slice, or the fallback value for the type
+// if the index is outside the bounds of the slice. Passing a nil slice is
+// equivalent to passing an empty slice.
+func SafeGetOr[T any](slice []T, index int, fallback T) T {
+	if index < 0 || index >= len(slice) {
+		return fallback
+	}
+	return slice[index]
 }

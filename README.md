@@ -103,6 +103,20 @@ go get -u gopkg.in/typ.v1
 - `typ.TrimRight[T]([]T, []T)`: Trim away unwanted elements from end.
 - `typ.Trim[T]([]T, []T)`: Trim away unwanted elements from start and end.
 - `typ.Zero[T]() T`: Returns the zero value for a type.
+- `typ.ZeroOf[T](T) T`: Returns the zero value for an anonymous type.
+- `typ.NewOf[T](*T) *T`: Returns the result of `new(T)`, useful for anonymous types.
+- `typ.MakeSliceOf[T](T, ...int) []T`: Returns the result of `make([]T)`, useful for anonymous types.
+- `typ.MakeSliceOfSlice[T]([]T, ...int) []T`: Returns the result of `make([]T)`, useful for anonymous types.
+- `typ.MakeSliceOfKey[K,V](map[K]V, ...int) []K`: Returns the result of `make([]K)`, useful for anonymous types.
+- `typ.MakeSliceOfValue[K,V](map[K]V, ...int) []V`: Returns the result of `make([]V)`, useful for anonymous types.
+- `typ.MakeMapOf[K,V](K, V, ...int) map[K]V`: Returns the result of `make(map[K]V)`, useful for anonymous types.
+- `typ.MakeMapOfMap[K,V](map[K]V, ...int) map[K]V`: Returns the result of `make(map[K]V)`, useful for anonymous types.
+- `typ.MakeChanOf[T](T, ...int) chan T`: Returns the result of `make(chan T)`, useful for anonymous types.
+- `typ.MakeChanOfChan[T](chan T, ...int) chan T`: Returns the result of `make(chan T)`, useful for anonymous types.
+- `typ.TryGet[T]([]T, int) (T, bool)`: Index a slice, or return false if index is out of bounds.
+- `typ.SafeGet[T]([]T, int) T`: Index a slice, or return zero if index is out of bounds.
+- `typ.SafeGetOr[T]([]T, int, T) T`: Index a slice, or return fallback value if index is out of bounds.
+- `typ.Index[T]([]T, T) int`: Returns index of a value, or -1 if not found.
 
 <!-- lint enable maximum-line-length -->
 
