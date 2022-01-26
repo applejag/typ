@@ -18,6 +18,10 @@ type OrderedTree[T constraints.Ordered] struct {
 	count int
 }
 
+func (n OrderedTree[T]) String() string {
+	return fmt.Sprint(n.SliceInOrder())
+}
+
 // Clone will return a copy of this tree, with a new set of nodes. The values
 // are copied as-is, so no pointers inside your value type gets a deep clone.
 func (n *OrderedTree[T]) Clone() OrderedTree[T] {
