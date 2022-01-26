@@ -10,6 +10,25 @@ SPDX-License-Identifier: CC-BY-4.0
 
 This project tries to follow [SemVer 2.0.0](https://semver.org/).
 
+## v1.1.0 (2022-01-26)
+
+- Added utility functions:
+
+  - `typ.Index[T]([]T, T) int`: Returns index of a value, or -1 if not found. (f104746)
+  - `typ.MakeChanOfChan[T](chan T, ...int) chan T`: Returns the result of `make(chan T)`, useful for anonymous types. (f104746)
+  - `typ.MakeChanOf[T](T, ...int) chan T`: Returns the result of `make(chan T)`, useful for anonymous types. (f104746)
+  - `typ.MakeMapOfMap[K,V](map[K]V, ...int) map[K]V`: Returns the result of `make(map[K]V)`, useful for anonymous types. (f104746)
+  - `typ.MakeMapOf[K,V](K, V, ...int) map[K]V`: Returns the result of `make(map[K]V)`, useful for anonymous types. (f104746)
+  - `typ.MakeSliceOfKey[K,V](map[K]V, ...int) []K`: Returns the result of `make([]K)`, useful for anonymous types. (f104746)
+  - `typ.MakeSliceOfSlice[T]([]T, ...int) []T`: Returns the result of `make([]T)`, useful for anonymous types. (f104746)
+  - `typ.MakeSliceOfValue[K,V](map[K]V, ...int) []V`: Returns the result of `make([]V)`, useful for anonymous types. (f104746)
+  - `typ.MakeSliceOf[T](T, ...int) []T`: Returns the result of `make([]T)`, useful for anonymous types. (f104746)
+  - `typ.NewOf[T](*T) *T`: Returns the result of `new(T)`, useful for anonymous types. (f104746)
+  - `typ.SafeGetOr[T]([]T, int, T) T`: Index a slice, or return fallback value if index is out of bounds. (f104746)
+  - `typ.SafeGet[T]([]T, int) T`: Index a slice, or return zero if index is out of bounds. (f104746)
+  - `typ.TryGet[T]([]T, int) (T, bool)`: Index a slice, or return false if index is out of bounds. (f104746)
+  - `typ.ZeroOf[T](T) T`: Returns the zero value for an anonymous type. (f104746)
+
 ## v1.0.1 (2022-01-25)
 
 - Fixed package reference in docs and tests. (2e1eb32)
