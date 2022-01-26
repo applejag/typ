@@ -10,6 +10,10 @@ SPDX-License-Identifier: CC-BY-4.0
 
 This project tries to follow [SemVer 2.0.0](https://semver.org/).
 
+## v1.1.1 (2022-01-26)
+
+- Added example tests for `typ.Set` and `typ.OrderedTree`. (e15e311)
+
 ## v1.1.0 (2022-01-26)
 
 - Added utility functions:
