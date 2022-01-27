@@ -17,6 +17,8 @@ This project tries to follow [SemVer 2.0.0](https://semver.org/).
   - `typ.IndexFunc[T]([]T, func(T) bool) int`: Returns index of a value, or -1 if not found. (a69bf35)
   - `typ.Last[T]([]T) T`: Returns the last item in a slice. (9bc54ab)
 
+- Changed `typ.Set.Set()` and `.Unset()` to `.Add()` and `.Remove()`, respectively. (bfabb2d)
+
 ## v1.1.1 (2022-01-26)
 
 - Added example tests for `typ.Set` and `typ.OrderedTree`. (e15e311)
