@@ -82,3 +82,16 @@ func Index[T comparable](slice []T, value T) int {
 	}
 	return -1
 }
+
+// Index returns the index of the first occurence where the function returns
+// true, or -1 if none found.
+//
+// This differs from Search as Index doesn't require the slice to be sorted.
+func IndexFunc[T any](slice []T, f func(value T) bool) int {
+	for i, v := range slice {
+		if f(v) {
+			return i
+		}
+	}
+	return -1
+}
