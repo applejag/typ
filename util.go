@@ -311,3 +311,12 @@ func SafeGetOr[T any](slice []T, index int, fallback T) T {
 	}
 	return slice[index]
 }
+
+// Last returns the last item in a slice, or the zero value if the slice is
+// empty.
+func Last[T any](slice []T) T {
+	if len(slice) == 0 {
+		return Zero[T]()
+	}
+	return slice[len(slice)-1]
+}
