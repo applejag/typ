@@ -47,15 +47,15 @@ go get -u gopkg.in/typ.v1
 ```go
 func UsingSets() {
 	set1 := make(typ.Set[string])
-	set1.Set("A")
-	set1.Set("B")
-	set1.Set("C")
+	set1.Add("A")
+	set1.Add("B")
+	set1.Add("C")
 	fmt.Println("set1:", set1) // {A B C}
 
 	set2 := make(typ.Set[string])
-	set2.Set("B")
-	set2.Set("C")
-	set2.Set("D")
+	set2.Add("B")
+	set2.Add("C")
+	set2.Add("D")
 	fmt.Println("set2:", set2) // {B C D}
 
 	fmt.Println("union:", set1.Union(set2))         // {A B C D}

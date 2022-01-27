@@ -37,9 +37,9 @@ func (s Set[T]) Has(value T) bool {
 	return has
 }
 
-// Set will add an element to the set, and return true if it was added
+// Add will add an element to the set, and return true if it was added
 // or false if the value already existed in the set.
-func (s Set[T]) Set(value T) bool {
+func (s Set[T]) Add(value T) bool {
 	if s.Has(value) {
 		return false
 	}
@@ -47,9 +47,9 @@ func (s Set[T]) Set(value T) bool {
 	return true
 }
 
-// Unset will remove an element from the set, and return true if it was removed
+// Remove will remove an element from the set, and return true if it was removed
 // or false if no such value existed in the set.
-func (s Set[T]) Unset(value T) bool {
+func (s Set[T]) Remove(value T) bool {
 	if !s.Has(value) {
 		return false
 	}
@@ -61,7 +61,7 @@ func (s Set[T]) Unset(value T) bool {
 func (s Set[T]) Clone() Set[T] {
 	clone := make(Set[T])
 	for v := range s {
-		clone.Set(v)
+		clone.Add(v)
 	}
 	return clone
 }
@@ -88,7 +88,7 @@ func (s Set[T]) Intersect(other Set[T]) Set[T] {
 	result := make(Set[T])
 	for v := range s {
 		if other.Has(v) {
-			result.Set(v)
+			result.Add(v)
 		}
 	}
 	return result
@@ -106,7 +106,7 @@ func (s Set[T]) Intersect(other Set[T]) Set[T] {
 func (s Set[T]) Union(other Set[T]) Set[T] {
 	result := s.Clone()
 	for v := range other {
-		result.Set(v)
+		result.Add(v)
 	}
 	return result
 }
@@ -125,7 +125,7 @@ func (s Set[T]) SetDiff(other Set[T]) Set[T] {
 	result := make(Set[T])
 	for v := range s {
 		if !other.Has(v) {
-			result.Set(v)
+			result.Add(v)
 		}
 	}
 	return result
@@ -146,7 +146,7 @@ func (s Set[T]) SymDiff(other Set[T]) Set[T] {
 	result := s.SetDiff(other)
 	for v := range other {
 		if !s.Has(v) {
-			result.Set(v)
+			result.Add(v)
 		}
 	}
 	return result
@@ -171,7 +171,7 @@ func CartesianProduct[TA comparable, TB comparable](a Set[TA], b Set[TB]) Set[Se
 	result := make(Set[SetProduct[TA, TB]])
 	for valueA := range a {
 		for valueB := range b {
-			result.Set(SetProduct[TA, TB]{valueA, valueB})
+			result.Add(SetProduct[TA, TB]{valueA, valueB})
 		}
 	}
 	return result
