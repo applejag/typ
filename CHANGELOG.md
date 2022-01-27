@@ -10,6 +10,12 @@ SPDX-License-Identifier: CC-BY-4.0
 
 This project tries to follow [SemVer 2.0.0](https://semver.org/).
 
+## v1.2.0 (WIP)
+
+- Added utility functions:
+
+  - `typ.IndexFunc[T]([]T, func(T) bool) int`: Returns index of a value, or -1 if not found. (a69bf35)
+
 ## v1.1.1 (2022-01-26)
 
 - Added example tests for `typ.Set` and `typ.OrderedTree`. (e15e311)
