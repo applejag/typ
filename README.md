@@ -119,8 +119,10 @@ func UsingOrderedTree() {
 - `typ.Coal[T](...T) T`: Coalesce operator, returns first non-zero value.
 - `typ.ContainsValue[K, V](map[K]V, V) bool`: Does map contain value?
 - `typ.Contains[T]([]T, T) bool`: Does slice contain value?
+- `typ.IndexFunc[T]([]T, func(T) bool) int`: Returns index of a value, or -1 if not found.
 - `typ.Index[T]([]T, T) int`: Returns index of a value, or -1 if not found.
 - `typ.IsNil[T](T) bool`: Returns true if the generic value is nil.
+- `typ.Last[T]([]T) T`: Returns the last item in a slice.
 - `typ.MakeChanOfChan[T](chan T, ...int) chan T`: Returns the result of `make(chan T)`, useful for anonymous types.
 - `typ.MakeChanOf[T](T, ...int) chan T`: Returns the result of `make(chan T)`, useful for anonymous types.
 - `typ.MakeMapOfMap[K,V](map[K]V, ...int) map[K]V`: Returns the result of `make(map[K]V)`, useful for anonymous types.
