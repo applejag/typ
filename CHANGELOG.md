@@ -15,6 +15,7 @@ This project tries to follow [SemVer 2.0.0](https://semver.org/).
 - Added utility functions:
 
   - `typ.IndexFunc[T]([]T, func(T) bool) int`: Returns index of a value, or -1 if not found. (a69bf35)
+  - `typ.Last[T]([]T) T`: Returns the last item in a slice. (9bc54ab)
 
 ## v1.1.1 (2022-01-26)
 
