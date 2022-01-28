@@ -35,60 +35,6 @@ func ZeroOf[T any](T) T {
 	return zero
 }
 
-// Repeat creates a new slice with the given value repeated across it.
-func Repeat[T any](value T, count int) []T {
-	result := make([]T, count)
-	for i := 0; i < count; i++ {
-		result[i] = value
-	}
-	return result
-}
-
-// Trim returns a slice of the slice that has had all unwanted values trimmed
-// away from both the start and the end.
-func Trim[T comparable](slice []T, unwanted []T) []T {
-	return TrimLeft(TrimRight(slice, unwanted), unwanted)
-}
-
-// TrimLeft returns a slice of the slice that has had all unwanted values
-// trimmed away from the start of the slice.
-func TrimLeft[T comparable](slice []T, unwanted []T) []T {
-	for len(slice) > 0 && Contains(unwanted, slice[0]) {
-		slice = slice[1:]
-	}
-	return slice
-}
-
-// TrimRight returns a slice of the slice that has had all unwanted values
-// trimmed away from the end of the slice.
-func TrimRight[T comparable](slice []T, unwanted []T) []T {
-	for len(slice) > 0 && Contains(unwanted, slice[len(slice)-1]) {
-		slice = slice[:len(slice)-1]
-	}
-	return slice
-}
-
-// Distinct returns a new slice of only unique values.
-func Distinct[T comparable](slice []T) []T {
-	result := make([]T, 0, len(slice))
-	for _, v := range slice {
-		if !Contains(result, v) {
-			result = append(result, v)
-		}
-	}
-	return result
-}
-
-// Contains checks if a value exists inside a slice of values.
-func Contains[T comparable](slice []T, value T) bool {
-	for _, v := range slice {
-		if v == value {
-			return true
-		}
-	}
-	return false
-}
-
 // ContainsValue checks if a value exists inside a map.
 func ContainsValue[K comparable, V comparable](m map[K]V, value V) bool {
 	for _, v := range m {
@@ -280,43 +226,4 @@ func MakeChanOfChan[T any](_ chan T, size ...int) chan T {
 		panic("MakeChanOf: max 1 size argument")
 	}
 	return make(chan T, SafeGet(size, 0))
-}
-
-// TryGet will get a value from a slice, or return false on the second return
-// value if the index is outside the bounds of the slice. Passing a nil slice is
-// equivalent to passing an empty slice.
-func TryGet[T any](slice []T, index int) (T, bool) {
-	if index < 0 || index >= len(slice) {
-		return Zero[T](), false
-	}
-	return slice[index], true
-}
-
-// SafeGet will get a value from a slice, or the zero value for the type if
-// the index is outside the bounds of the slice. Passing a nil slice is
-// equivalent to passing an empty slice.
-func SafeGet[T any](slice []T, index int) T {
-	if index < 0 || index >= len(slice) {
-		return Zero[T]()
-	}
-	return slice[index]
-}
-
-// SafeGetOr will get a value from a slice, or the fallback value for the type
-// if the index is outside the bounds of the slice. Passing a nil slice is
-// equivalent to passing an empty slice.
-func SafeGetOr[T any](slice []T, index int, fallback T) T {
-	if index < 0 || index >= len(slice) {
-		return fallback
-	}
-	return slice[index]
-}
-
-// Last returns the last item in a slice, or the zero value if the slice is
-// empty.
-func Last[T any](slice []T) T {
-	if len(slice) == 0 {
-		return Zero[T]()
-	}
-	return slice[len(slice)-1]
 }
