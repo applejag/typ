@@ -32,6 +32,8 @@ This project tries to follow [SemVer 2.0.0](https://semver.org/).
   - `typ.TrimFunc[T]([]T, func(T) bool) []T`: Trim away unwanted matches from start and end. (e94faf7)
   - `typ.TrimLeftFunc[T]([]T, func(T) bool) []T`: Trim away unwanted matches from start. (e94faf7)
   - `typ.TrimRightFunc[T]([]T, func(T) bool) []T`: Trim away unwanted matches from end. (e94faf7)
+  - `typ.WindowedIter[T]([]T, int, func([]T))`: Invoke callback for all windows in a slice. (91a701e)
+  - `typ.Windowed[T]([]T, int) [][]T`: Returns all windows from a slice. (91a701e)
 
 - Changed `typ.Set.Set()` and `.Unset()` to `.Add()` and `.Remove()`, respectively. (bfabb2d)
 
