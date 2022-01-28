@@ -12,6 +12,10 @@ This project tries to follow [SemVer 2.0.0](https://semver.org/).
 
 ## v1.2.0 (WIP)
 
+- Added types:
+
+  - `typ.Array2D[T]`: 2-dimensional array. (74289fe)
+
 - Added utility functions:
 
   - `typ.All[T]([]T, func(T) bool) bool`: Does condition match all values? (024361a)
