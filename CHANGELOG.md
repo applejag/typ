@@ -24,6 +24,7 @@ This project tries to follow [SemVer 2.0.0](https://semver.org/).
   - `typ.DistinctFunc[T]([]T, func(T, T) bool) []T`: Returns new slice of unique elements with custom equals. (e94faf7)
   - `typ.ExceptSet[T]([]T, Set[T]) []T`: Exclude values from other set. (6c21e5d)
   - `typ.Except[T]([]T, []T) []T`: Exclude values from other slice. (6c21e5d)
+  - `typ.Fill[T]([]T, T)`: Fill a slice with a value. (d202eea)
   - `typ.Filter[T](slice []T, func(T) bool) []T`: Returns filtered slice. (024361a)
   - `typ.FoldReverse[TState, T]([]T, TState, func(TState, T) TState) TState`: Accumulate values from slice in reverse order. (0871a38)
   - `typ.Fold[TState, T]([]T, TState, func(TState, T) TState) TState`: Accumulate values from slice. (024361a)
