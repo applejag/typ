@@ -116,6 +116,8 @@ func UsingOrderedTree() {
 
 - `typ.All[T]([]T, func(T) bool) bool`: Does condition match all values?
 - `typ.Any[T]([]T, func(T) bool) bool`: Does condition match any value?
+- `typ.ChunkIter[T]([]T, int) [][]T`: Invoke callback for all chunks in a slice.
+- `typ.Chunk[T]([]T, int) [][]T`: Divide up a slice.
 - `typ.Clamp01[T](T) T`: Clamp a value between `0` and `1`.
 - `typ.Clamp[T](T, T, T) T`: Clamp a value inside a range.
 - `typ.Coal[T](...T) T`: Coalesce operator, returns first non-zero value.

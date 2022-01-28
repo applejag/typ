@@ -307,7 +307,7 @@ func PairsIter[T any](slice []T, callback func(a, b T)) {
 	if len(slice) < 2 {
 		return
 	}
-	lim := len(slice) - 2
+	lim := len(slice) - 1
 	for i := 0; i < lim; i++ {
 		callback(slice[i], slice[i+1])
 	}
@@ -327,14 +327,50 @@ func Windowed[T any](slice []T, size int) [][]T {
 	return windows
 }
 
-// WindowedIter ivokes the provided callback for all windows, where each window
+// WindowedIter invokes the provided callback for all windows, where each window
 // is a slice of the specified size from the specified slice.
 func WindowedIter[T any](slice []T, size int, callback func(window []T)) {
 	if len(slice) < size {
 		return
 	}
-	lim := len(slice) - size
+	lim := len(slice) - size + 1
 	for i := 0; i < lim; i++ {
 		callback(slice[i : i+size])
+	}
+}
+
+// Chunk divides the slice up into chunks with a size limit. The last chunk
+// may be smaller than size if the slice is not evenly divisible.
+func Chunk[T any](slice []T, size int) [][]T {
+	if len(slice) == 0 {
+		return nil
+	}
+	div := len(slice) / size
+	rounded := div * size
+	lim := div + (len(slice) - rounded)
+	chunks := make([][]T, lim)
+	for i, j := 0, 0; j < rounded; i, j = i+1, j+size {
+		chunks[i] = slice[j : j+size]
+	}
+	if div != lim {
+		chunks[lim-1] = slice[rounded:]
+	}
+	return chunks
+}
+
+// ChunkIter divides the slice up into chunks and invokes the callback on each
+// chunk. The last chunk may be smaller than size if the slice is not evenly
+// divisible.
+func ChunkIter[T any](slice []T, size int, callback func(chunk []T)) {
+	if len(slice) == 0 {
+		return
+	}
+	div := len(slice) / size
+	rounded := div * size
+	for i, j := 0, 0; j < rounded; i, j = i+1, j+size {
+		callback(slice[j : j+size])
+	}
+	if rounded != len(slice) {
+		callback(slice[rounded:])
 	}
 }

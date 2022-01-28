@@ -76,6 +76,105 @@ func TestGroupBy(t *testing.T) {
 	assertSlice(t, "group[2]", []string{"Toast"}, got[2].Values)
 }
 
+func TestPairs(t *testing.T) {
+	in := []byte("abcdefg")
+	got := Pairs(in)
+	if len(got) != 6 {
+		t.Fatalf("want len=6, got len=%d", len(got))
+	}
+	want := []string{
+		"ab", "bc", "cd", "de", "ef", "fg",
+	}
+	for i := range got {
+		assertComparable(t, fmt.Sprintf("got[%d]", i), want[i], string(got[i][:]))
+	}
+}
+
+func TestPairsIter(t *testing.T) {
+	in := []byte("abcdefg")
+	var got [][]byte
+	PairsIter(in, func(a, b byte) {
+		got = append(got, []byte{a, b})
+	})
+	if len(got) != 6 {
+		t.Fatalf("want len=6, got len=%d", len(got))
+	}
+	want := []string{
+		"ab", "bc", "cd", "de", "ef", "fg",
+	}
+	for i := range got {
+		assertComparable(t, fmt.Sprintf("got[%d]", i), want[i], string(got[i]))
+	}
+}
+
+func TestWindowed(t *testing.T) {
+	in := []byte("abcdefg")
+	got := Windowed(in, 3)
+	if len(got) != 5 {
+		t.Fatalf("want len=5, got len=%d", len(got))
+	}
+	want := []string{
+		"abc", "bcd", "cde", "def", "efg",
+	}
+	for i := range got {
+		assertComparable(t, fmt.Sprintf("got[%d]", i), want[i], string(got[i]))
+	}
+}
+
+func TestWindowedIter(t *testing.T) {
+	in := []byte("abcdefg")
+	var got [][]byte
+	WindowedIter(in, 3, func(window []byte) {
+		got = append(got, window)
+	})
+	if len(got) != 5 {
+		t.Fatalf("want len=5, got len=%d", len(got))
+	}
+	want := []string{
+		"abc", "bcd", "cde", "def", "efg",
+	}
+	for i := range got {
+		assertComparable(t, fmt.Sprintf("got[%d]", i), want[i], string(got[i]))
+	}
+}
+
+func TestChunk(t *testing.T) {
+	in := []byte("abcdefg")
+	got := Chunk(in, 3)
+	if len(got) != 3 {
+		t.Fatalf("want len=3, got len=%d", len(got))
+	}
+	want := []string{
+		"abc", "def", "g",
+	}
+	for i := range got {
+		assertComparable(t, fmt.Sprintf("got[%d]", i), want[i], string(got[i]))
+	}
+}
+
+func TestChunkIter(t *testing.T) {
+	in := []byte("abcdefg")
+	var got [][]byte
+	ChunkIter(in, 3, func(chunk []byte) {
+		got = append(got, chunk)
+	})
+	if len(got) != 3 {
+		t.Fatalf("want len=3, got len=%d", len(got))
+	}
+	want := []string{
+		"abc", "def", "g",
+	}
+	for i := range got {
+		assertComparable(t, fmt.Sprintf("got[%d]", i), want[i], string(got[i]))
+	}
+}
+
+func assertComparable[T comparable](t *testing.T, name string, want T, got T) {
+	if want != got {
+		t.Errorf(`%s: want "%v", got "%v"`, name, want, got)
+	}
+}
+
 func assertSlice[T comparable](t *testing.T, name string, want, got []T) {
 	if len(want) != len(got) {
 		t.Errorf("%s: want len=%d, got len=%d", name, len(want), len(got))
@@ -85,38 +184,5 @@ func assertSlice[T comparable](t *testing.T, name string, want, got []T) {
 		if want[i] != got[i] {
 			t.Errorf(`%s: index %d: want "%v", got "%v"`, name, i, want[i], got[i])
 		}
-	}
-}
-
-func TestPairs(t *testing.T) {
-	in := []byte("abcdefg")
-	got := Pairs(in)
-	if len(got) != 6 {
-		t.Fatalf("want len=6, got len=%d", len(got))
-	}
-	assertComparable(t, "got[0]", "ab", string(got[0][:]))
-	assertComparable(t, "got[1]", "bc", string(got[1][:]))
-	assertComparable(t, "got[2]", "cd", string(got[2][:]))
-	assertComparable(t, "got[3]", "de", string(got[3][:]))
-	assertComparable(t, "got[4]", "ef", string(got[4][:]))
-	assertComparable(t, "got[5]", "fg", string(got[5][:]))
-}
-
-func TestWindowed(t *testing.T) {
-	in := []byte("abcdefg")
-	got := Windowed(in, 3)
-	if len(got) != 5 {
-		t.Fatalf("want len=5, got len=%d", len(got))
-	}
-	assertComparable(t, "got[0]", "abc", string(got[0]))
-	assertComparable(t, "got[1]", "bcd", string(got[1]))
-	assertComparable(t, "got[2]", "cde", string(got[2]))
-	assertComparable(t, "got[3]", "def", string(got[3]))
-	assertComparable(t, "got[4]", "efg", string(got[4]))
-}
-
-func assertComparable[T comparable](t *testing.T, name string, want T, got T) {
-	if want != got {
-		t.Errorf(`%s: want "%v", got "%v"`, name, want, got)
 	}
 }
