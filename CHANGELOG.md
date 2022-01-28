@@ -39,6 +39,7 @@ This project tries to follow [SemVer 2.0.0](https://semver.org/).
   - `typ.Map[TA, TB](slice []TA, func(TA) TB) []TB`: Returns converted slice. (024361a)
   - `typ.PairsIter[T]([]T, func(T, T))`: Invoke callback for all pairs in a slice. (92498c7)
   - `typ.Pairs[T]([]T) [][2]T`: Returns all pairs from a slice. (92498c7)
+  - `typ.Ptr[T](T) *T`: Return a pointer of the value, such as a literal. (d48dd7f)
   - `typ.TrimFunc[T]([]T, func(T) bool) []T`: Trim away unwanted matches from start and end. (e94faf7)
   - `typ.TrimLeftFunc[T]([]T, func(T) bool) []T`: Trim away unwanted matches from start. (e94faf7)
   - `typ.TrimRightFunc[T]([]T, func(T) bool) []T`: Trim away unwanted matches from end. (e94faf7)
