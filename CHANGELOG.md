@@ -14,6 +14,11 @@ This project tries to follow [SemVer 2.0.0](https://semver.org/).
 
 - Added utility functions:
 
+  - `typ.ContainsFunc[T]([]T, T, func(T, T) bool) bool`: Checks if value exists in slice with custom equals. (e94faf7)
+  - `typ.DistinctFunc[T]([]T, func(T, T) bool) []T`: Returns new slice of unique elements with custom equals. (e94faf7)
+  - `typ.TrimFunc[T]([]T, func(T) bool) []T`: Trim away unwanted matches from start and end. (e94faf7)
+  - `typ.TrimLeftFunc[T]([]T, func(T) bool) []T`: Trim away unwanted matches from start. (e94faf7)
+  - `typ.TrimRightFunc[T]([]T, func(T) bool) []T`: Trim away unwanted matches from end. (e94faf7)
   - `typ.IndexFunc[T]([]T, func(T) bool) int`: Returns index of a value, or -1 if not found. (a69bf35)
   - `typ.Last[T]([]T) T`: Returns the last item in a slice. (9bc54ab)
 

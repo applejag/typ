@@ -117,8 +117,11 @@ func UsingOrderedTree() {
 - `typ.Clamp01[T](T) T`: Clamp a value between `0` and `1`.
 - `typ.Clamp[T](T, T, T) T`: Clamp a value inside a range.
 - `typ.Coal[T](...T) T`: Coalesce operator, returns first non-zero value.
+- `typ.ContainsFunc[T]([]T, T, func(T, T) bool) bool`: Checks if value exists in slice with custom equals.
 - `typ.ContainsValue[K, V](map[K]V, V) bool`: Does map contain value?
 - `typ.Contains[T]([]T, T) bool`: Does slice contain value?
+- `typ.DistinctFunc[T]([]T, func(T, T) bool) []T`: Returns new slice of unique elements with custom equals.
+- `typ.Distinct[T]([]T, func(T, T) bool) []T`: Returns new slice of unique elements.
 - `typ.IndexFunc[T]([]T, func(T) bool) int`: Returns index of a value, or -1 if not found.
 - `typ.Index[T]([]T, T) int`: Returns index of a value, or -1 if not found.
 - `typ.IsNil[T](T) bool`: Returns true if the generic value is nil.
@@ -148,7 +151,10 @@ func UsingOrderedTree() {
 - `typ.Sum[T](...T) T`: Sums up numbers (addition).
 - `typ.TernCast[T](bool, any, T) T`: Conditionally cast a value.
 - `typ.Tern[T](bool, T, T) T`: Ternary operator, return based on conditional.
+- `typ.TrimFunc[T]([]T, func(T) bool) []T`: Trim away unwanted matches from start and end.
+- `typ.TrimLeftFunc[T]([]T, func(T) bool) []T`: Trim away unwanted matches from start.
 - `typ.TrimLeft[T]([]T, []T)`: Trim away unwanted elements from start.
+- `typ.TrimRightFunc[T]([]T, func(T) bool) []T`: Trim away unwanted matches from end.
 - `typ.TrimRight[T]([]T, []T)`: Trim away unwanted elements from end.
 - `typ.Trim[T]([]T, []T)`: Trim away unwanted elements from start and end.
 - `typ.TryGet[T]([]T, int) (T, bool)`: Index a slice, or return false if index is out of bounds.
