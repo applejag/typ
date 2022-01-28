@@ -82,6 +82,7 @@ func UsingOrderedTree() {
 ## Features
 ### Types
 
+- `typ.Array2D[T]`: 2-dimensional array.
 - `typ.AtomicValue[T]`: Atomic value store, wrapper around [`sync/atomic.Value`](https://pkg.go.dev/sync/atomic#Value).
 - `typ.List[T]`: Linked list, forked from [`container/list`](https://pkg.go.dev/container/list).
 - `typ.Null[T]`: Nullable type without needing pointers, forked from [`github.com/volatiletech/null/v9`](https://github.com/volatiletech/null)
