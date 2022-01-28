@@ -124,6 +124,7 @@ func UsingOrderedTree() {
 - `typ.ContainsFunc[T]([]T, T, func(T, T) bool) bool`: Checks if value exists in slice with custom equals.
 - `typ.ContainsValue[K, V](map[K]V, V) bool`: Does map contain value?
 - `typ.Contains[T]([]T, T) bool`: Does slice contain value?
+- `typ.CountBy[K, V]([]V, func(V) K) []Counting[K]`: Count elements by key.
 - `typ.DistinctFunc[T]([]T, func(T, T) bool) []T`: Returns new slice of unique elements with custom equals.
 - `typ.Distinct[T]([]T, func(T, T) bool) []T`: Returns new slice of unique elements.
 - `typ.Filter[T](slice []T, func(T) bool) []T`: Returns filtered slice.

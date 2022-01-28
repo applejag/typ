@@ -67,13 +67,42 @@ func TestGroupBy(t *testing.T) {
 	}
 	assertSlice(t, "group[0]", []string{"Potatoes", "Pizza", "Pancake"}, got[0].Values)
 	if got[1].Key != 'H' {
-		t.Errorf("want group[1].Key = 'P', got %q", got[1].Key)
+		t.Errorf("want group[1].Key = 'H', got %q", got[1].Key)
 	}
 	assertSlice(t, "group[1]", []string{"Hamburger", "Hummus"}, got[1].Values)
 	if got[2].Key != 'T' {
-		t.Errorf("want group[2].Key = 'P', got %q", got[2].Key)
+		t.Errorf("want group[2].Key = 'T', got %q", got[2].Key)
 	}
 	assertSlice(t, "group[2]", []string{"Toast"}, got[2].Values)
+}
+
+func TestCountBy(t *testing.T) {
+	in := []string{
+		"Potatoes",
+		"Hamburger",
+		"Pizza",
+		"Toast",
+		"Hummus",
+		"Pancake",
+	}
+	got := CountBy(in, func(value string) byte {
+		return value[0]
+	})
+	if len(got) != 3 {
+		t.Fatalf("want 3 groups, got %d: %v", len(got), got)
+	}
+	if got[0].Key != 'P' {
+		t.Errorf("want group[0].Key = 'P', got %q", got[0].Key)
+	}
+	assertComparable(t, "group[0]", 3, got[0].Count)
+	if got[1].Key != 'H' {
+		t.Errorf("want group[1].Key = 'H', got %q", got[1].Key)
+	}
+	assertComparable(t, "group[1]", 2, got[1].Count)
+	if got[2].Key != 'T' {
+		t.Errorf("want group[2].Key = 'T', got %q", got[2].Key)
+	}
+	assertComparable(t, "group[2]", 1, got[2].Count)
 }
 
 func TestPairs(t *testing.T) {

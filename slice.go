@@ -258,7 +258,7 @@ func Concat[T any](a, b []T) []T {
 	return result
 }
 
-// Grouping is a key values store returned by the GroupBy functions.
+// Grouping is a key-values store returned by the GroupBy functions.
 type Grouping[K, V any] struct {
 	Key    K
 	Values []V
@@ -282,6 +282,35 @@ func GroupBy[K comparable, V any](slice []V, keyer func(value V) K) []Grouping[K
 		groups[i] = Grouping[K, V]{
 			Key:    key,
 			Values: m[key],
+		}
+	}
+	return groups
+}
+
+// Counting is a key-count store returned by the CountBy function.
+type Counting[K any] struct {
+	Key   K
+	Count int
+}
+
+// CountBy will count the number of occurrences for each key, using the key
+// from the function provided.
+func CountBy[K comparable, V any](slice []V, keyer func(value V) K) []Counting[K] {
+	m := map[K]int{}
+	var orderedKeys []K
+	for _, v := range slice {
+		key := keyer(v)
+		count, ok := m[key]
+		m[key] = count + 1
+		if !ok {
+			orderedKeys = append(orderedKeys, key)
+		}
+	}
+	groups := make([]Counting[K], len(orderedKeys))
+	for i, key := range orderedKeys {
+		groups[i] = Counting[K]{
+			Key:   key,
+			Count: m[key],
 		}
 	}
 	return groups
