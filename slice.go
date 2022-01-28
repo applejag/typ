@@ -170,3 +170,79 @@ func Last[T any](slice []T) T {
 	}
 	return slice[len(slice)-1]
 }
+
+// Any checks if any value matches the condition. Returns false if the slice is
+// empty.
+func Any[T any](slice []T, cond func(value T) bool) bool {
+	for _, v := range slice {
+		if cond(v) {
+			return true
+		}
+	}
+	return false
+}
+
+// All checks if all values matches the condition. Returns true if the slice is
+// empty.
+func All[T any](slice []T, cond func(value T) bool) bool {
+	for _, v := range slice {
+		if !cond(v) {
+			return false
+		}
+	}
+	return true
+}
+
+// Map will apply a conversion function to all elements in a slice and return
+// the new slice with converted values.
+func Map[TA any, TB any](slice []TA, conv func(value TA) TB) []TB {
+	result := make([]TB, len(slice))
+	for i, v := range slice {
+		result[i] = conv(v)
+	}
+	return result
+}
+
+// MapErr will apply a conversion function to all elements in a slice and return
+// the new slice with converted values. Will cancel the conversion on the first
+// error occurrence.
+func MapErr[TA any, TB any](slice []TA, conv func(value TA) (TB, error)) ([]TB, error) {
+	result := make([]TB, len(slice))
+	var err error
+	for i, v := range slice {
+		result[i], err = conv(v)
+		if err != nil {
+			return nil, err
+		}
+	}
+	return result, nil
+}
+
+// Filter will return a new slice of all matching elements.
+func Filter[T any](slice []T, match func(value T) bool) []T {
+	result := make([]T, 0, len(slice))
+	for _, v := range slice {
+		if match(v) {
+			result = append(result, v)
+		}
+	}
+	return result
+}
+
+// Fold will accumulate an answer based on all values in a slice. Returns the
+// seed value as-is if the slice is empty.
+func Fold[TState, T any](slice []T, seed TState, acc func(state TState, value T) TState) TState {
+	state := seed
+	for _, v := range slice {
+		seed = acc(state, v)
+	}
+	return state
+}
+
+// Concat returns a new slice with the values from the two slices concatenated.
+func Concat[T any](a, b []T) []T {
+	result := make([]T, len(a)+len(b))
+	copy(result[:len(a)], a)
+	copy(result[len(a):], b)
+	return result
+}
