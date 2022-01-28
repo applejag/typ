@@ -15,6 +15,24 @@ func Fill[T any](slice []T, value T) {
 	}
 }
 
+// Inserted returns a slice that as the specified value inserted at a given
+// index and all values after shifted to the right.
+func Inserted[T any](slice []T, index int, value T) []T {
+	slice = append(slice, value)
+	copy(slice[index+1:], slice[index:])
+	slice[index] = value
+	return slice
+}
+
+// InsertedSlice returns a slice that has the specified values inserted at a
+// given index and all values after shifted to the right.
+func InsertedSlice[T any](slice []T, index int, values []T) []T {
+	slice = append(slice, values...)
+	copy(slice[index+len(values):], slice[index:])
+	copy(slice[index:], values)
+	return slice
+}
+
 // Index returns the index of a value, or -1 if none found.
 //
 // This differs from Search as Index doesn't require the slice to be sorted.

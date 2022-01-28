@@ -137,6 +137,8 @@ func UsingOrderedTree() {
 - `typ.GroupBy[K, V]([]V, func(V) K) []Grouping[K, V]`: Group elements by key.
 - `typ.IndexFunc[T]([]T, func(T) bool) int`: Returns index of a value, or -1 if not found.
 - `typ.Index[T]([]T, T) int`: Returns index of a value, or -1 if not found.
+- `typ.InsertedSlice[T]([]T, int, []T) []T`: Return a slice with values inserted at index.
+- `typ.Inserted[T]([]T, int, T) []T`: Return a slice with value inserted at index.
 - `typ.IsNil[T](T) bool`: Returns true if the generic value is nil.
 - `typ.Last[T]([]T) T`: Returns the last item in a slice.
 - `typ.MakeChanOfChan[T](chan T, ...int) chan T`: Returns the result of `make(chan T)`, useful for anonymous types.

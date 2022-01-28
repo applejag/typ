@@ -19,6 +19,94 @@ func TestFill(t *testing.T) {
 	}
 }
 
+func TestInserted(t *testing.T) {
+	const insertion = '_'
+	testCases := []struct {
+		name  string
+		slice string
+		index int
+		want  string
+	}{
+		{
+			name:  "empty",
+			slice: "",
+			index: 0,
+			want:  "_",
+		},
+		{
+			name:  "start",
+			slice: "start",
+			index: 0,
+			want:  "_start",
+		},
+		{
+			name:  "end",
+			slice: "end",
+			index: 3,
+			want:  "end_",
+		},
+		{
+			name:  "middle",
+			slice: "middle",
+			index: 3,
+			want:  "mid_dle",
+		},
+	}
+	for _, tc := range testCases {
+		t.Run(tc.name, func(t *testing.T) {
+			got := Inserted([]byte(tc.slice), tc.index, insertion)
+			gotStr := string(got)
+			if gotStr != tc.want {
+				t.Errorf("want %q, got %q", tc.want, got)
+			}
+		})
+	}
+}
+
+func TestInsertedSlice(t *testing.T) {
+	const insertion = "123"
+	testCases := []struct {
+		name  string
+		slice string
+		index int
+		want  string
+	}{
+		{
+			name:  "empty",
+			slice: "",
+			index: 0,
+			want:  "123",
+		},
+		{
+			name:  "start",
+			slice: "start",
+			index: 0,
+			want:  "123start",
+		},
+		{
+			name:  "end",
+			slice: "end",
+			index: 3,
+			want:  "end123",
+		},
+		{
+			name:  "middle",
+			slice: "middle",
+			index: 3,
+			want:  "mid123dle",
+		},
+	}
+	for _, tc := range testCases {
+		t.Run(tc.name, func(t *testing.T) {
+			got := InsertedSlice([]byte(tc.slice), tc.index, []byte(insertion))
+			gotStr := string(got)
+			if gotStr != tc.want {
+				t.Errorf("want %q, got %q", tc.want, got)
+			}
+		})
+	}
+}
+
 func TestConcat(t *testing.T) {
 	testCases := []struct {
 		a    string
