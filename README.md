@@ -137,8 +137,8 @@ func UsingOrderedTree() {
 - `typ.GroupBy[K, V]([]V, func(V) K) []Grouping[K, V]`: Group elements by key.
 - `typ.IndexFunc[T]([]T, func(T) bool) int`: Returns index of a value, or -1 if not found.
 - `typ.Index[T]([]T, T) int`: Returns index of a value, or -1 if not found.
-- `typ.InsertedSlice[T]([]T, int, []T) []T`: Return a slice with values inserted at index.
-- `typ.Inserted[T]([]T, int, T) []T`: Return a slice with value inserted at index.
+- `typ.InsertSlice[T](*[]T, int, []T)`: Inserts a slice of values at index.
+- `typ.Insert[T](*[]T, int, T)`: Inserts a value at index.
 - `typ.IsNil[T](T) bool`: Returns true if the generic value is nil.
 - `typ.Last[T]([]T) T`: Returns the last item in a slice.
 - `typ.MakeChanOfChan[T](chan T, ...int) chan T`: Returns the result of `make(chan T)`, useful for anonymous types.
@@ -159,6 +159,8 @@ func UsingOrderedTree() {
 - `typ.Product[T](...T) T`: Multiplies together numbers.
 - `typ.Ptr[T](T) *T`: Return a pointer of the value, such as a literal.
 - `typ.RecvTimeout[T](chan<- T, time.Duration)`: Receive from channel with timeout.
+- `typ.RemoveSlice[T](*[]T, int, int)`: Removes a slice of values at index.
+- `typ.Remove[T](*[]T, int)`: Removes a value at index.
 - `typ.Reverse[T]([]T)`: Reverse the order of a slice.
 - `typ.SafeGetOr[T]([]T, int, T) T`: Index a slice, or return fallback value if index is out of bounds.
 - `typ.SafeGet[T]([]T, int) T`: Index a slice, or return zero if index is out of bounds.
