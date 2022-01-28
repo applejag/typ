@@ -20,6 +20,7 @@ This project tries to follow [SemVer 2.0.0](https://semver.org/).
   - `typ.Chunk[T]([]T, int) [][]T`: Divide up a slice. (e269dec)
   - `typ.Concat[T]([]T, []T) []T`: Returns two concatenated slices. (024361a)
   - `typ.ContainsFunc[T]([]T, T, func(T, T) bool) bool`: Checks if value exists in slice with custom equals. (e94faf7)
+  - `typ.CountBy[K, V]([]V, func(V) K) []Counting[K]`: Count elements by key. (2105841)
   - `typ.DistinctFunc[T]([]T, func(T, T) bool) []T`: Returns new slice of unique elements with custom equals. (e94faf7)
   - `typ.Filter[T](slice []T, func(T) bool) []T`: Returns filtered slice. (024361a)
   - `typ.FoldReverse[TState, T]([]T, TState, func(TState, T) TState) TState`: Accumulate values from slice in reverse order. (0871a38)
