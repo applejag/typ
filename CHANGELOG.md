@@ -16,6 +16,8 @@ This project tries to follow [SemVer 2.0.0](https://semver.org/).
 
   - `typ.All[T]([]T, func(T) bool) bool`: Does condition match all values? (024361a)
   - `typ.Any[T]([]T, func(T) bool) bool`: Does condition match any value? (024361a)
+  - `typ.ChunkIter[T]([]T, int) [][]T`: Invoke callback for all chunks in a slice. (e269dec)
+  - `typ.Chunk[T]([]T, int) [][]T`: Divide up a slice. (e269dec)
   - `typ.Concat[T]([]T, []T) []T`: Returns two concatenated slices. (024361a)
   - `typ.ContainsFunc[T]([]T, T, func(T, T) bool) bool`: Checks if value exists in slice with custom equals. (e94faf7)
   - `typ.DistinctFunc[T]([]T, func(T, T) bool) []T`: Returns new slice of unique elements with custom equals. (e94faf7)
