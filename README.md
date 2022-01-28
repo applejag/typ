@@ -114,6 +114,8 @@ func UsingOrderedTree() {
 
 <!-- lint disable maximum-line-length -->
 
+- `typ.All[T]([]T, func(T) bool) bool`: Does condition match all values?
+- `typ.Any[T]([]T, func(T) bool) bool`: Does condition match any value?
 - `typ.Clamp01[T](T) T`: Clamp a value between `0` and `1`.
 - `typ.Clamp[T](T, T, T) T`: Clamp a value inside a range.
 - `typ.Coal[T](...T) T`: Coalesce operator, returns first non-zero value.
@@ -122,6 +124,8 @@ func UsingOrderedTree() {
 - `typ.Contains[T]([]T, T) bool`: Does slice contain value?
 - `typ.DistinctFunc[T]([]T, func(T, T) bool) []T`: Returns new slice of unique elements with custom equals.
 - `typ.Distinct[T]([]T, func(T, T) bool) []T`: Returns new slice of unique elements.
+- `typ.Filter[T](slice []T, func(T) bool) []T`: Returns filtered slice.
+- `typ.Fold[TState, T]([]T, TState, func(TState, T) TState) TState`: Accumulate values from slice.
 - `typ.IndexFunc[T]([]T, func(T) bool) int`: Returns index of a value, or -1 if not found.
 - `typ.Index[T]([]T, T) int`: Returns index of a value, or -1 if not found.
 - `typ.IsNil[T](T) bool`: Returns true if the generic value is nil.
@@ -134,6 +138,8 @@ func UsingOrderedTree() {
 - `typ.MakeSliceOfSlice[T]([]T, ...int) []T`: Returns the result of `make([]T)`, useful for anonymous types.
 - `typ.MakeSliceOfValue[K,V](map[K]V, ...int) []V`: Returns the result of `make([]V)`, useful for anonymous types.
 - `typ.MakeSliceOf[T](T, ...int) []T`: Returns the result of `make([]T)`, useful for anonymous types.
+- `typ.MapErr[TA, TB](slice []TA, func(TA) (TB, error)) ([]TB, error)`: Returns converted slice, or first error.
+- `typ.Map[TA, TB](slice []TA, func(TA) TB) []TB`: Returns converted slice.
 - `typ.Max[T](...T) T`: Return the largest value.
 - `typ.Min[T](...T) T`: Return the smallest value.
 - `typ.NewOf[T](*T) *T`: Returns the result of `new(T)`, useful for anonymous types.

@@ -21,6 +21,13 @@ This project tries to follow [SemVer 2.0.0](https://semver.org/).
   - `typ.TrimRightFunc[T]([]T, func(T) bool) []T`: Trim away unwanted matches from end. (e94faf7)
   - `typ.IndexFunc[T]([]T, func(T) bool) int`: Returns index of a value, or -1 if not found. (a69bf35)
   - `typ.Last[T]([]T) T`: Returns the last item in a slice. (9bc54ab)
+  - `typ.Any[T]([]T, func(T) bool) bool`: Does condition match any value? (024361a)
+  - `typ.All[T]([]T, func(T) bool) bool`: Does condition match all values? (024361a)
+  - `typ.Map[TA, TB](slice []TA, func(TA) TB) []TB`: Returns converted slice. (024361a)
+  - `typ.MapErr[TA, TB](slice []TA, func(TA) (TB, error)) ([]TB, error)`: Returns converted slice, or first error. (024361a)
+  - `typ.Filter[T](slice []T, func(T) bool) []T`: Returns filtered slice. (024361a)
+  - `typ.Fold[TState, T]([]T, TState, func(TState, T) TState) TState`: Accumulate values from slice. (024361a)
+  - `typ.Concat[T]([]T, []T) []T`: Returns two concatenated slices. (024361a)
 
 - Changed `typ.Set.Set()` and `.Unset()` to `.Add()` and `.Remove()`, respectively. (bfabb2d)
 
