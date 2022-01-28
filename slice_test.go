@@ -54,10 +54,11 @@ func TestInserted(t *testing.T) {
 	}
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
-			got := Inserted([]byte(tc.slice), tc.index, insertion)
-			gotStr := string(got)
+			slice := []byte(tc.slice)
+			Insert(&slice, tc.index, insertion)
+			gotStr := string(slice)
 			if gotStr != tc.want {
-				t.Errorf("want %q, got %q", tc.want, got)
+				t.Errorf("want %q, got %q", tc.want, gotStr)
 			}
 		})
 	}
@@ -98,10 +99,11 @@ func TestInsertedSlice(t *testing.T) {
 	}
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
-			got := InsertedSlice([]byte(tc.slice), tc.index, []byte(insertion))
-			gotStr := string(got)
+			slice := []byte(tc.slice)
+			InsertSlice(&slice, tc.index, []byte(insertion))
+			gotStr := string(slice)
 			if gotStr != tc.want {
-				t.Errorf("want %q, got %q", tc.want, got)
+				t.Errorf("want %q, got %q", tc.want, gotStr)
 			}
 		})
 	}
