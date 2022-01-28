@@ -46,3 +46,44 @@ func TestConcat(t *testing.T) {
 		})
 	}
 }
+
+func TestGroupBy(t *testing.T) {
+	in := []string{
+		"Potatoes",
+		"Hamburger",
+		"Pizza",
+		"Toast",
+		"Hummus",
+		"Pancake",
+	}
+	got := GroupBy(in, func(value string) byte {
+		return value[0]
+	})
+	if len(got) != 3 {
+		t.Fatalf("want 3 groups, got %d: %v", len(got), got)
+	}
+	if got[0].Key != 'P' {
+		t.Errorf("want group[0].Key = 'P', got %q", got[0].Key)
+	}
+	assertSlice(t, "group[0]", []string{"Potatoes", "Pizza", "Pancake"}, got[0].Values)
+	if got[1].Key != 'H' {
+		t.Errorf("want group[1].Key = 'P', got %q", got[1].Key)
+	}
+	assertSlice(t, "group[1]", []string{"Hamburger", "Hummus"}, got[1].Values)
+	if got[2].Key != 'T' {
+		t.Errorf("want group[2].Key = 'P', got %q", got[2].Key)
+	}
+	assertSlice(t, "group[2]", []string{"Toast"}, got[2].Values)
+}
+
+func assertSlice[T comparable](t *testing.T, name string, want, got []T) {
+	if len(want) != len(got) {
+		t.Errorf("%s: want len=%d, got len=%d", name, len(want), len(got))
+		return
+	}
+	for i := range want {
+		if want[i] != got[i] {
+			t.Errorf(`%s: index %d: want "%v", got "%v"`, name, i, want[i], got[i])
+		}
+	}
+}
