@@ -145,6 +145,8 @@ func UsingOrderedTree() {
 - `typ.Max[T](...T) T`: Return the largest value.
 - `typ.Min[T](...T) T`: Return the smallest value.
 - `typ.NewOf[T](*T) *T`: Returns the result of `new(T)`, useful for anonymous types.
+- `typ.PairsIter[T]([]T, func(T, T))`: Invoke callback for all pairs in a slice.
+- `typ.Pairs[T]([]T) [][2]T`: Returns all pairs from a slice.
 - `typ.Product[T](...T) T`: Multiplies together numbers.
 - `typ.RecvTimeout[T](chan<- T, time.Duration)`: Receive from channel with timeout.
 - `typ.Reverse[T]([]T)`: Reverse the order of a slice.

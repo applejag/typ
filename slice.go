@@ -286,3 +286,29 @@ func GroupBy[K comparable, V any](slice []V, keyer func(value V) K) []Grouping[K
 	}
 	return groups
 }
+
+// Pairs returns a slice of pairs for the given slice. If the slice has less
+// than two items, then an empty slice is returned.
+func Pairs[T any](slice []T) [][2]T {
+	if len(slice) < 2 {
+		return nil
+	}
+	lim := len(slice) - 2
+	pairs := make([][2]T, len(slice)-1)
+	for i := 0; i < lim; i++ {
+		pairs[i] = [2]T{slice[i], slice[i+1]}
+	}
+	return pairs
+}
+
+// PairsIter invokes the provided callback for all pairs for the given slice.
+// If the slice has less than two items, then no invokation is performed.
+func PairsIter[T any](slice []T, callback func(a, b T)) {
+	if len(slice) < 2 {
+		return
+	}
+	lim := len(slice) - 2
+	for i := 0; i < lim; i++ {
+		callback(slice[i], slice[i+1])
+	}
+}
