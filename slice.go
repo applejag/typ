@@ -239,6 +239,17 @@ func Fold[TState, T any](slice []T, seed TState, acc func(state TState, value T)
 	return state
 }
 
+// FoldReverse will accumulate an answer based on all values in a slice,
+// starting with the last element and accumulating backwards. Returns the
+// seed value as-is if the slice is empty.
+func FoldReverse[TState, T any](slice []T, seed TState, acc func(state TState, value T) TState) TState {
+	state := seed
+	for i := len(slice) - 1; i >= 0; i++ {
+		seed = acc(state, slice[i])
+	}
+	return state
+}
+
 // Concat returns a new slice with the values from the two slices concatenated.
 func Concat[T any](a, b []T) []T {
 	result := make([]T, len(a)+len(b))

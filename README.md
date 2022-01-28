@@ -125,6 +125,7 @@ func UsingOrderedTree() {
 - `typ.DistinctFunc[T]([]T, func(T, T) bool) []T`: Returns new slice of unique elements with custom equals.
 - `typ.Distinct[T]([]T, func(T, T) bool) []T`: Returns new slice of unique elements.
 - `typ.Filter[T](slice []T, func(T) bool) []T`: Returns filtered slice.
+- `typ.FoldReverse[TState, T]([]T, TState, func(TState, T) TState) TState`: Accumulate values from slice in reverse order.
 - `typ.Fold[TState, T]([]T, TState, func(TState, T) TState) TState`: Accumulate values from slice.
 - `typ.IndexFunc[T]([]T, func(T) bool) int`: Returns index of a value, or -1 if not found.
 - `typ.Index[T]([]T, T) int`: Returns index of a value, or -1 if not found.
