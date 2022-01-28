@@ -19,7 +19,7 @@ func TestFill(t *testing.T) {
 	}
 }
 
-func TestInserted(t *testing.T) {
+func TestInsert(t *testing.T) {
 	const insertion = '_'
 	testCases := []struct {
 		name  string
@@ -64,7 +64,7 @@ func TestInserted(t *testing.T) {
 	}
 }
 
-func TestInsertedSlice(t *testing.T) {
+func TestInsertSlice(t *testing.T) {
 	const insertion = "123"
 	testCases := []struct {
 		name  string
@@ -101,6 +101,83 @@ func TestInsertedSlice(t *testing.T) {
 		t.Run(tc.name, func(t *testing.T) {
 			slice := []byte(tc.slice)
 			InsertSlice(&slice, tc.index, []byte(insertion))
+			gotStr := string(slice)
+			if gotStr != tc.want {
+				t.Errorf("want %q, got %q", tc.want, gotStr)
+			}
+		})
+	}
+}
+
+func TestRemove2(t *testing.T) {
+	testCases := []struct {
+		name  string
+		slice string
+		index int
+		want  string
+	}{
+		{
+			name:  "start",
+			slice: "_start",
+			index: 0,
+			want:  "start",
+		},
+		{
+			name:  "end",
+			slice: "end_",
+			index: 3,
+			want:  "end",
+		},
+		{
+			name:  "middle",
+			slice: "mid_dle",
+			index: 3,
+			want:  "middle",
+		},
+	}
+	for _, tc := range testCases {
+		t.Run(tc.name, func(t *testing.T) {
+			slice := []byte(tc.slice)
+			Remove(&slice, tc.index)
+			gotStr := string(slice)
+			if gotStr != tc.want {
+				t.Errorf("want %q, got %q", tc.want, gotStr)
+			}
+		})
+	}
+}
+
+func TestRemoveSlice(t *testing.T) {
+	const length = 3
+	testCases := []struct {
+		name  string
+		slice string
+		index int
+		want  string
+	}{
+		{
+			name:  "start",
+			slice: "123start",
+			index: 0,
+			want:  "start",
+		},
+		{
+			name:  "end",
+			slice: "end123",
+			index: 3,
+			want:  "end",
+		},
+		{
+			name:  "middle",
+			slice: "mid123dle",
+			index: 3,
+			want:  "middle",
+		},
+	}
+	for _, tc := range testCases {
+		t.Run(tc.name, func(t *testing.T) {
+			slice := []byte(tc.slice)
+			RemoveSlice(&slice, tc.index, length)
 			gotStr := string(slice)
 			if gotStr != tc.want {
 				t.Errorf("want %q, got %q", tc.want, gotStr)

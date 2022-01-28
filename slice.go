@@ -15,20 +15,34 @@ func Fill[T any](slice []T, value T) {
 	}
 }
 
-// Insert returns a slice that as the specified value inserted at a given
-// index and all values after shifted to the right.
+// Insert inserts a value at a given index in the slice and shifts all following
+// values to the right.
 func Insert[T any](slice *[]T, index int, value T) {
 	*slice = append(*slice, value)
 	copy((*slice)[index+1:], (*slice)[index:])
 	(*slice)[index] = value
 }
 
-// InsertSlice returns a slice that has the specified values inserted at a
-// given index and all values after shifted to the right.
+// InsertSlice inserts a slice of values at a given index in the slice and
+// shifts all following values to the right.
 func InsertSlice[T any](slice *[]T, index int, values []T) {
 	*slice = append(*slice, values...)
 	copy((*slice)[index+len(values):], (*slice)[index:])
 	copy((*slice)[index:], values)
+}
+
+// Remove takes out a value at a given index and shifts all following values
+// to the left.
+func Remove[T any](slice *[]T, index int) {
+	copy((*slice)[index:], (*slice)[index+1:])
+	*slice = (*slice)[:len(*slice)-1]
+}
+
+// RemoveSlice takes out a slice of values at a given index and length and
+// shifts all following values to the left.
+func RemoveSlice[T any](slice *[]T, index int, length int) {
+	copy((*slice)[index:], (*slice)[index+length:])
+	*slice = (*slice)[:len(*slice)-length]
 }
 
 // Index returns the index of a value, or -1 if none found.
