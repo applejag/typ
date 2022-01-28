@@ -258,15 +258,15 @@ func Concat[T any](a, b []T) []T {
 	return result
 }
 
-// Group is a key values store returned by the GroupBy functions.
-type Group[K, V any] struct {
+// Grouping is a key values store returned by the GroupBy functions.
+type Grouping[K, V any] struct {
 	Key    K
 	Values []V
 }
 
 // GroupBy will group all elements in the slice and return a slice of groups,
 // using the key from the function provided.
-func GroupBy[K comparable, V any](slice []V, keyer func(value V) K) []Group[K, V] {
+func GroupBy[K comparable, V any](slice []V, keyer func(value V) K) []Grouping[K, V] {
 	m := map[K][]V{}
 	var orderedKeys []K
 	for _, v := range slice {
@@ -277,9 +277,9 @@ func GroupBy[K comparable, V any](slice []V, keyer func(value V) K) []Group[K, V
 			orderedKeys = append(orderedKeys, key)
 		}
 	}
-	groups := make([]Group[K, V], len(orderedKeys))
+	groups := make([]Grouping[K, V], len(orderedKeys))
 	for i, key := range orderedKeys {
-		groups[i] = Group[K, V]{
+		groups[i] = Grouping[K, V]{
 			Key:    key,
 			Values: m[key],
 		}

@@ -22,7 +22,7 @@ This project tries to follow [SemVer 2.0.0](https://semver.org/).
   - `typ.Filter[T](slice []T, func(T) bool) []T`: Returns filtered slice. (024361a)
   - `typ.FoldReverse[TState, T]([]T, TState, func(TState, T) TState) TState`: Accumulate values from slice in reverse order. (0871a38)
   - `typ.Fold[TState, T]([]T, TState, func(TState, T) TState) TState`: Accumulate values from slice. (024361a)
-  - `typ.GroupBy[K, V]([]V, func(V) K) []Group[K, V]`: Group elements by key. (8468938)
+  - `typ.GroupBy[K, V]([]V, func(V) K) []Grouping[K, V]`: Group elements by key. (8468938)
   - `typ.IndexFunc[T]([]T, func(T) bool) int`: Returns index of a value, or -1 if not found. (a69bf35)
   - `typ.Last[T]([]T) T`: Returns the last item in a slice. (9bc54ab)
   - `typ.MapErr[TA, TB](slice []TA, func(TA) (TB, error)) ([]TB, error)`: Returns converted slice, or first error. (024361a)

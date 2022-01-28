@@ -127,7 +127,7 @@ func UsingOrderedTree() {
 - `typ.Filter[T](slice []T, func(T) bool) []T`: Returns filtered slice.
 - `typ.FoldReverse[TState, T]([]T, TState, func(TState, T) TState) TState`: Accumulate values from slice in reverse order.
 - `typ.Fold[TState, T]([]T, TState, func(TState, T) TState) TState`: Accumulate values from slice.
-- `typ.GroupBy[K, V]([]V, func(V) K) []Group[K, V]`: Group elements by key.
+- `typ.GroupBy[K, V]([]V, func(V) K) []Grouping[K, V]`: Group elements by key.
 - `typ.IndexFunc[T]([]T, func(T) bool) int`: Returns index of a value, or -1 if not found.
 - `typ.Index[T]([]T, T) int`: Returns index of a value, or -1 if not found.
 - `typ.IsNil[T](T) bool`: Returns true if the generic value is nil.
