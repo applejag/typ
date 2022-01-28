@@ -168,6 +168,8 @@ func UsingOrderedTree() {
 - `typ.TrimRight[T]([]T, []T)`: Trim away unwanted elements from end.
 - `typ.Trim[T]([]T, []T)`: Trim away unwanted elements from start and end.
 - `typ.TryGet[T]([]T, int) (T, bool)`: Index a slice, or return false if index is out of bounds.
+- `typ.WindowedIter[T]([]T, int, func([]T))`: Invoke callback for all windows in a slice.
+- `typ.Windowed[T]([]T, int) [][]T`: Returns all windows from a slice.
 - `typ.ZeroOf[T](T) T`: Returns the zero value for an anonymous type.
 - `typ.Zero[T]() T`: Returns the zero value for a type.
 

@@ -87,3 +87,36 @@ func assertSlice[T comparable](t *testing.T, name string, want, got []T) {
 		}
 	}
 }
+
+func TestPairs(t *testing.T) {
+	in := []byte("abcdefg")
+	got := Pairs(in)
+	if len(got) != 6 {
+		t.Fatalf("want len=6, got len=%d", len(got))
+	}
+	assertComparable(t, "got[0]", "ab", string(got[0][:]))
+	assertComparable(t, "got[1]", "bc", string(got[1][:]))
+	assertComparable(t, "got[2]", "cd", string(got[2][:]))
+	assertComparable(t, "got[3]", "de", string(got[3][:]))
+	assertComparable(t, "got[4]", "ef", string(got[4][:]))
+	assertComparable(t, "got[5]", "fg", string(got[5][:]))
+}
+
+func TestWindowed(t *testing.T) {
+	in := []byte("abcdefg")
+	got := Windowed(in, 3)
+	if len(got) != 5 {
+		t.Fatalf("want len=5, got len=%d", len(got))
+	}
+	assertComparable(t, "got[0]", "abc", string(got[0]))
+	assertComparable(t, "got[1]", "bcd", string(got[1]))
+	assertComparable(t, "got[2]", "cde", string(got[2]))
+	assertComparable(t, "got[3]", "def", string(got[3]))
+	assertComparable(t, "got[4]", "efg", string(got[4]))
+}
+
+func assertComparable[T comparable](t *testing.T, name string, want T, got T) {
+	if want != got {
+		t.Errorf(`%s: want "%v", got "%v"`, name, want, got)
+	}
+}

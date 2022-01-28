@@ -293,8 +293,8 @@ func Pairs[T any](slice []T) [][2]T {
 	if len(slice) < 2 {
 		return nil
 	}
-	lim := len(slice) - 2
-	pairs := make([][2]T, len(slice)-1)
+	lim := len(slice) - 1
+	pairs := make([][2]T, lim)
 	for i := 0; i < lim; i++ {
 		pairs[i] = [2]T{slice[i], slice[i+1]}
 	}
@@ -310,5 +310,31 @@ func PairsIter[T any](slice []T, callback func(a, b T)) {
 	lim := len(slice) - 2
 	for i := 0; i < lim; i++ {
 		callback(slice[i], slice[i+1])
+	}
+}
+
+// Windowed returns a slice of windows, where each window is a slice of the
+// specified size from the specified slice.
+func Windowed[T any](slice []T, size int) [][]T {
+	if len(slice) < size {
+		return nil
+	}
+	lim := len(slice) - size + 1
+	windows := make([][]T, lim)
+	for i := 0; i < lim; i++ {
+		windows[i] = slice[i : i+size]
+	}
+	return windows
+}
+
+// WindowedIter ivokes the provided callback for all windows, where each window
+// is a slice of the specified size from the specified slice.
+func WindowedIter[T any](slice []T, size int, callback func(window []T)) {
+	if len(slice) < size {
+		return
+	}
+	lim := len(slice) - size
+	for i := 0; i < lim; i++ {
+		callback(slice[i : i+size])
 	}
 }
