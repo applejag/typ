@@ -9,6 +9,33 @@ import (
 	"strings"
 )
 
+// NewSetOfSlice returns a Set with all values from a slice added to it.
+func NewSetOfSlice[T comparable](slice []T) Set[T] {
+	var set Set[T]
+	for _, v := range slice {
+		set.Add(v)
+	}
+	return set
+}
+
+// NewSetOfKeys returns a Set with all keys from a map added to it.
+func NewSetOfKeys[K comparable, V any](m map[K]V) Set[K] {
+	var set Set[K]
+	for k := range m {
+		set.Add(k)
+	}
+	return set
+}
+
+// NewSetOfValues returns a Set with all values from a map added to it.
+func NewSetOfValues[K comparable, V comparable](m map[K]V) Set[V] {
+	var set Set[V]
+	for _, v := range m {
+		set.Add(v)
+	}
+	return set
+}
+
 // Set holds a collection of values with no duplicates. Its methods are based
 // on the mathmatical branch of set theory, and its implementation is using a
 // Go map[T]struct{}.
@@ -47,6 +74,18 @@ func (s Set[T]) Add(value T) bool {
 	return true
 }
 
+// AddSet will add all element found in specified set to this set, and
+// return the number of values that was added.
+func (s Set[T]) AddSet(set Set[T]) int {
+	var added int
+	for v := range set {
+		if s.Add(v) {
+			added++
+		}
+	}
+	return added
+}
+
 // Remove will remove an element from the set, and return true if it was removed
 // or false if no such value existed in the set.
 func (s Set[T]) Remove(value T) bool {
@@ -55,6 +94,18 @@ func (s Set[T]) Remove(value T) bool {
 	}
 	delete(s, value)
 	return true
+}
+
+// RemoveSet will remove all element found in specified set from this set, and
+// return the number of values that was removed.
+func (s Set[T]) RemoveSet(set Set[T]) int {
+	var removed int
+	for v := range set {
+		if s.Remove(v) {
+			removed++
+		}
+	}
+	return removed
 }
 
 // Clone returns a copy of the set.
