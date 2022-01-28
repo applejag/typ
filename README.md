@@ -155,6 +155,7 @@ func UsingOrderedTree() {
 - `typ.PairsIter[T]([]T, func(T, T))`: Invoke callback for all pairs in a slice.
 - `typ.Pairs[T]([]T) [][2]T`: Returns all pairs from a slice.
 - `typ.Product[T](...T) T`: Multiplies together numbers.
+- `typ.Ptr[T](T) *T`: Return a pointer of the value, such as a literal.
 - `typ.RecvTimeout[T](chan<- T, time.Duration)`: Receive from channel with timeout.
 - `typ.Reverse[T]([]T)`: Reverse the order of a slice.
 - `typ.SafeGetOr[T]([]T, int, T) T`: Index a slice, or return fallback value if index is out of bounds.
