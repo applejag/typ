@@ -127,6 +127,8 @@ func UsingOrderedTree() {
 - `typ.CountBy[K, V]([]V, func(V) K) []Counting[K]`: Count elements by key.
 - `typ.DistinctFunc[T]([]T, func(T, T) bool) []T`: Returns new slice of unique elements with custom equals.
 - `typ.Distinct[T]([]T, func(T, T) bool) []T`: Returns new slice of unique elements.
+- `typ.ExceptSet[T]([]T, Set[T]) []T`: Exclude values from other set.
+- `typ.Except[T]([]T, []T) []T`: Exclude values from other slice.
 - `typ.Filter[T](slice []T, func(T) bool) []T`: Returns filtered slice.
 - `typ.FoldReverse[TState, T]([]T, TState, func(TState, T) TState) TState`: Accumulate values from slice in reverse order.
 - `typ.Fold[TState, T]([]T, TState, func(TState, T) TState) TState`: Accumulate values from slice.

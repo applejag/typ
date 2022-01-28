@@ -403,3 +403,22 @@ func ChunkIter[T any](slice []T, size int, callback func(chunk []T)) {
 		callback(slice[rounded:])
 	}
 }
+
+// Except returns a new slice for all items that are not found in the slice of
+// items to exclude.
+func Except[T comparable](slice []T, exclude []T) []T {
+	set := NewSetOfSlice(exclude)
+	return ExceptSet(slice, set)
+}
+
+// ExceptSet returns a new slice for all items that are not found in the set of
+// items to exclude.
+func ExceptSet[T comparable](slice []T, exclude Set[T]) []T {
+	result := make([]T, 0, len(slice))
+	for _, v := range slice {
+		if !exclude.Has(v) {
+			result = append(result, v)
+		}
+	}
+	return result
+}
