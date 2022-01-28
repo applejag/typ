@@ -9,6 +9,16 @@ import (
 	"testing"
 )
 
+func TestFill(t *testing.T) {
+	slice := make([]int, 127)
+	Fill(slice, 42)
+	for i, v := range slice {
+		if v != 42 {
+			t.Errorf("index %d: want 42, got %d", i, v)
+		}
+	}
+}
+
 func TestConcat(t *testing.T) {
 	testCases := []struct {
 		a    string

@@ -4,6 +4,17 @@
 
 package typ
 
+// Fill populates a whole slice with the same value using exponential copy.
+func Fill[T any](slice []T, value T) {
+	if len(slice) == 0 {
+		return
+	}
+	slice[0] = value
+	for i := 1; i < len(slice); i += i {
+		copy(slice[i:], slice[:i])
+	}
+}
+
 // Index returns the index of a value, or -1 if none found.
 //
 // This differs from Search as Index doesn't require the slice to be sorted.
