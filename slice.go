@@ -44,6 +44,13 @@ func Trim[T comparable](slice []T, unwanted []T) []T {
 	return TrimLeft(TrimRight(slice, unwanted), unwanted)
 }
 
+// TrimFunc returns a slice of the slice that has had all unwanted values
+// trimmed away from both the start and the end.
+// Values are considered unwanted if the callback returns false.
+func TrimFunc[T any](slice []T, unwanted func(value T) bool) []T {
+	return TrimLeftFunc(TrimRightFunc(slice, unwanted), unwanted)
+}
+
 // TrimLeft returns a slice of the slice that has had all unwanted values
 // trimmed away from the start of the slice.
 func TrimLeft[T comparable](slice []T, unwanted []T) []T {
@@ -53,10 +60,30 @@ func TrimLeft[T comparable](slice []T, unwanted []T) []T {
 	return slice
 }
 
+// TrimLeftFunc returns a slice of the slice that has had all unwanted values
+// trimmed away from the start of the slice.
+// Values are considered unwanted if the callback returns false.
+func TrimLeftFunc[T any](slice []T, unwanted func(value T) bool) []T {
+	for len(slice) > 0 && unwanted(slice[0]) {
+		slice = slice[1:]
+	}
+	return slice
+}
+
 // TrimRight returns a slice of the slice that has had all unwanted values
 // trimmed away from the end of the slice.
 func TrimRight[T comparable](slice []T, unwanted []T) []T {
 	for len(slice) > 0 && Contains(unwanted, slice[len(slice)-1]) {
+		slice = slice[:len(slice)-1]
+	}
+	return slice
+}
+
+// TrimRightFunc returns a slice of the slice that has had all unwanted values
+// trimmed away from the end of the slice.
+// Values are considered unwanted if the callback returns false.
+func TrimRightFunc[T any](slice []T, unwanted func(value T) bool) []T {
+	for len(slice) > 0 && unwanted(slice[len(slice)-1]) {
 		slice = slice[:len(slice)-1]
 	}
 	return slice
@@ -73,10 +100,32 @@ func Distinct[T comparable](slice []T) []T {
 	return result
 }
 
+// DistinctFunc returns a new slice of only unique values.
+func DistinctFunc[T any](slice []T, equals func(a, b T) bool) []T {
+	result := make([]T, 0, len(slice))
+	for _, v := range slice {
+		if !ContainsFunc(result, v, equals) {
+			result = append(result, v)
+		}
+	}
+	return result
+}
+
 // Contains checks if a value exists inside a slice of values.
 func Contains[T comparable](slice []T, value T) bool {
 	for _, v := range slice {
 		if v == value {
+			return true
+		}
+	}
+	return false
+}
+
+// ContainsFunc checks if a value exists inside a slice of values with a custom
+// equals operation.
+func ContainsFunc[T any](slice []T, value T, equals func(a, b T) bool) bool {
+	for _, v := range slice {
+		if equals(v, value) {
 			return true
 		}
 	}
