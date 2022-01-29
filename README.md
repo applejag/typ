@@ -219,6 +219,9 @@ Go 1.18 generics support.
 
 - <https://github.com/go-generics/collections>: Go generic collections
 
+- <https://github.com/golang-design/go2generics>: 🧪 A chunk of experiments and
+  demos about Go 2 generics design (type parameter & type set)
+
 ## License
 
 This project is primarily licensed under the MIT license:
