@@ -15,6 +15,8 @@ This project tries to follow [SemVer 2.0.0](https://semver.org/).
 - Added types:
 
   - `typ.Array2D[T]`: 2-dimensional array. (74289fe)
+  - `typ.OrderedSlice[T]`: Always-sorted slice for ordered types. (08b8720)
+  - `typ.SortedSlice[T]`: Always-sorted slice. Requires custom `less` function. (08b8720)
 
 - Added utility functions:
 
