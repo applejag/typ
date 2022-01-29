@@ -82,18 +82,24 @@ func UsingOrderedTree() {
 ## Features
 ### Types
 
+<!-- lint disable maximum-line-length -->
+
 - `typ.Array2D[T]`: 2-dimensional array.
 - `typ.AtomicValue[T]`: Atomic value store, wrapper around [`sync/atomic.Value`](https://pkg.go.dev/sync/atomic#Value).
 - `typ.List[T]`: Linked list, forked from [`container/list`](https://pkg.go.dev/container/list).
 - `typ.Null[T]`: Nullable type without needing pointers, forked from [`github.com/volatiletech/null/v9`](https://github.com/volatiletech/null)
+- `typ.OrderedSlice[T]`: Always-sorted slice for ordered types.
+- `typ.OrderedTree[T]`: AVL-tree (auto-balancing binary search tree) implementation for ordered types.
 - `typ.Pool[T]`: Object pool, wrapper around [`sync.Pool`](https://pkg.go.dev/sync#Pool).
 - `typ.Publisher[T]`: Publish-subscribe pattern (pubsub) using channels.
 - `typ.Queue[T]`: First-in-first-out collection.
 - `typ.Ring[T]`: Circular list, forked from [`container/ring`](https://pkg.go.dev/container/ring).
 - `typ.Set[T]`: Set, based on set theory.
+- `typ.SortedSlice[T]`: Always-sorted slice. Requires custom `less` function.
 - `typ.Stack[T]`: First-in-last-out collection.
 - `typ.SyncMap[K,V]`: Concurrent map, forked from [`sync.Map`](https://pkg.go.dev/sync#Map).
-- `typ.Tree[T]`: AVL-tree (auto-balancing binary search tree) implementation.
+
+<!-- lint enable maximum-line-length -->
 
 > Explanation:
 >
