@@ -97,3 +97,71 @@ func Abs[T Real](v T) T {
 	}
 	return v
 }
+
+// DigitsSign10 returns the number of digits in the number as if it would be
+// converted to a string in base 10, plus 1 if the number is negative to account
+// for the negative sign. This is computed by comparing its value to all orders
+// of 10, making it increadibly faster than calculating logaritms or by
+// performing divisions.
+func DigitsSign10[T constraints.Integer](v T) int {
+	if v < 0 {
+		return Digits10(-v) + 1
+	}
+	return Digits10(v)
+}
+
+// Digits10 returns the number of digits in the number as if it would be
+// converted to a string in base 10. This is computed by comparing its value
+// to all orders of 10, making it increadibly faster than calculating logaritms
+// or by performing divisions.
+func Digits10[T constraints.Integer](v T) int {
+	if v < 0 {
+		v = -v
+	}
+	n := uint64(v)
+	switch {
+	case n < 10:
+		return 1
+	case n < 1e2:
+		return 2
+	case n < 1e3:
+		return 3
+	case n < 1e4:
+		return 4
+	case n < 1e5:
+		return 5
+	case n < 1e6:
+		return 6
+	case n < 1e7:
+		return 7
+	case n < 1e8:
+		return 8
+	case n < 1e9:
+		return 9
+	case n < 1e10:
+		return 10
+	case n < 1e11:
+		return 11
+	case n < 1e12:
+		return 12
+	case n < 1e13:
+		return 13
+	case n < 1e14:
+		return 14
+	case n < 1e15:
+		return 15
+	case n < 1e16:
+		return 16
+	case n < 1e17:
+		return 17
+	case n < 1e18:
+		return 18
+	case n < 1e19:
+		return 19
+	default:
+		// largest uint64 is 20 digits long.
+		// 18446744073709551615 <- max uint64
+		// 01234567890123456789
+		return 20
+	}
+}
