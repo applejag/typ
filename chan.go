@@ -4,7 +4,9 @@
 
 package typ
 
-import "time"
+import (
+	"time"
+)
 
 // SendTimeout sends a value to a channel, or cancels after a given duration.
 func SendTimeout[T any](ch chan<- T, value T, timeout time.Duration) bool {
@@ -37,4 +39,37 @@ func RecvTimeout[T any](ch <-chan T, timeout time.Duration) (T, bool) {
 	case <-timer.C:
 		return Zero[T](), false
 	}
+}
+
+// RecvQueued will receive all values from a channel until either there's no
+// more values in the channel's queue buffer, or it has received maxValues
+// values, or until the channel is closed, whichever comes first.
+func RecvQueued[T any](ch <-chan T, maxValues int) []T {
+	var buffer []T
+	for len(buffer) < maxValues {
+		select {
+		case v := <-ch:
+			buffer = append(buffer, v)
+		default:
+			break
+		}
+	}
+	return buffer
+}
+
+// RecvQueuedFull will receive all values from a channel until either there's no
+// more values in the channel's queue buffer, or it has filled buf with
+// values, or until the channel is closed, whichever comes first, and then
+// returns the number of values that was received.
+func RecvQueuedFull[T any](ch <-chan T, buf []T) int {
+	var index int
+	for index < len(buf) {
+		select {
+		case v := <-ch:
+			buf[index] = v
+		default:
+			break
+		}
+	}
+	return index
 }
