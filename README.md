@@ -86,6 +86,8 @@ func UsingOrderedTree() {
 
 - `typ.Array2D[T]`: 2-dimensional array.
 - `typ.AtomicValue[T]`: Atomic value store, wrapper around [`sync/atomic.Value`](https://pkg.go.dev/sync/atomic#Value).
+- `typ.KeyedMutex[T]`: Mutual exclusive lock on a per-key basis.
+- `typ.KeyedRWMutex[T]`: Mutual exclusive reader/writer lock on a per-key basis.
 - `typ.List[T]`: Linked list, forked from [`container/list`](https://pkg.go.dev/container/list).
 - `typ.Null[T]`: Nullable type without needing pointers, forked from [`github.com/volatiletech/null/v9`](https://github.com/volatiletech/null)
 - `typ.OrderedSlice[T]`: Always-sorted slice for ordered types.

@@ -12,6 +12,11 @@ This project tries to follow [SemVer 2.0.0](https://semver.org/).
 
 ## v1.3.0 (WIP)
 
+- Added types:
+
+  - `typ.KeyedMutex[T]`: Mutual exclusive lock on a per-key basis. (4f99f8e)
+  - `typ.KeyedRWMutex[T]`: Mutual exclusive reader/writer lock on a per-key basis. (4f99f8e)
+
 - Added utility functions:
 
   - `typ.Abs[T](T) T`: Absolute value of a number. (f6f0cdf)
