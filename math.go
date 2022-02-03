@@ -4,7 +4,9 @@
 
 package typ
 
-import "constraints"
+import (
+	"constraints"
+)
 
 // Min returns the smallest value.
 func Min[T constraints.Ordered](v ...T) T {
@@ -81,4 +83,17 @@ func Product[T Number](v ...T) T {
 		product *= num
 	}
 	return product
+}
+
+// Abs returns the absolute value of a number, in other words removing the sign,
+// in other words (again) changing negative numbers to positive and leaving
+// positive numbers as-is.
+// 	Abs(0)   // => 0
+// 	Abs(15)  // => 15
+// 	Abs(-15) // => 15
+func Abs[T Real](v T) T {
+	if v < 0 {
+		return -v
+	}
+	return v
 }
