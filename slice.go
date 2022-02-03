@@ -73,9 +73,7 @@ func IndexFunc[T any](slice []T, f func(value T) bool) int {
 // Repeat creates a new slice with the given value repeated across it.
 func Repeat[T any](value T, count int) []T {
 	result := make([]T, count)
-	for i := 0; i < count; i++ {
-		result[i] = value
-	}
+	Fill(result, value)
 	return result
 }
 
