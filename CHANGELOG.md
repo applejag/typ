@@ -10,7 +10,7 @@ SPDX-License-Identifier: CC-BY-4.0
 
 This project tries to follow [SemVer 2.0.0](https://semver.org/).
 
-## v1.3.0 (WIP)
+## v1.3.0 (2022-02-03)
 
 - Added types:
 
