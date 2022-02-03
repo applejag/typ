@@ -121,6 +121,7 @@ func UsingOrderedTree() {
 
 <!-- lint disable maximum-line-length -->
 
+- `typ.Abs[T](T) T`: Absolute value of a number.
 - `typ.All[T]([]T, func(T) bool) bool`: Does condition match all values?
 - `typ.Any[T]([]T, func(T) bool) bool`: Does condition match any value?
 - `typ.ChunkIter[T]([]T, int) [][]T`: Invoke callback for all chunks in a slice.
@@ -132,6 +133,8 @@ func UsingOrderedTree() {
 - `typ.ContainsValue[K, V](map[K]V, V) bool`: Does map contain value?
 - `typ.Contains[T]([]T, T) bool`: Does slice contain value?
 - `typ.CountBy[K, V]([]V, func(V) K) []Counting[K]`: Count elements by key.
+- `typ.Digits10Sign[T](T) int`: Number of base 10 digits (including sign) in integer.
+- `typ.Digits10[T](T) int`: Number of base 10 digits (excluding sign) in integer.
 - `typ.DistinctFunc[T]([]T, func(T, T) bool) []T`: Returns new slice of unique elements with custom equals.
 - `typ.Distinct[T]([]T, func(T, T) bool) []T`: Returns new slice of unique elements.
 - `typ.ExceptSet[T]([]T, Set[T]) []T`: Exclude values from other set.
