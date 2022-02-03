@@ -10,6 +10,14 @@ SPDX-License-Identifier: CC-BY-4.0
 
 This project tries to follow [SemVer 2.0.0](https://semver.org/).
 
+## v1.3.0 (WIP)
+
+- Added utility functions:
+
+  - `typ.Abs[T](T) T`: Absolute value of a number. (f6f0cdf)
+  - `typ.Digits10Sign[T](T) int`: Number of base 10 digits (including sign) in integer. (36fbfef)
+  - `typ.Digits10[T](T) int`: Number of base 10 digits (excluding sign) in integer. (36fbfef)
+
 ## v1.2.0 (2022-01-29)
 
 - Added types:
