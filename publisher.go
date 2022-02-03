@@ -26,7 +26,8 @@ type Publisher[T any] struct {
 	mutex sync.RWMutex
 }
 
-// Pub sends the event to all subscriptions in new fire-and-forget goroutines.
+// Pub sends the event to all subscriptions in their own goroutines and returns
+// immediately without waiting for any of the channels to finish sending.
 func (o *Publisher[T]) Pub(ev T) {
 	o.mutex.RLock()
 	for _, sub := range o.subs {
@@ -39,8 +40,8 @@ func (o *Publisher[T]) Pub(ev T) {
 	o.mutex.RUnlock()
 }
 
-// PubWait sends the event to all subscriptions, and waits until all have
-// received the message or timed out.
+// PubWait blocks while sending the event to all subscriptions in their own
+// goroutines, and waits until all have received the message or timed out.
 func (o *Publisher[T]) PubWait(ev T) {
 	var wg sync.WaitGroup
 	o.mutex.RLock()
@@ -55,6 +56,19 @@ func (o *Publisher[T]) PubWait(ev T) {
 	}
 	o.mutex.RUnlock()
 	wg.Wait()
+}
+
+// PubSync blocks while sending the event syncronously to all subscriptions
+// without starting a single goroutine. Useful in performance-critical use cases
+// where there are a low expected number of subscribers (0-3).
+func (o *Publisher[T]) PubSync(ev T) {
+	o.mutex.RLock()
+	for _, sub := range o.subs {
+		if !SendTimeout(sub, ev, o.PubTimeoutAfter) && o.OnPubTimeout != nil {
+			o.OnPubTimeout(ev)
+		}
+	}
+	o.mutex.RUnlock()
 }
 
 // Sub subscribes to events in a newly created channel with no buffer.
