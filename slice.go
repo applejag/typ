@@ -203,15 +203,6 @@ func SafeGetOr[T any](slice []T, index int, fallback T) T {
 	return slice[index]
 }
 
-// Last returns the last item in a slice, or the zero value if the slice is
-// empty.
-func Last[T any](slice []T) T {
-	if len(slice) == 0 {
-		return Zero[T]()
-	}
-	return slice[len(slice)-1]
-}
-
 // Any checks if any value matches the condition. Returns false if the slice is
 // empty.
 func Any[T any](slice []T, cond func(value T) bool) bool {
@@ -462,4 +453,10 @@ func ExceptSet[T comparable](slice []T, exclude Set[T]) []T {
 		}
 	}
 	return result
+}
+
+// Last returns the last item in a slice. Will panic with an out of bound error
+// if the slice is empty.
+func Last[T any](slice []T) T {
+	return slice[len(slice)-1]
 }
