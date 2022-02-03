@@ -17,6 +17,8 @@ This project tries to follow [SemVer 2.0.0](https://semver.org/).
   - `typ.Abs[T](T) T`: Absolute value of a number. (f6f0cdf)
   - `typ.Digits10Sign[T](T) int`: Number of base 10 digits (including sign) in integer. (36fbfef)
   - `typ.Digits10[T](T) int`: Number of base 10 digits (excluding sign) in integer. (36fbfef)
+  - `typ.RecvQueuedFull[T](<-chan T, []T)`: Receive all queued values from a channel's buffer. (a56b0e5)
+  - `typ.RecvQueued[T](<-chan T, int) []T`: Receive all queued values from a channel's buffer. (a56b0e5)
 
 ## v1.2.0 (2022-01-29)
 
