@@ -5,6 +5,7 @@
 package typ
 
 import (
+	"context"
 	"time"
 )
 
@@ -24,6 +25,17 @@ func SendTimeout[T any](ch chan<- T, value T, timeout time.Duration) bool {
 	}
 }
 
+// SendContext receives a value from a channel, or cancels when the given
+// context is cancelled.
+func SendContext[T any](ctx context.Context, ch chan<- T, value T) bool {
+	select {
+	case ch <- value:
+		return true
+	case <-ctx.Done():
+		return false
+	}
+}
+
 // RecvTimeout receives a value from a channel, or cancels after a given timeout.
 // If the timeout duration is zero or negative, then no limit is used.
 func RecvTimeout[T any](ch <-chan T, timeout time.Duration) (T, bool) {
@@ -37,6 +49,17 @@ func RecvTimeout[T any](ch <-chan T, timeout time.Duration) (T, bool) {
 		timer.Stop()
 		return value, ok
 	case <-timer.C:
+		return Zero[T](), false
+	}
+}
+
+// RecvContext receives a value from a channel, or cancels when the given
+// context is cancelled.
+func RecvContext[T any](ctx context.Context, ch <-chan T) (T, bool) {
+	select {
+	case value, ok := <-ch:
+		return value, ok
+	case <-ctx.Done():
 		return Zero[T](), false
 	}
 }
