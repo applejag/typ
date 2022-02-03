@@ -167,6 +167,8 @@ func UsingOrderedTree() {
 - `typ.Pairs[T]([]T) [][2]T`: Returns all pairs from a slice.
 - `typ.Product[T](...T) T`: Multiplies together numbers.
 - `typ.Ptr[T](T) *T`: Return a pointer of the value, such as a literal.
+- `typ.RecvQueuedFull[T](<-chan T, []T)`: Receive all queued values from a channel's buffer.
+- `typ.RecvQueued[T](<-chan T, int) []T`: Receive all queued values from a channel's buffer.
 - `typ.RecvTimeout[T](chan<- T, time.Duration)`: Receive from channel with timeout.
 - `typ.RemoveSlice[T](*[]T, int, int)`: Removes a slice of values at index.
 - `typ.Remove[T](*[]T, int)`: Removes a value at index.
