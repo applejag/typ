@@ -167,6 +167,7 @@ func UsingOrderedTree() {
 - `typ.Pairs[T]([]T) [][2]T`: Returns all pairs from a slice.
 - `typ.Product[T](...T) T`: Multiplies together numbers.
 - `typ.Ptr[T](T) *T`: Return a pointer of the value, such as a literal.
+- `typ.RecvContext[T](context.Context, <-chan T) (T, bool)`: Receive from a channel, or cancel with context.
 - `typ.RecvQueuedFull[T](<-chan T, []T)`: Receive all queued values from a channel's buffer.
 - `typ.RecvQueued[T](<-chan T, int) []T`: Receive all queued values from a channel's buffer.
 - `typ.RecvTimeout[T](chan<- T, time.Duration)`: Receive from channel with timeout.
@@ -176,6 +177,7 @@ func UsingOrderedTree() {
 - `typ.SafeGetOr[T]([]T, int, T) T`: Index a slice, or return fallback value if index is out of bounds.
 - `typ.SafeGet[T]([]T, int) T`: Index a slice, or return zero if index is out of bounds.
 - `typ.Search[T]([]T, T)`: Searches for element index or insertion index in slice.
+- `typ.SendContext[T](context.Context, chan<- T, T) bool`: Send to a channel, or cancel with context.
 - `typ.SendTimeout[T](<-chan T, T, time.Duration)`: Send to channel with timeout.
 - `typ.ShuffleRand[T]([]T, *rand.Rand)`: Randomizes the order of a slice.
 - `typ.Shuffle[T]([]T)`: Randomizes the order of a slice.
