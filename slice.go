@@ -360,9 +360,9 @@ func Pairs[S ~[]E, E any](slice S) [][2]E {
 	return pairs
 }
 
-// PairsIter invokes the provided callback for all pairs for the given slice.
+// PairsFunc invokes the provided callback for all pairs for the given slice.
 // If the slice has less than two items, then no invokation is performed.
-func PairsIter[S ~[]E, E any](slice S, callback func(a, b E)) {
+func PairsFunc[S ~[]E, E any](slice S, callback func(a, b E)) {
 	if len(slice) < 2 {
 		return
 	}
@@ -386,9 +386,9 @@ func Windowed[S ~[]E, E any](slice S, size int) []S {
 	return windows
 }
 
-// WindowedIter invokes the provided callback for all windows, where each window
+// WindowedFunc invokes the provided callback for all windows, where each window
 // is a slice of the specified size from the specified slice.
-func WindowedIter[S ~[]E, E any](slice S, size int, callback func(window S)) {
+func WindowedFunc[S ~[]E, E any](slice S, size int, callback func(window S)) {
 	if len(slice) < size {
 		return
 	}
@@ -417,10 +417,10 @@ func Chunk[S ~[]E, E any](slice S, size int) []S {
 	return chunks
 }
 
-// ChunkIter divides the slice up into chunks and invokes the callback on each
+// ChunkFunc divides the slice up into chunks and invokes the callback on each
 // chunk. The last chunk may be smaller than size if the slice is not evenly
 // divisible.
-func ChunkIter[S ~[]E, E any](slice S, size int, callback func(chunk S)) {
+func ChunkFunc[S ~[]E, E any](slice S, size int, callback func(chunk S)) {
 	if len(slice) == 0 {
 		return
 	}

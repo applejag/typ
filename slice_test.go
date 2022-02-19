@@ -296,10 +296,10 @@ func TestPairs(t *testing.T) {
 	}
 }
 
-func TestPairsIter(t *testing.T) {
+func TestPairsFunc(t *testing.T) {
 	in := []byte("abcdefg")
 	var got [][]byte
-	PairsIter(in, func(a, b byte) {
+	PairsFunc(in, func(a, b byte) {
 		got = append(got, []byte{a, b})
 	})
 	if len(got) != 6 {
@@ -327,10 +327,10 @@ func TestWindowed(t *testing.T) {
 	}
 }
 
-func TestWindowedIter(t *testing.T) {
+func TestWindowedFunc(t *testing.T) {
 	in := []byte("abcdefg")
 	var got [][]byte
-	WindowedIter(in, 3, func(window []byte) {
+	WindowedFunc(in, 3, func(window []byte) {
 		got = append(got, window)
 	})
 	if len(got) != 5 {
@@ -358,10 +358,10 @@ func TestChunk(t *testing.T) {
 	}
 }
 
-func TestChunkIter(t *testing.T) {
+func TestChunkFunc(t *testing.T) {
 	in := []byte("abcdefg")
 	var got [][]byte
-	ChunkIter(in, 3, func(chunk []byte) {
+	ChunkFunc(in, 3, func(chunk []byte) {
 		got = append(got, chunk)
 	})
 	if len(got) != 3 {
