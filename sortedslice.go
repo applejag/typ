@@ -20,13 +20,13 @@ import (
 // less function cannot properly distinguish between two elements, then any of
 // the equivalent elements may be the one being removed. The SortedSlice does
 // not keep track of collision detection.
-func NewSortedSlice[T comparable](values []T, less func(a, b T) bool) SortedSlice[T] {
-	slice := make([]T, len(values))
+func NewSortedSlice[S ~[]E, E comparable](values S, less func(a, b E) bool) SortedSlice[E] {
+	slice := make([]E, len(values))
 	copy(slice, values)
 	sort.SliceStable(slice, func(i, j int) bool {
 		return less(slice[i], slice[j])
 	})
-	return SortedSlice[T]{slice, less}
+	return SortedSlice[E]{slice, less}
 }
 
 // NewSortedSliceOrdered returns a new sorted slice based on a slice of values.
