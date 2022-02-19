@@ -465,3 +465,10 @@ func CloneSlice[T any](slice []T) []T {
 	copy(newSlice, slice)
 	return newSlice
 }
+
+// GrowSlice will add n number of values to the end of the slice.
+func GrowSlice[T any](slice []T, n int) []T {
+	// Relies on the compiler optimization introduced in Go v1.11
+	// https://go.dev/doc/go1.11#performance-compiler
+	return append(slice, make([]T, n)...)
+}
