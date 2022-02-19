@@ -27,6 +27,21 @@ func Zero[T any]() T {
 	return zero
 }
 
+// IsZero returns true if the value is zero. If the type implements
+//  IsZero() bool
+// then that method is also used.
+func IsZero[T comparable](value T) bool {
+	var zero T
+	if value == zero {
+		return true
+	}
+	var asAny any = value
+	if isZeroer, ok := asAny.(interface{ IsZero() bool }); ok {
+		return isZeroer.IsZero()
+	}
+	return false
+}
+
 // ZeroOf returns the zero value for a given type. The first argument is unused,
 // but using Go's type inference can be useful to create the zero value for an
 // anonymous type without needing to declare the full type.
