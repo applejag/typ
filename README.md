@@ -36,7 +36,7 @@ sensible implementations of sets, trees, stacks, etc without excessive casting.
 
 ## Compatibility
 
-Requires Go v1.18beta1 or later as the code makes use of generics.
+Requires Go v1.18rc1 or later as the code makes heavy use of generics.
 
 ## Installation and usage
 
