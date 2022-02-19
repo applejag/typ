@@ -29,6 +29,12 @@ func NewSortedSlice[T comparable](values []T, less func(a, b T) bool) SortedSlic
 	return SortedSlice[T]{slice, less}
 }
 
+// NewSortedSliceOrdered returns a new sorted slice based on a slice of values.
+// Only ordered types are allowed. The values are sorted on insertion.
+func NewSortedSliceOrdered[T Ordered](values ...T) SortedSlice[T] {
+	return NewSortedSlice(values, Less[T])
+}
+
 // SortedSlice is a slice of ordered values. The slice is always sorted thanks
 // to only inserting values in a sorted order.
 type SortedSlice[T comparable] struct {

@@ -27,7 +27,7 @@ func (u User) AsAdmin() User {
 	return u
 }
 
-func ExampleSortedSlice() {
+func ExampleNewSortedSlice() {
 	slice := typ.NewSortedSlice([]User{}, func(a, b User) bool {
 		return a.Name < b.Name
 	})
@@ -48,4 +48,25 @@ func ExampleSortedSlice() {
 	// Contains John non-admin? true
 	// Contains John admin? false
 	// [Ann Jane Wayne]
+}
+
+func ExampleNewSortedSliceOrdered() {
+	slice := typ.NewSortedSliceOrdered[string]()
+	slice.Add("f")
+	slice.Add("b")
+	slice.Add("e")
+	slice.Add("a")
+	slice.Add("d")
+	slice.Add("c")
+	slice.Add("g")
+
+	fmt.Println(slice)
+	fmt.Println("Contains a?", slice.Contains("a"))
+	slice.Remove("d")
+	fmt.Println(slice)
+
+	// Output:
+	// [a b c d e f g]
+	// Contains a? true
+	// [a b c e f g]
 }

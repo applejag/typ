@@ -16,6 +16,11 @@ func Compare[T Ordered](a, b T) int {
 	return 0
 }
 
+// Less returns true if the first argument is less than the second.
+func Less[T Ordered](a, b T) bool {
+	return a < b
+}
+
 // Zero returns the zero value for a given type.
 func Zero[T any]() T {
 	var zero T
