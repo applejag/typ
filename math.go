@@ -4,12 +4,8 @@
 
 package typ
 
-import (
-	"constraints"
-)
-
 // Min returns the smallest value.
-func Min[T constraints.Ordered](v ...T) T {
+func Min[T Ordered](v ...T) T {
 	switch len(v) {
 	case 0:
 		panic("typ.Min: at least one argument is required")
@@ -27,7 +23,7 @@ func Min[T constraints.Ordered](v ...T) T {
 }
 
 // Max returns the largest value.
-func Max[T constraints.Ordered](v ...T) T {
+func Max[T Ordered](v ...T) T {
 	switch len(v) {
 	case 0:
 		panic("typ.Max: at least one argument is required")
@@ -45,7 +41,7 @@ func Max[T constraints.Ordered](v ...T) T {
 }
 
 // Clamp returns the value clamped between the minimum and maximum values.
-func Clamp[T constraints.Ordered](v, min, max T) T {
+func Clamp[T Ordered](v, min, max T) T {
 	if v < min {
 		return min
 	}
@@ -103,7 +99,7 @@ func Abs[T Real](v T) T {
 // for the negative sign. This is computed by comparing its value to all orders
 // of 10, making it increadibly faster than calculating logaritms or by
 // performing divisions.
-func DigitsSign10[T constraints.Integer](v T) int {
+func DigitsSign10[T Integer](v T) int {
 	if v < 0 {
 		return Digits10(-v) + 1
 	}
@@ -114,7 +110,7 @@ func DigitsSign10[T constraints.Integer](v T) int {
 // converted to a string in base 10. This is computed by comparing its value
 // to all orders of 10, making it increadibly faster than calculating logaritms
 // or by performing divisions.
-func Digits10[T constraints.Integer](v T) int {
+func Digits10[T Integer](v T) int {
 	if v < 0 {
 		v = -v
 	}

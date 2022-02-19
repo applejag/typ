@@ -5,7 +5,6 @@
 package typ
 
 import (
-	"constraints"
 	"fmt"
 )
 
@@ -13,7 +12,7 @@ import (
 // (numbers & strings), implemented as an AVL tree
 // (Adelson-Velsky and Landis tree), a type of self-balancing BST. This
 // guarantees O(log n) operations on insertion, searching, and deletion.
-type OrderedTree[T constraints.Ordered] struct {
+type OrderedTree[T Ordered] struct {
 	root  *avlNode[T]
 	count int
 }

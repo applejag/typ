@@ -5,13 +5,12 @@
 package typ
 
 import (
-	"constraints"
 	"fmt"
 )
 
 // NewOrderedSlice returns a new sorted slice based on a slice of values.
 // Only ordered types are allowed. The values are sorted on insertion.
-func NewOrderedSlice[T constraints.Ordered](values []T) OrderedSlice[T] {
+func NewOrderedSlice[T Ordered](values []T) OrderedSlice[T] {
 	slice := make([]T, len(values))
 	copy(slice, values)
 	Sort(slice)
@@ -20,7 +19,7 @@ func NewOrderedSlice[T constraints.Ordered](values []T) OrderedSlice[T] {
 
 // OrderedSlice is a slice of ordered values. The slice is always sorted thanks
 // to only inserting values in a sorted order.
-type OrderedSlice[T constraints.Ordered] struct {
+type OrderedSlice[T Ordered] struct {
 	slice []T
 }
 

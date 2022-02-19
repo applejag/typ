@@ -5,13 +5,12 @@
 package typ
 
 import (
-	"constraints"
 	"math/rand"
 	"sort"
 )
 
 // SortOrdered implements sort.Interface via the default less-than operator.
-type SortOrdered[T constraints.Ordered] []T
+type SortOrdered[T Ordered] []T
 
 func (s SortOrdered[T]) Len() int {
 	return len(s)
@@ -26,13 +25,13 @@ func (s SortOrdered[T]) Less(i, j int) bool {
 }
 
 // Sort will sort a slice using the default less-than operator.
-func Sort[T constraints.Ordered](slice []T) {
+func Sort[T Ordered](slice []T) {
 	sort.Sort(SortOrdered[T](slice))
 }
 
 // SortDesc will sort a slice using the default less-than operator in
 // descending order.
-func SortDesc[T constraints.Ordered](slice []T) {
+func SortDesc[T Ordered](slice []T) {
 	sort.Sort(sort.Reverse(SortOrdered[T](slice)))
 }
 
@@ -65,7 +64,7 @@ func ShuffleRand[T any](slice []T, rand *rand.Rand) {
 // slice of ordered values. The index of the first match is returned, or the
 // index where it insert the value if the value is not present.
 // The slice must be sorted in ascending order.
-func Search[T constraints.Ordered](slice []T, value T) int {
+func Search[T Ordered](slice []T, value T) int {
 	return sort.Search(len(slice), func(i int) bool {
 		return slice[i] >= value
 	})
