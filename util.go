@@ -190,7 +190,15 @@ func MakeChanOfChan[T any](_ chan T, size ...int) chan T {
 	return make(chan T, SafeGet(size, 0))
 }
 
-// Ptr returns a pointer to the value. Useful when working with literals.
-func Ptr[T any](value T) *T {
+// Ref returns a pointer to the value. Useful when working with literals.
+func Ref[T any](value T) *T {
 	return &value
+}
+
+// DerefZero returns the dereferenced value, or zero if it was nil.
+func DerefZero[T any](value *T) T {
+	if value == nil {
+		return Zero[T]()
+	}
+	return *value
 }
