@@ -10,8 +10,8 @@ import (
 )
 
 // NewSetOfSlice returns a Set with all values from a slice added to it.
-func NewSetOfSlice[T comparable](slice []T) Set[T] {
-	var set Set[T]
+func NewSetOfSlice[S ~[]E, E comparable](slice S) Set[E] {
+	var set Set[E]
 	for _, v := range slice {
 		set.Add(v)
 	}

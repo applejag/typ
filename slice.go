@@ -5,7 +5,7 @@
 package typ
 
 // Fill populates a whole slice with the same value using exponential copy.
-func Fill[T any](slice []T, value T) {
+func Fill[S ~[]E, E any](slice S, value E) {
 	if len(slice) == 0 {
 		return
 	}
@@ -17,7 +17,7 @@ func Fill[T any](slice []T, value T) {
 
 // Insert inserts a value at a given index in the slice and shifts all following
 // values to the right.
-func Insert[T any](slice *[]T, index int, value T) {
+func Insert[S ~[]E, E any](slice *S, index int, value E) {
 	*slice = append(*slice, value)
 	copy((*slice)[index+1:], (*slice)[index:])
 	(*slice)[index] = value
@@ -25,7 +25,7 @@ func Insert[T any](slice *[]T, index int, value T) {
 
 // InsertSlice inserts a slice of values at a given index in the slice and
 // shifts all following values to the right.
-func InsertSlice[T any](slice *[]T, index int, values []T) {
+func InsertSlice[S ~[]E, E any](slice *S, index int, values S) {
 	*slice = append(*slice, values...)
 	copy((*slice)[index+len(values):], (*slice)[index:])
 	copy((*slice)[index:], values)
@@ -33,14 +33,14 @@ func InsertSlice[T any](slice *[]T, index int, values []T) {
 
 // Remove takes out a value at a given index and shifts all following values
 // to the left.
-func Remove[T any](slice *[]T, index int) {
+func Remove[S ~[]E, E any](slice *S, index int) {
 	copy((*slice)[index:], (*slice)[index+1:])
 	*slice = (*slice)[:len(*slice)-1]
 }
 
 // RemoveSlice takes out a slice of values at a given index and length and
 // shifts all following values to the left.
-func RemoveSlice[T any](slice *[]T, index int, length int) {
+func RemoveSlice[S ~[]E, E any](slice *S, index int, length int) {
 	copy((*slice)[index:], (*slice)[index+length:])
 	*slice = (*slice)[:len(*slice)-length]
 }
@@ -48,7 +48,7 @@ func RemoveSlice[T any](slice *[]T, index int, length int) {
 // Index returns the index of a value, or -1 if none found.
 //
 // This differs from Search as Index doesn't require the slice to be sorted.
-func Index[T comparable](slice []T, value T) int {
+func Index[S ~[]E, E comparable](slice S, value E) int {
 	for i, v := range slice {
 		if v == value {
 			return i
@@ -61,7 +61,7 @@ func Index[T comparable](slice []T, value T) int {
 // true, or -1 if none found.
 //
 // This differs from Search as Index doesn't require the slice to be sorted.
-func IndexFunc[T any](slice []T, f func(value T) bool) int {
+func IndexFunc[S ~[]E, E any](slice S, f func(value E) bool) int {
 	for i, v := range slice {
 		if f(v) {
 			return i
@@ -71,28 +71,28 @@ func IndexFunc[T any](slice []T, f func(value T) bool) int {
 }
 
 // Repeat creates a new slice with the given value repeated across it.
-func Repeat[T any](value T, count int) []T {
-	result := make([]T, count)
+func Repeat[E any](value E, count int) []E {
+	result := make([]E, count)
 	Fill(result, value)
 	return result
 }
 
 // Trim returns a slice of the slice that has had all unwanted values trimmed
 // away from both the start and the end.
-func Trim[T comparable](slice []T, unwanted []T) []T {
-	return TrimLeft(TrimRight(slice, unwanted), unwanted)
+func Trim[S ~[]E, E comparable](slice S, unwanted S) S {
+	return TrimLeft[S, E](TrimRight[S, E](slice, unwanted), unwanted)
 }
 
 // TrimFunc returns a slice of the slice that has had all unwanted values
 // trimmed away from both the start and the end.
 // Values are considered unwanted if the callback returns false.
-func TrimFunc[T any](slice []T, unwanted func(value T) bool) []T {
+func TrimFunc[S ~[]E, E any](slice S, unwanted func(value E) bool) S {
 	return TrimLeftFunc(TrimRightFunc(slice, unwanted), unwanted)
 }
 
 // TrimLeft returns a slice of the slice that has had all unwanted values
 // trimmed away from the start of the slice.
-func TrimLeft[T comparable](slice []T, unwanted []T) []T {
+func TrimLeft[S ~[]E, E comparable](slice S, unwanted S) S {
 	for len(slice) > 0 && Contains(unwanted, slice[0]) {
 		slice = slice[1:]
 	}
@@ -102,7 +102,7 @@ func TrimLeft[T comparable](slice []T, unwanted []T) []T {
 // TrimLeftFunc returns a slice of the slice that has had all unwanted values
 // trimmed away from the start of the slice.
 // Values are considered unwanted if the callback returns false.
-func TrimLeftFunc[T any](slice []T, unwanted func(value T) bool) []T {
+func TrimLeftFunc[S ~[]E, E any](slice S, unwanted func(value E) bool) S {
 	for len(slice) > 0 && unwanted(slice[0]) {
 		slice = slice[1:]
 	}
@@ -111,7 +111,7 @@ func TrimLeftFunc[T any](slice []T, unwanted func(value T) bool) []T {
 
 // TrimRight returns a slice of the slice that has had all unwanted values
 // trimmed away from the end of the slice.
-func TrimRight[T comparable](slice []T, unwanted []T) []T {
+func TrimRight[S ~[]E, E comparable](slice S, unwanted S) S {
 	for len(slice) > 0 && Contains(unwanted, slice[len(slice)-1]) {
 		slice = slice[:len(slice)-1]
 	}
@@ -121,7 +121,7 @@ func TrimRight[T comparable](slice []T, unwanted []T) []T {
 // TrimRightFunc returns a slice of the slice that has had all unwanted values
 // trimmed away from the end of the slice.
 // Values are considered unwanted if the callback returns false.
-func TrimRightFunc[T any](slice []T, unwanted func(value T) bool) []T {
+func TrimRightFunc[S ~[]E, E any](slice S, unwanted func(value E) bool) S {
 	for len(slice) > 0 && unwanted(slice[len(slice)-1]) {
 		slice = slice[:len(slice)-1]
 	}
@@ -129,8 +129,8 @@ func TrimRightFunc[T any](slice []T, unwanted func(value T) bool) []T {
 }
 
 // Distinct returns a new slice of only unique values.
-func Distinct[T comparable](slice []T) []T {
-	result := make([]T, 0, len(slice))
+func Distinct[S ~[]E, E comparable](slice S) S {
+	result := make(S, 0, len(slice))
 	for _, v := range slice {
 		if !Contains(result, v) {
 			result = append(result, v)
@@ -140,8 +140,8 @@ func Distinct[T comparable](slice []T) []T {
 }
 
 // DistinctFunc returns a new slice of only unique values.
-func DistinctFunc[T any](slice []T, equals func(a, b T) bool) []T {
-	result := make([]T, 0, len(slice))
+func DistinctFunc[S ~[]E, E any](slice S, equals func(a, b E) bool) S {
+	result := make(S, 0, len(slice))
 	for _, v := range slice {
 		if !ContainsFunc(result, v, equals) {
 			result = append(result, v)
@@ -151,7 +151,7 @@ func DistinctFunc[T any](slice []T, equals func(a, b T) bool) []T {
 }
 
 // Contains checks if a value exists inside a slice of values.
-func Contains[T comparable](slice []T, value T) bool {
+func Contains[S ~[]E, E comparable](slice S, value E) bool {
 	for _, v := range slice {
 		if v == value {
 			return true
@@ -162,7 +162,7 @@ func Contains[T comparable](slice []T, value T) bool {
 
 // ContainsFunc checks if a value exists inside a slice of values with a custom
 // equals operation.
-func ContainsFunc[T any](slice []T, value T, equals func(a, b T) bool) bool {
+func ContainsFunc[S ~[]E, E any](slice S, value E, equals func(a, b E) bool) bool {
 	for _, v := range slice {
 		if equals(v, value) {
 			return true
@@ -174,9 +174,9 @@ func ContainsFunc[T any](slice []T, value T, equals func(a, b T) bool) bool {
 // TryGet will get a value from a slice, or return false on the second return
 // value if the index is outside the bounds of the slice. Passing a nil slice is
 // equivalent to passing an empty slice.
-func TryGet[T any](slice []T, index int) (T, bool) {
+func TryGet[S ~[]E, E any](slice S, index int) (E, bool) {
 	if index < 0 || index >= len(slice) {
-		return Zero[T](), false
+		return Zero[E](), false
 	}
 	return slice[index], true
 }
@@ -184,9 +184,9 @@ func TryGet[T any](slice []T, index int) (T, bool) {
 // SafeGet will get a value from a slice, or the zero value for the type if
 // the index is outside the bounds of the slice. Passing a nil slice is
 // equivalent to passing an empty slice.
-func SafeGet[T any](slice []T, index int) T {
+func SafeGet[S ~[]E, E any](slice S, index int) E {
 	if index < 0 || index >= len(slice) {
-		return Zero[T]()
+		return Zero[E]()
 	}
 	return slice[index]
 }
@@ -194,7 +194,7 @@ func SafeGet[T any](slice []T, index int) T {
 // SafeGetOr will get a value from a slice, or the fallback value for the type
 // if the index is outside the bounds of the slice. Passing a nil slice is
 // equivalent to passing an empty slice.
-func SafeGetOr[T any](slice []T, index int, fallback T) T {
+func SafeGetOr[S ~[]E, E any](slice S, index int, fallback E) E {
 	if index < 0 || index >= len(slice) {
 		return fallback
 	}
@@ -203,7 +203,7 @@ func SafeGetOr[T any](slice []T, index int, fallback T) T {
 
 // Any checks if any value matches the condition. Returns false if the slice is
 // empty.
-func Any[T any](slice []T, cond func(value T) bool) bool {
+func Any[S ~[]E, E any](slice S, cond func(value E) bool) bool {
 	for _, v := range slice {
 		if cond(v) {
 			return true
@@ -214,7 +214,7 @@ func Any[T any](slice []T, cond func(value T) bool) bool {
 
 // All checks if all values matches the condition. Returns true if the slice is
 // empty.
-func All[T any](slice []T, cond func(value T) bool) bool {
+func All[S ~[]E, E any](slice S, cond func(value E) bool) bool {
 	for _, v := range slice {
 		if !cond(v) {
 			return false
@@ -225,8 +225,8 @@ func All[T any](slice []T, cond func(value T) bool) bool {
 
 // Map will apply a conversion function to all elements in a slice and return
 // the new slice with converted values.
-func Map[TA any, TB any](slice []TA, conv func(value TA) TB) []TB {
-	result := make([]TB, len(slice))
+func Map[S ~[]E, E, Result any](slice S, conv func(value E) Result) []Result {
+	result := make([]Result, len(slice))
 	for i, v := range slice {
 		result[i] = conv(v)
 	}
@@ -236,8 +236,8 @@ func Map[TA any, TB any](slice []TA, conv func(value TA) TB) []TB {
 // MapErr will apply a conversion function to all elements in a slice and return
 // the new slice with converted values. Will cancel the conversion on the first
 // error occurrence.
-func MapErr[TA any, TB any](slice []TA, conv func(value TA) (TB, error)) ([]TB, error) {
-	result := make([]TB, len(slice))
+func MapErr[S ~[]E, E, Result any](slice S, conv func(value E) (Result, error)) ([]Result, error) {
+	result := make([]Result, len(slice))
 	var err error
 	for i, v := range slice {
 		result[i], err = conv(v)
@@ -249,8 +249,8 @@ func MapErr[TA any, TB any](slice []TA, conv func(value TA) (TB, error)) ([]TB, 
 }
 
 // Filter will return a new slice of all matching elements.
-func Filter[T any](slice []T, match func(value T) bool) []T {
-	result := make([]T, 0, len(slice))
+func Filter[S ~[]E, E any](slice S, match func(value E) bool) S {
+	result := make(S, 0, len(slice))
 	for _, v := range slice {
 		if match(v) {
 			result = append(result, v)
@@ -261,7 +261,7 @@ func Filter[T any](slice []T, match func(value T) bool) []T {
 
 // Fold will accumulate an answer based on all values in a slice. Returns the
 // seed value as-is if the slice is empty.
-func Fold[TState, T any](slice []T, seed TState, acc func(state TState, value T) TState) TState {
+func Fold[S ~[]E, State, E any](slice S, seed State, acc func(state State, value E) State) State {
 	state := seed
 	for _, v := range slice {
 		seed = acc(state, v)
@@ -272,7 +272,7 @@ func Fold[TState, T any](slice []T, seed TState, acc func(state TState, value T)
 // FoldReverse will accumulate an answer based on all values in a slice,
 // starting with the last element and accumulating backwards. Returns the
 // seed value as-is if the slice is empty.
-func FoldReverse[TState, T any](slice []T, seed TState, acc func(state TState, value T) TState) TState {
+func FoldReverse[S ~[]E, State, E any](slice S, seed State, acc func(state State, value E) State) State {
 	state := seed
 	for i := len(slice) - 1; i >= 0; i++ {
 		seed = acc(state, slice[i])
@@ -281,8 +281,8 @@ func FoldReverse[TState, T any](slice []T, seed TState, acc func(state TState, v
 }
 
 // Concat returns a new slice with the values from the two slices concatenated.
-func Concat[T any](a, b []T) []T {
-	result := make([]T, len(a)+len(b))
+func Concat[S ~[]E, E any](a, b S) S {
+	result := make(S, len(a)+len(b))
 	copy(result[:len(a)], a)
 	copy(result[len(a):], b)
 	return result
@@ -296,7 +296,7 @@ type Grouping[K, V any] struct {
 
 // GroupBy will group all elements in the slice and return a slice of groups,
 // using the key from the function provided.
-func GroupBy[K comparable, V any](slice []V, keyer func(value V) K) []Grouping[K, V] {
+func GroupBy[S ~[]V, K comparable, V any](slice S, keyer func(value V) K) []Grouping[K, V] {
 	m := map[K][]V{}
 	var orderedKeys []K
 	for _, v := range slice {
@@ -325,7 +325,7 @@ type Counting[K any] struct {
 
 // CountBy will count the number of occurrences for each key, using the key
 // from the function provided.
-func CountBy[K comparable, V any](slice []V, keyer func(value V) K) []Counting[K] {
+func CountBy[S ~[]V, K comparable, V any](slice S, keyer func(value V) K) []Counting[K] {
 	m := map[K]int{}
 	var orderedKeys []K
 	for _, v := range slice {
@@ -348,21 +348,21 @@ func CountBy[K comparable, V any](slice []V, keyer func(value V) K) []Counting[K
 
 // Pairs returns a slice of pairs for the given slice. If the slice has less
 // than two items, then an empty slice is returned.
-func Pairs[T any](slice []T) [][2]T {
+func Pairs[S ~[]E, E any](slice S) [][2]E {
 	if len(slice) < 2 {
 		return nil
 	}
 	lim := len(slice) - 1
-	pairs := make([][2]T, lim)
+	pairs := make([][2]E, lim)
 	for i := 0; i < lim; i++ {
-		pairs[i] = [2]T{slice[i], slice[i+1]}
+		pairs[i] = [2]E{slice[i], slice[i+1]}
 	}
 	return pairs
 }
 
 // PairsIter invokes the provided callback for all pairs for the given slice.
 // If the slice has less than two items, then no invokation is performed.
-func PairsIter[T any](slice []T, callback func(a, b T)) {
+func PairsIter[S ~[]E, E any](slice S, callback func(a, b E)) {
 	if len(slice) < 2 {
 		return
 	}
@@ -374,12 +374,12 @@ func PairsIter[T any](slice []T, callback func(a, b T)) {
 
 // Windowed returns a slice of windows, where each window is a slice of the
 // specified size from the specified slice.
-func Windowed[T any](slice []T, size int) [][]T {
+func Windowed[S ~[]E, E any](slice S, size int) []S {
 	if len(slice) < size {
 		return nil
 	}
 	lim := len(slice) - size + 1
-	windows := make([][]T, lim)
+	windows := make([]S, lim)
 	for i := 0; i < lim; i++ {
 		windows[i] = slice[i : i+size]
 	}
@@ -388,7 +388,7 @@ func Windowed[T any](slice []T, size int) [][]T {
 
 // WindowedIter invokes the provided callback for all windows, where each window
 // is a slice of the specified size from the specified slice.
-func WindowedIter[T any](slice []T, size int, callback func(window []T)) {
+func WindowedIter[S ~[]E, E any](slice S, size int, callback func(window S)) {
 	if len(slice) < size {
 		return
 	}
@@ -400,14 +400,14 @@ func WindowedIter[T any](slice []T, size int, callback func(window []T)) {
 
 // Chunk divides the slice up into chunks with a size limit. The last chunk
 // may be smaller than size if the slice is not evenly divisible.
-func Chunk[T any](slice []T, size int) [][]T {
+func Chunk[S ~[]E, E any](slice S, size int) []S {
 	if len(slice) == 0 {
 		return nil
 	}
 	div := len(slice) / size
 	rounded := div * size
 	lim := div + (len(slice) - rounded)
-	chunks := make([][]T, lim)
+	chunks := make([]S, lim)
 	for i, j := 0, 0; j < rounded; i, j = i+1, j+size {
 		chunks[i] = slice[j : j+size]
 	}
@@ -420,7 +420,7 @@ func Chunk[T any](slice []T, size int) [][]T {
 // ChunkIter divides the slice up into chunks and invokes the callback on each
 // chunk. The last chunk may be smaller than size if the slice is not evenly
 // divisible.
-func ChunkIter[T any](slice []T, size int, callback func(chunk []T)) {
+func ChunkIter[S ~[]E, E any](slice S, size int, callback func(chunk S)) {
 	if len(slice) == 0 {
 		return
 	}
@@ -436,15 +436,15 @@ func ChunkIter[T any](slice []T, size int, callback func(chunk []T)) {
 
 // Except returns a new slice for all items that are not found in the slice of
 // items to exclude.
-func Except[T comparable](slice []T, exclude []T) []T {
-	set := NewSetOfSlice(exclude)
+func Except[S ~[]E, E comparable](slice S, exclude S) S {
+	set := NewSetOfSlice[S, E](exclude)
 	return ExceptSet(slice, set)
 }
 
 // ExceptSet returns a new slice for all items that are not found in the set of
 // items to exclude.
-func ExceptSet[T comparable](slice []T, exclude Set[T]) []T {
-	result := make([]T, 0, len(slice))
+func ExceptSet[S ~[]E, E comparable](slice S, exclude Set[E]) S {
+	result := make(S, 0, len(slice))
 	for _, v := range slice {
 		if !exclude.Has(v) {
 			result = append(result, v)
@@ -455,20 +455,20 @@ func ExceptSet[T comparable](slice []T, exclude Set[T]) []T {
 
 // Last returns the last item in a slice. Will panic with an out of bound error
 // if the slice is empty.
-func Last[T any](slice []T) T {
+func Last[S ~[]E, E any](slice S) E {
 	return slice[len(slice)-1]
 }
 
 // CloneSlice returns a shallow copy of a slice.
-func CloneSlice[T any](slice []T) []T {
-	newSlice := make([]T, len(slice))
+func CloneSlice[S ~[]E, E any](slice S) S {
+	newSlice := make(S, len(slice))
 	copy(newSlice, slice)
 	return newSlice
 }
 
 // GrowSlice will add n number of values to the end of the slice.
-func GrowSlice[T any](slice []T, n int) []T {
+func GrowSlice[S ~[]E, E any](slice S, n int) S {
 	// Relies on the compiler optimization introduced in Go v1.11
 	// https://go.dev/doc/go1.11#performance-compiler
-	return append(slice, make([]T, n)...)
+	return append(slice, make(S, n)...)
 }
