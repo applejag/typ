@@ -10,6 +10,11 @@ SPDX-License-Identifier: CC-BY-4.0
 
 This project tries to follow [SemVer 2.0.0](https://semver.org/).
 
+## v2.0.0 (2022-02-19)
+
+- Added constraints from [`golang.org/x/exp/constraints`](https://pkg.go.dev/golang.org/x/exp/constraints)
+  as they were removed from the stdlib. (729e08d)
+
 ## v1.3.0 (2022-02-03)
 
 - Added types:

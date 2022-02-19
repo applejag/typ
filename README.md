@@ -116,8 +116,14 @@ func UsingOrderedTree() {
 
 ### Constraints
 
-- `typ.Number`: Type constraint for any number: integers, floats, & complex.
-- `typ.Real`: Type constraint for real numbers: integers & floats.
+- `typ.Number`: integers, floats, & complex.
+- `typ.Real`: integers & floats.
+- `typ.Complex`: complex numbers, forked from [`golang.org/x/exp/constraints`](https://pkg.go.dev/golang.org/x/exp/constraints)
+- `typ.Float`: floats, forked from [`golang.org/x/exp/constraints`](https://pkg.go.dev/golang.org/x/exp/constraints)
+- `typ.Integer`: signed & unsigned integers, forked from [`golang.org/x/exp/constraints`](https://pkg.go.dev/golang.org/x/exp/constraints)
+- `typ.Ordered`: integers, floats, & strings, forked from [`golang.org/x/exp/constraints`](https://pkg.go.dev/golang.org/x/exp/constraints)
+- `typ.Signed`: signed integers, forked from [`golang.org/x/exp/constraints`](https://pkg.go.dev/golang.org/x/exp/constraints)
+- `typ.Unsigned`: unsigned integers & pointers, forked from [`golang.org/x/exp/constraints`](https://pkg.go.dev/golang.org/x/exp/constraints)
 
 ### Utility functions
 
