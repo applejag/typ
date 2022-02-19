@@ -82,24 +82,24 @@ func NewOf[T any](*T) *T {
 // Useful when wanting to call make() on a slice of anonymous types by making
 // use of type inference to skip having to declare the full anonymous type
 // multiple times, which is quite common when writing tests.
-func MakeSliceOf[T any](_ T, size ...int) []T {
+func MakeSliceOf[E any](_ E, size ...int) []E {
 	if len(size) > 2 {
 		panic("MakeSliceOf: max 2 size arguments")
 	}
-	return make([]T, SafeGet(size, 0), SafeGet(size, 1))
+	return make([]E, SafeGet(size, 0), SafeGet(size, 1))
 }
 
-// MakeSliceOfSlice returns the result of make([]T) for the same type as the
+// MakeSliceOfSlice returns the result of make([]E) for the same type as the
 // slice element type of the first argument.
 //
 // Useful when wanting to call make() on a slice of anonymous types by making
 // use of type inference to skip having to declare the full anonymous type
 // multiple times, which is quite common when writing tests.
-func MakeSliceOfSlice[T any](_ []T, size ...int) []T {
+func MakeSliceOfSlice[S ~[]E, E any](_ S, size ...int) S {
 	if len(size) > 2 {
 		panic("MakeSliceOfSlice: max 2 size arguments")
 	}
-	return make([]T, SafeGet(size, 0), SafeGet(size, 1))
+	return make([]E, SafeGet(size, 0), SafeGet(size, 1))
 }
 
 // MakeSliceOfKey returns the result of make([]T) for the same type as the
@@ -108,7 +108,7 @@ func MakeSliceOfSlice[T any](_ []T, size ...int) []T {
 // Useful when wanting to call make() on a slice of anonymous types by making
 // use of type inference to skip having to declare the full anonymous type
 // multiple times, which is quite common when writing tests.
-func MakeSliceOfKey[K comparable, V any](_ map[K]V, size ...int) []K {
+func MakeSliceOfKey[M ~map[K]V, K comparable, V any](_ M, size ...int) []K {
 	if len(size) > 2 {
 		panic("MakeSliceOfSlice: max 2 size arguments")
 	}
@@ -121,7 +121,7 @@ func MakeSliceOfKey[K comparable, V any](_ map[K]V, size ...int) []K {
 // Useful when wanting to call make() on a slice of anonymous types by making
 // use of type inference to skip having to declare the full anonymous type
 // multiple times, which is quite common when writing tests.
-func MakeSliceOfValue[K comparable, V any](_ map[K]V, size ...int) []V {
+func MakeSliceOfValue[M ~map[K]V, K comparable, V any](_ M, size ...int) []V {
 	if len(size) > 2 {
 		panic("MakeSliceOfSlice: max 2 size arguments")
 	}
@@ -147,37 +147,37 @@ func MakeMapOf[K comparable, V any](_ K, _ V, size ...int) map[K]V {
 // Useful when wanting to call make() on a map of anonymous types by making
 // use of type inference to skip having to declare the full anonymous type
 // multiple times, which is quite common when writing tests.
-func MakeMapOfMap[K comparable, V any](_ map[K]V, size ...int) map[K]V {
+func MakeMapOfMap[M ~map[K]V, K comparable, V any](_ M, size ...int) M {
 	if len(size) > 1 {
 		panic("MakeMapOf: max 1 size argument")
 	}
-	return make(map[K]V, SafeGet(size, 0))
+	return make(M, SafeGet(size, 0))
 }
 
-// MakeChanOf returns the result of make(chan T) for the same type as the first
+// MakeChanOf returns the result of make(chan V) for the same type as the first
 // argument.
 //
 // Useful when wanting to call make() on a channel of anonymous types by making
 // use of type inference to skip having to declare the full anonymous type
 // multiple times, which is quite common when writing tests.
-func MakeChanOf[T any](_ T, size ...int) chan T {
+func MakeChanOf[V any](_ V, size ...int) chan V {
 	if len(size) > 1 {
 		panic("MakeChanOf: max 1 size argument")
 	}
-	return make(chan T, SafeGet(size, 0))
+	return make(chan V, SafeGet(size, 0))
 }
 
-// MakeChanOfChan returns the result of make(chan T) for the same type as the
+// MakeChanOfChan returns the result of make(chan V) for the same type as the
 // channel type in the first argument.
 //
 // Useful when wanting to call make() on a channel of anonymous types by making
 // use of type inference to skip having to declare the full anonymous type
 // multiple times, which is quite common when writing tests.
-func MakeChanOfChan[T any](_ chan T, size ...int) chan T {
+func MakeChanOfChan[C ~chan V, V any](_ C, size ...int) C {
 	if len(size) > 1 {
 		panic("MakeChanOf: max 1 size argument")
 	}
-	return make(chan T, SafeGet(size, 0))
+	return make(C, SafeGet(size, 0))
 }
 
 // Ref returns a pointer to the value. Useful when working with literals.
@@ -186,9 +186,9 @@ func Ref[T any](value T) *T {
 }
 
 // DerefZero returns the dereferenced value, or zero if it was nil.
-func DerefZero[T any](value *T) T {
-	if value == nil {
-		return Zero[T]()
+func DerefZero[P ~*V, V any](ptr P) V {
+	if ptr == nil {
+		return Zero[V]()
 	}
-	return *value
+	return *ptr
 }

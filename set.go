@@ -19,7 +19,7 @@ func NewSetOfSlice[S ~[]E, E comparable](slice S) Set[E] {
 }
 
 // NewSetOfKeys returns a Set with all keys from a map added to it.
-func NewSetOfKeys[K comparable, V any](m map[K]V) Set[K] {
+func NewSetOfKeys[M ~map[K]V, K comparable, V any](m M) Set[K] {
 	var set Set[K]
 	for k := range m {
 		set.Add(k)
@@ -28,7 +28,7 @@ func NewSetOfKeys[K comparable, V any](m map[K]V) Set[K] {
 }
 
 // NewSetOfValues returns a Set with all values from a map added to it.
-func NewSetOfValues[K comparable, V comparable](m map[K]V) Set[V] {
+func NewSetOfValues[M ~map[K]V, K comparable, V comparable](m M) Set[V] {
 	var set Set[V]
 	for _, v := range m {
 		set.Add(v)

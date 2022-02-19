@@ -32,8 +32,8 @@ func NewArray2DFromValue[T any](width, height int, value T) Array2D[T] {
 // NewArray2DFromSlice initializes a 2-dimensional array based on a jagged
 // slice of rows of values. Values from the jagged slice that are out of bounds
 // are ignored.
-func NewArray2DFromSlice[T any](width, height int, jagged [][]T) Array2D[T] {
-	arr := NewArray2D[T](width, height)
+func NewArray2DFromSlice[J ~[]S, S ~[]E, E any](width, height int, jagged J) Array2D[E] {
+	arr := NewArray2D[E](width, height)
 	for y, row := range jagged {
 		copy(arr.Row(y), row)
 	}

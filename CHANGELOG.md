@@ -34,6 +34,9 @@ This project tries to follow [SemVer 2.0.0](https://semver.org/).
 - Changed `typ.AVLTree` to not be constrainted on only ordered types. Now you
   can use `typ.NewAVLTree()` to create one with a custom comparator. (d96902f)
 
+- Changed most functions to use generic constraints as `[S ~[]E, E any]` instead
+  of just `[S []any]`. (b973cb7)
+
 ## v1.3.0 (2022-02-03)
 
 - Added types:

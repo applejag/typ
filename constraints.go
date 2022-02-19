@@ -58,3 +58,15 @@ type Complex interface {
 type Ordered interface {
 	Integer | Float | ~string
 }
+
+// RecvChan is a constraint that permits a receive-only chan or a send & receive
+// channal.
+type RecvChan[T any] interface {
+	~chan T | ~<-chan T
+}
+
+// SendChan is a constraint that permits a send-only chan or a send & receive
+// channal.
+type SendChan[T any] interface {
+	~chan T | ~chan<- T
+}
