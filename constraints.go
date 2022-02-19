@@ -70,3 +70,9 @@ type RecvChan[T any] interface {
 type SendChan[T any] interface {
 	~chan T | ~chan<- T
 }
+
+// Chan is a constraint that permits any type of channel, be it a receive-only,
+// send-only, or unidirectional channel.
+type Chan[T any] interface {
+	~chan T | ~chan<- T | ~<-chan T
+}
