@@ -8,67 +8,82 @@ import (
 	"fmt"
 )
 
-// OrderedTree is a binary search tree (BST) for ordered Go types
+// NewAVLTree creates a new AVL tree using a comparator function that is
+// is expected to return  0 if a == b, -1 if a < b, and +1 if a > b.
+func NewAVLTree[T comparable](compare func(a, b T) int) AVLTree[T] {
+	return AVLTree[T]{
+		compare: compare,
+	}
+}
+
+// NewAVLTreeOrdered creates a new AVL tree using a default comparator function
+// for any ordered type (ints, uints, floats, strings).
+func NewAVLTreeOrdered[T Ordered]() AVLTree[T] {
+	return NewAVLTree(Compare[T])
+}
+
+// AVLTree is a binary search tree (BST) for ordered Go types
 // (numbers & strings), implemented as an AVL tree
 // (Adelson-Velsky and Landis tree), a type of self-balancing BST. This
 // guarantees O(log n) operations on insertion, searching, and deletion.
-type OrderedTree[T Ordered] struct {
-	root  *avlNode[T]
-	count int
+type AVLTree[T comparable] struct {
+	compare func(a, b T) int
+	root    *avlNode[T]
+	count   int
 }
 
-func (n OrderedTree[T]) String() string {
+func (n AVLTree[T]) String() string {
 	return fmt.Sprint(n.SliceInOrder())
 }
 
 // Clone will return a copy of this tree, with a new set of nodes. The values
 // are copied as-is, so no pointers inside your value type gets a deep clone.
-func (n *OrderedTree[T]) Clone() OrderedTree[T] {
-	var clone OrderedTree[T]
+func (n *AVLTree[T]) Clone() AVLTree[T] {
+	var clone AVLTree[T]
 	n.WalkPreOrder(clone.Add)
 	return clone
 }
 
 // Len returns the number of nodes in this tree.
-func (n *OrderedTree[T]) Len() int {
+func (n *AVLTree[T]) Len() int {
 	return n.count
 }
 
 // Contains checks if a value exists in this tree by iterating the binary
 // search tree.
-func (n *OrderedTree[T]) Contains(value T) bool {
+func (n *AVLTree[T]) Contains(value T) bool {
 	if n.root == nil {
 		return false
 	}
-	return n.root.contains(value, Compare[T])
+	return n.root.contains(value, n.compare)
 }
 
 // Add will add another value to this tree. Duplicate values are allowed and
 // are not dismissed.
-func (n *OrderedTree[T]) Add(value T) {
+func (n *AVLTree[T]) Add(value T) {
 	if n.root == nil {
 		n.root = &avlNode[T]{
 			value: value,
 		}
 	} else {
-		n.root = n.root.add(value, Compare[T])
+		n.root = n.root.add(value, n.compare)
 	}
 	n.count++
 }
 
 // Remove will try to remove the first occurrence of a value from the tree.
-func (n *OrderedTree[T]) Remove(value T) bool {
+func (n *AVLTree[T]) Remove(value T) bool {
 	if n.root == nil {
 		return false
 	}
-	newRoot, ok := n.root.remove(value, Compare[T])
+	newRoot, ok := n.root.remove(value, n.compare)
 	n.root = newRoot
 	n.count--
 	return ok
 }
 
 // Clear will reset this tree to an empty tree.
-func (n *OrderedTree[T]) Clear() {
+func (n *AVLTree[T]) Clear() {
 	n.root = nil
 	n.count = 0
 }
@@ -78,7 +93,7 @@ func (n *OrderedTree[T]) Clear() {
 //
 // This is useful when copying binary search trees, as inserting back in this
 // order will guarantee the clone will have the exact same layout.
-func (n *OrderedTree[T]) WalkPreOrder(walker func(value T)) {
+func (n *AVLTree[T]) WalkPreOrder(walker func(value T)) {
 	if n.root == nil {
 		return
 	}
@@ -90,7 +105,7 @@ func (n *OrderedTree[T]) WalkPreOrder(walker func(value T)) {
 //
 // This is useful when reading a tree's values in order, as this guarantees
 // iterating them in a sorted order.
-func (n *OrderedTree[T]) WalkInOrder(walker func(value T)) {
+func (n *AVLTree[T]) WalkInOrder(walker func(value T)) {
 	if n.root == nil {
 		return
 	}
@@ -102,7 +117,7 @@ func (n *OrderedTree[T]) WalkInOrder(walker func(value T)) {
 //
 // This is useful when deleting values from a tree, as this guarantees to always
 // delete leaf nodes.
-func (n *OrderedTree[T]) WalkPostOrder(walker func(value T)) {
+func (n *AVLTree[T]) WalkPostOrder(walker func(value T)) {
 	if n.root == nil {
 		return
 	}
@@ -111,24 +126,24 @@ func (n *OrderedTree[T]) WalkPostOrder(walker func(value T)) {
 
 // SlicePreOrder returns a slice of values by walking the tree in pre-order.
 // See WalkPreOrder for more details.
-func (n *OrderedTree[T]) SlicePreOrder() []T {
+func (n *AVLTree[T]) SlicePreOrder() []T {
 	return n.slice(n.WalkPreOrder)
 }
 
 // SliceInOrder returns a slice of values by walking the tree in in-order.
 // This returns all values in sorted order.
 // See WalkInOrder for more details.
-func (n *OrderedTree[T]) SliceInOrder() []T {
+func (n *AVLTree[T]) SliceInOrder() []T {
 	return n.slice(n.WalkInOrder)
 }
 
 // SlicePostOrder returns a slice of values by walking the tree in post-order.
 // See WalkPostOrder for more details.
-func (n *OrderedTree[T]) SlicePostOrder() []T {
+func (n *AVLTree[T]) SlicePostOrder() []T {
 	return n.slice(n.WalkPostOrder)
 }
 
-func (n *OrderedTree[T]) slice(f func(f func(value T))) []T {
+func (n *AVLTree[T]) slice(f func(f func(value T))) []T {
 	slice := make([]T, 0, n.count)
 	f(func(v T) {
 		slice = append(slice, v)

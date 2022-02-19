@@ -191,7 +191,7 @@ func FuzzOrderedTree_AddRemove(f *testing.F) {
 		f.Add(tc)
 	}
 	f.Fuzz(func(t *testing.T, str string) {
-		var tree OrderedTree[rune]
+		tree := NewAVLTreeOrdered[rune]()
 		t.Logf("using runes: %q", str)
 		strLen := utf8.RuneCountInString(str)
 		for _, r := range str {
