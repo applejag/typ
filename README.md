@@ -190,7 +190,11 @@ func UsingAVLTree() {
 - `typ.SendTimeout[T](<-chan T, T, time.Duration)`: Send to channel with timeout.
 - `typ.ShuffleRand[T]([]T, *rand.Rand)`: Randomizes the order of a slice.
 - `typ.Shuffle[T]([]T)`: Randomizes the order of a slice.
+- `typ.SortDescFunc[T]([]T, func(T, T) bool)`: Sorts a slice with a given sort function in descending order.
 - `typ.SortDesc[T]([]T)`: Sort ordered slices in descending order.
+- `typ.SortFunc[T]([]T, func(T, T) bool)`: Sorts a slice with a given sort function.
+- `typ.SortStableDescFunc[T]([]T, func(T, T) bool)`: Sorts a slice with a given sort function in descending order, while keeping original order of equal elements.
+- `typ.SortStableFunc[T]([]T, func(T, T) bool)`: Sorts a slice with a given sort function, while keeping original order of equal elements.
 - `typ.Sort[T]([]T)`: Sort ordered slices in ascending order.
 - `typ.Sum[T](...T) T`: Sums up numbers (addition).
 - `typ.TernCast[T](bool, any, T) T`: Conditionally cast a value.
