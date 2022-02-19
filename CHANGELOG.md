@@ -27,6 +27,7 @@ This project tries to follow [SemVer 2.0.0](https://semver.org/).
   - `typ.DerefZero[T](*T) T`: Returns a dereferenced pointer value, or zero if nil. (10de9a6)
   - `typ.GrowSlice[T]([]T, int) []T`: Adds `n` number of zero elements to a slice. (814016c)
   - `typ.Less[T](T, T) bool`: Returns true if the first argument is less than the second. (320bf5c)
+  - `typ.SearchFunc[T]([]T, func(T) bool)`: Searches for element index or insertion index in slice. (68f823d)
   - `typ.SortDescFunc[T]([]T, func(T, T) bool)`: Sorts a slice with a given sort function in descending order. (b55962b)
   - `typ.SortFunc[T]([]T, func(T, T) bool)`: Sorts a slice with a given sort function. (b55962b)
   - `typ.SortStableDescFunc[T]([]T, func(T, T) bool)`: Sorts a slice with a given sort function in descending order, while keeping original order of equal elements. (b55962b)

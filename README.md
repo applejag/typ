@@ -192,6 +192,7 @@ func UsingAVLTree() {
 - `typ.Reverse[T]([]T)`: Reverse the order of a slice.
 - `typ.SafeGetOr[T]([]T, int, T) T`: Index a slice, or return fallback value if index is out of bounds.
 - `typ.SafeGet[T]([]T, int) T`: Index a slice, or return zero if index is out of bounds.
+- `typ.SearchFunc[T]([]T, func(T) bool)`: Searches for element index or insertion index in slice.
 - `typ.Search[T]([]T, T)`: Searches for element index or insertion index in slice.
 - `typ.SendContext[T](context.Context, chan<- T, T) bool`: Send to a channel, or cancel with context.
 - `typ.SendTimeout[T](<-chan T, T, time.Duration)`: Send to channel with timeout.
