@@ -136,6 +136,7 @@ func UsingAVLTree() {
 - `typ.Chunk[T]([]T, int) [][]T`: Divide up a slice.
 - `typ.Clamp01[T](T) T`: Clamp a value between `0` and `1`.
 - `typ.Clamp[T](T, T, T) T`: Clamp a value inside a range.
+- `typ.ClearMap[K, V](map[K]V)`: Removes all elements from a map.
 - `typ.CloneMap[K, V](map[K]V) map[K]V`: Returns a shallow copy of a map.
 - `typ.CloneSlice[T]([]T) []T`: Returns a shallow copy of a slice.
 - `typ.Coal[T](...T) T`: Coalesce operator, returns first non-zero value.
@@ -155,6 +156,7 @@ func UsingAVLTree() {
 - `typ.FoldReverse[TState, T]([]T, TState, func(TState, T) TState) TState`: Accumulate values from slice in reverse order.
 - `typ.Fold[TState, T]([]T, TState, func(TState, T) TState) TState`: Accumulate values from slice.
 - `typ.GroupBy[K, V]([]V, func(V) K) []Grouping[K, V]`: Group elements by key.
+- `typ.GrowSlice[T]([]T, int) []T`: Adds `n` number of zero elements to a slice.
 - `typ.IndexFunc[T]([]T, func(T) bool) int`: Returns index of a value, or -1 if not found.
 - `typ.Index[T]([]T, T) int`: Returns index of a value, or -1 if not found.
 - `typ.InsertSlice[T](*[]T, int, []T)`: Inserts a slice of values at index.
