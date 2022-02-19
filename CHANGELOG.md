@@ -19,7 +19,12 @@ This project tries to follow [SemVer 2.0.0](https://semver.org/).
 
   - `typ.DerefZero[T](*T) T`: Returns a dereferenced pointer value, or zero if nil. (10de9a6)
 
-- Renamed `typ.Ptr` to `typ.Ref`.
+- Renamed `typ.Ptr` to `typ.Ref`. (10de9a6)
+
+- Renamed `typ.OrderedTree` to `typ.AVLTree`. (d96902f)
+
+- Changed `typ.AVLTree` to not be constrainted on only ordered types. Now you
+  can use `typ.NewAVLTree()` to create one with a custom comparator. (d96902f)
 
 ## v1.3.0 (2022-02-03)
 
