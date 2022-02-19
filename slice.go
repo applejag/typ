@@ -458,3 +458,10 @@ func ExceptSet[T comparable](slice []T, exclude Set[T]) []T {
 func Last[T any](slice []T) T {
 	return slice[len(slice)-1]
 }
+
+// CloneSlice returns a shallow copy of a slice.
+func CloneSlice[T any](slice []T) []T {
+	newSlice := make([]T, len(slice))
+	copy(newSlice, slice)
+	return newSlice
+}

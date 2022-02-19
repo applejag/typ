@@ -30,16 +30,6 @@ func ZeroOf[T any](T) T {
 	return zero
 }
 
-// ContainsValue checks if a value exists inside a map.
-func ContainsValue[K comparable, V comparable](m map[K]V, value V) bool {
-	for _, v := range m {
-		if v == value {
-			return true
-		}
-	}
-	return false
-}
-
 // Coal will return the first non-zero value. Equivalent to the "null coalescing"
 // operator from other languages, or the SQL "COALESCE(...)" expression.
 // 	var result = null ?? myDefaultValue;       // C#, JavaScript, PHP, etc
