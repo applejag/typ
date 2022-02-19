@@ -22,3 +22,12 @@ func CloneMap[K comparable, V any](m map[K]V) map[K]V {
 	}
 	return newMap
 }
+
+// ClearMap will delete all key-value pairs from a map, rendering it empty.
+func ClearMap[K comparable, V any](m map[K]V) {
+	// Relies on the compiler optimization introduced in Go v1.11
+	// https://go.dev/doc/go1.11#performance-compiler
+	for k := range m {
+		delete(m, k)
+	}
+}
