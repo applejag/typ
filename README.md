@@ -238,6 +238,18 @@ Go 1.18 generics support.
 - <https://github.com/golang-design/go2generics>: 🧪 A chunk of experiments and
   demos about Go 2 generics design (type parameter & type set)
 
+Official Go packages:
+
+- [`golang.org/x/exp/constraints`](https://pkg.go.dev/golang.org/x/exp/constraints):
+  Constraints that are useful for generic code, such as constraints.Ordered.
+
+- [`golang.org/x/exp/maps`](https://pkg.go.dev/golang.org/x/exp/maps):
+  A collection of generic functions that operate on slices of any element type.
+
+- [`golang.org/x/exp/slices`](https://pkg.go.dev/golang.org/x/exp/slices):
+  A collection of generic functions that operate on maps of any key or element
+  type.
+
 ## License
 
 This project is primarily licensed under the MIT license:
