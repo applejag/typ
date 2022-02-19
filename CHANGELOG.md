@@ -26,6 +26,7 @@ This project tries to follow [SemVer 2.0.0](https://semver.org/).
   - `typ.CloneSlice[T]([]T) []T`: Returns a shallow copy of a slice. (a4f42ca)
   - `typ.DerefZero[T](*T) T`: Returns a dereferenced pointer value, or zero if nil. (10de9a6)
   - `typ.GrowSlice[T]([]T, int) []T`: Adds `n` number of zero elements to a slice. (814016c)
+  - `typ.Less[T](T, T) bool`: Returns true if the first argument is less than the second. (320bf5c)
   - `typ.SortDescFunc[T]([]T, func(T, T) bool)`: Sorts a slice with a given sort function in descending order. (b55962b)
   - `typ.SortFunc[T]([]T, func(T, T) bool)`: Sorts a slice with a given sort function. (b55962b)
   - `typ.SortStableDescFunc[T]([]T, func(T, T) bool)`: Sorts a slice with a given sort function in descending order, while keeping original order of equal elements. (b55962b)
@@ -40,6 +41,9 @@ This project tries to follow [SemVer 2.0.0](https://semver.org/).
 
 - Changed most functions to use generic constraints as `[S ~[]E, E any]` instead
   of just `[S []any]`. (b973cb7)
+
+- Removed `typ.OrderedSlice` in favor of the new `typ.NewSortedSliceOrdered`
+  function. (320bf5c)
 
 ## v1.3.0 (2022-02-03)
 

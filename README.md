@@ -90,7 +90,6 @@ func UsingAVLTree() {
 - `typ.KeyedRWMutex[T]`: Mutual exclusive reader/writer lock on a per-key basis.
 - `typ.List[T]`: Linked list, forked from [`container/list`](https://pkg.go.dev/container/list).
 - `typ.Null[T]`: Nullable type without needing pointers, forked from [`github.com/volatiletech/null/v9`](https://github.com/volatiletech/null)
-- `typ.OrderedSlice[T]`: Always-sorted slice for ordered types.
 - `typ.AVLTree[T]`: AVL-tree (auto-balancing binary search tree) implementation.
 - `typ.Pool[T]`: Object pool, wrapper around [`sync.Pool`](https://pkg.go.dev/sync#Pool).
 - `typ.Publisher[T]`: Publish-subscribe pattern (pubsub) using channels.
@@ -166,6 +165,7 @@ func UsingAVLTree() {
 - `typ.Insert[T](*[]T, int, T)`: Inserts a value at index.
 - `typ.IsNil[T](T) bool`: Returns true if the generic value is nil.
 - `typ.Last[T]([]T) T`: Returns the last item in a slice.
+- `typ.Less[T](T, T) bool`: Returns true if the first argument is less than the second.
 - `typ.MakeChanOfChan[T](chan T, ...int) chan T`: Returns the result of `make(chan T)`, useful for anonymous types.
 - `typ.MakeChanOf[T](T, ...int) chan T`: Returns the result of `make(chan T)`, useful for anonymous types.
 - `typ.MakeMapOfMap[K,V](map[K]V, ...int) map[K]V`: Returns the result of `make(map[K]V)`, useful for anonymous types.
