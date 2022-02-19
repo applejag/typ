@@ -37,6 +37,9 @@ This project tries to follow [SemVer 2.0.0](https://semver.org/).
 
 - Renamed `typ.OrderedTree` to `typ.AVLTree`. (d96902f)
 
+- Renamed `typ.ChunkIter`, `typ.PairsIter`, and `typ.WindowedIter` to
+  `typ.ChunkFunc`, `typ.PairsFunc`, and `typ.WindowedFunc`, respectively. (4a3936e)
+
 - Changed `typ.AVLTree` to not be constrainted on only ordered types. Now you
   can use `typ.NewAVLTree()` to create one with a custom comparator. (d96902f)
 

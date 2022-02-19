@@ -134,7 +134,7 @@ func UsingAVLTree() {
 - `typ.Abs[T](T) T`: Absolute value of a number.
 - `typ.All[T]([]T, func(T) bool) bool`: Does condition match all values?
 - `typ.Any[T]([]T, func(T) bool) bool`: Does condition match any value?
-- `typ.ChunkIter[T]([]T, int) [][]T`: Invoke callback for all chunks in a slice.
+- `typ.ChunkFunc[T]([]T, int) [][]T`: Invoke callback for all chunks in a slice.
 - `typ.Chunk[T]([]T, int) [][]T`: Divide up a slice.
 - `typ.Clamp01[T](T) T`: Clamp a value between `0` and `1`.
 - `typ.Clamp[T](T, T, T) T`: Clamp a value inside a range.
@@ -179,7 +179,7 @@ func UsingAVLTree() {
 - `typ.Max[T](...T) T`: Return the largest value.
 - `typ.Min[T](...T) T`: Return the smallest value.
 - `typ.NewOf[T](*T) *T`: Returns the result of `new(T)`, useful for anonymous types.
-- `typ.PairsIter[T]([]T, func(T, T))`: Invoke callback for all pairs in a slice.
+- `typ.PairsFunc[T]([]T, func(T, T))`: Invoke callback for all pairs in a slice.
 - `typ.Pairs[T]([]T) [][2]T`: Returns all pairs from a slice.
 - `typ.Product[T](...T) T`: Multiplies together numbers.
 - `typ.RecvContext[T](context.Context, <-chan T) (T, bool)`: Receive from a channel, or cancel with context.
@@ -214,7 +214,7 @@ func UsingAVLTree() {
 - `typ.TrimRight[T]([]T, []T)`: Trim away unwanted elements from end.
 - `typ.Trim[T]([]T, []T)`: Trim away unwanted elements from start and end.
 - `typ.TryGet[T]([]T, int) (T, bool)`: Index a slice, or return false if index is out of bounds.
-- `typ.WindowedIter[T]([]T, int, func([]T))`: Invoke callback for all windows in a slice.
+- `typ.WindowedFunc[T]([]T, int, func([]T))`: Invoke callback for all windows in a slice.
 - `typ.Windowed[T]([]T, int) [][]T`: Returns all windows from a slice.
 - `typ.ZeroOf[T](T) T`: Returns the zero value for an anonymous type.
 - `typ.Zero[T]() T`: Returns the zero value for a type.
