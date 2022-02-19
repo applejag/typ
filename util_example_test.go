@@ -9,7 +9,7 @@ import (
 	"path/filepath"
 	"time"
 
-	"gopkg.in/typ.v1"
+	"gopkg.in/typ.v2"
 )
 
 func ExampleTrim() {

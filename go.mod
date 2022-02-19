@@ -2,6 +2,6 @@
 //
 // SPDX-License-Identifier: CC0-1.0
 
-module gopkg.in/typ.v1
+module gopkg.in/typ.v2
 
 go 1.18

@@ -8,7 +8,7 @@ import (
 	"fmt"
 	"strings"
 
-	"gopkg.in/typ.v1"
+	"gopkg.in/typ.v2"
 )
 
 type Sudoku struct {

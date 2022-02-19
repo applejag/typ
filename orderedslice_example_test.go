@@ -7,7 +7,7 @@ package typ_test
 import (
 	"fmt"
 
-	"gopkg.in/typ.v1"
+	"gopkg.in/typ.v2"
 )
 
 func ExampleOrderedSlice() {
