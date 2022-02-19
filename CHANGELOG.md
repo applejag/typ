@@ -32,6 +32,7 @@ This project tries to follow [SemVer 2.0.0](https://semver.org/).
   - `typ.SortFunc[T]([]T, func(T, T) bool)`: Sorts a slice with a given sort function. (b55962b)
   - `typ.SortStableDescFunc[T]([]T, func(T, T) bool)`: Sorts a slice with a given sort function in descending order, while keeping original order of equal elements. (b55962b)
   - `typ.SortStableFunc[T]([]T, func(T, T) bool)`: Sorts a slice with a given sort function, while keeping original order of equal elements. (b55962b)
+  - `typ.IsZero[T](T) bool`: Returns true if the value is its type's zero value or if method `IsZero() bool` returns true. (ff25c12)
 
 - Renamed `typ.Ptr` to `typ.Ref`. (10de9a6)
 

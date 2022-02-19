@@ -164,6 +164,7 @@ func UsingAVLTree() {
 - `typ.InsertSlice[T](*[]T, int, []T)`: Inserts a slice of values at index.
 - `typ.Insert[T](*[]T, int, T)`: Inserts a value at index.
 - `typ.IsNil[T](T) bool`: Returns true if the generic value is nil.
+- `typ.IsZero[T](T) bool`: Returns true if the value is its type's zero value or if method `IsZero() bool` returns true.
 - `typ.Last[T]([]T) T`: Returns the last item in a slice.
 - `typ.Less[T](T, T) bool`: Returns true if the first argument is less than the second.
 - `typ.MakeChanOfChan[T](chan T, ...int) chan T`: Returns the result of `make(chan T)`, useful for anonymous types.
