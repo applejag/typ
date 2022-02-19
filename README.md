@@ -116,12 +116,14 @@ func UsingAVLTree() {
 
 ### Constraints
 
-- `typ.Number`: integers, floats, & complex.
-- `typ.Real`: integers & floats.
 - `typ.Complex`: complex numbers, forked from [`golang.org/x/exp/constraints`](https://pkg.go.dev/golang.org/x/exp/constraints)
 - `typ.Float`: floats, forked from [`golang.org/x/exp/constraints`](https://pkg.go.dev/golang.org/x/exp/constraints)
 - `typ.Integer`: signed & unsigned integers, forked from [`golang.org/x/exp/constraints`](https://pkg.go.dev/golang.org/x/exp/constraints)
+- `typ.Number`: integers, floats, & complex.
 - `typ.Ordered`: integers, floats, & strings, forked from [`golang.org/x/exp/constraints`](https://pkg.go.dev/golang.org/x/exp/constraints)
+- `typ.Real`: integers & floats.
+- `typ.RecvChan[T]`: channel of type or receive-only channel of type. (649938c)
+- `typ.SendChan[T]`: channel of type or send-only channel of type. (649938c)
 - `typ.Signed`: signed integers, forked from [`golang.org/x/exp/constraints`](https://pkg.go.dev/golang.org/x/exp/constraints)
 - `typ.Unsigned`: unsigned integers & pointers, forked from [`golang.org/x/exp/constraints`](https://pkg.go.dev/golang.org/x/exp/constraints)
 

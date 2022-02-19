@@ -12,8 +12,11 @@ This project tries to follow [SemVer 2.0.0](https://semver.org/).
 
 ## v2.0.0 (2022-02-19)
 
-- Added constraints from [`golang.org/x/exp/constraints`](https://pkg.go.dev/golang.org/x/exp/constraints)
-  as they were removed from the stdlib. (729e08d)
+- Added constraints:
+
+  - All constraints from [`golang.org/x/exp/constraints`](https://pkg.go.dev/golang.org/x/exp/constraints) as they were removed from the stdlib since Go v1.18rc1. (729e08d)
+  - `typ.RecvChan[T]`: channel of type or receive-only channel of type. (649938c)
+  - `typ.SendChan[T]`: channel of type or send-only channel of type. (649938c)
 
 - Added utility functions:
 
