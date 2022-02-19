@@ -15,6 +15,12 @@ This project tries to follow [SemVer 2.0.0](https://semver.org/).
 - Added constraints from [`golang.org/x/exp/constraints`](https://pkg.go.dev/golang.org/x/exp/constraints)
   as they were removed from the stdlib. (729e08d)
 
+- Added utility functions:
+
+  - `typ.DerefZero[T](*T) T`: Returns a dereferenced pointer value, or zero if nil. (10de9a6)
+
+- Renamed `typ.Ptr` to `typ.Ref`.
+
 ## v1.3.0 (2022-02-03)
 
 - Added types:

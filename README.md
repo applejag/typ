@@ -141,6 +141,7 @@ func UsingOrderedTree() {
 - `typ.ContainsValue[K, V](map[K]V, V) bool`: Does map contain value?
 - `typ.Contains[T]([]T, T) bool`: Does slice contain value?
 - `typ.CountBy[K, V]([]V, func(V) K) []Counting[K]`: Count elements by key.
+- `typ.DerefZero[T](*T) T`: Returns a dereferenced pointer value, or zero if nil.
 - `typ.Digits10Sign[T](T) int`: Number of base 10 digits (including sign) in integer.
 - `typ.Digits10[T](T) int`: Number of base 10 digits (excluding sign) in integer.
 - `typ.DistinctFunc[T]([]T, func(T, T) bool) []T`: Returns new slice of unique elements with custom equals.
@@ -174,11 +175,11 @@ func UsingOrderedTree() {
 - `typ.PairsIter[T]([]T, func(T, T))`: Invoke callback for all pairs in a slice.
 - `typ.Pairs[T]([]T) [][2]T`: Returns all pairs from a slice.
 - `typ.Product[T](...T) T`: Multiplies together numbers.
-- `typ.Ptr[T](T) *T`: Return a pointer of the value, such as a literal.
 - `typ.RecvContext[T](context.Context, <-chan T) (T, bool)`: Receive from a channel, or cancel with context.
 - `typ.RecvQueuedFull[T](<-chan T, []T)`: Receive all queued values from a channel's buffer.
 - `typ.RecvQueued[T](<-chan T, int) []T`: Receive all queued values from a channel's buffer.
 - `typ.RecvTimeout[T](chan<- T, time.Duration)`: Receive from channel with timeout.
+- `typ.Ref[T](T) *T`: Return a pointer of the value, such as a literal.
 - `typ.RemoveSlice[T](*[]T, int, int)`: Removes a slice of values at index.
 - `typ.Remove[T](*[]T, int)`: Removes a value at index.
 - `typ.Reverse[T]([]T)`: Reverse the order of a slice.
