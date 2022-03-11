@@ -8,7 +8,7 @@ SPDX-License-Identifier: CC-BY-4.0
 
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/6b0289f204c044c2911a53c67a4833d9)](https://app.codacy.com/gh/go-typ/typ?utm_source=github.com&utm_medium=referral&utm_content=go-typ/typ&utm_campaign=Badge_Grade_Settings)
 [![REUSE status](https://api.reuse.software/badge/github.com/go-typ/typ)](https://api.reuse.software/info/github.com/go-typ/typ)
-[![Go Reference](https://pkg.go.dev/badge/gopkg.in/typ.v2.svg)](https://pkg.go.dev/gopkg.in/typ.v1)
+[![Go Reference](https://pkg.go.dev/badge/gopkg.in/typ.v2.svg)](https://pkg.go.dev/gopkg.in/typ.v2)
 
 Generic types and functions that are missing from Go, including sets, trees,
 linked lists, etc.
