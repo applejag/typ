@@ -2,6 +2,8 @@
 //
 // SPDX-License-Identifier: MIT
 
+// Package chans contains utility constraints, functions, and types regarding
+// Go channels, such as the PubSub type for fan-out events.
 package chans
 
 import (

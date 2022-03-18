@@ -2,6 +2,9 @@
 //
 // SPDX-License-Identifier: MIT
 
+// Package avl contains a AVL-tree (Adelson-Velsky and Landis tree)
+// implementation, which is a binary search tree (BST) that performs
+// self-balancing on insertion and deletion.
 package avl
 
 import (

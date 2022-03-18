@@ -2,6 +2,7 @@
 //
 // SPDX-License-Identifier: MIT
 
+// Package maps contains utility functions for maps.
 package maps
 
 // ContainsValue checks if a value exists inside a map.

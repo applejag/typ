@@ -2,6 +2,7 @@
 //
 // SPDX-License-Identifier: MIT
 
+// Package sets contains a Set implementation, based on the built in map type.
 package sets
 
 import (

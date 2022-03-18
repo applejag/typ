@@ -2,6 +2,8 @@
 //
 // SPDX-License-Identifier: MIT
 
+// Package slices contains utility functions for Go slices, as well as a Sorted slice
+// type.
 package slices
 
 import (
