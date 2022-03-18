@@ -24,17 +24,7 @@ There's multiple ways to contribute:
 
 ### Prerequisites
 
-[Go](https://go.dev/) v1.18rc1 (or higher)
-
-Go v1.18rc1 can be installed by a previous version of Go by running:
-
-```sh
-go install golang.org/dl/go1.18rc1@latest
-go1.18rc1 download
-
-# Quality of life:
-alias go=go1.18rc1
-```
+[Go](https://go.dev/) v1.18 (or higher)
 
 ### Formatting
 
