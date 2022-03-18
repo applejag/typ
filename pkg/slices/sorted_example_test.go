@@ -27,7 +27,7 @@ func (u User) AsAdmin() User {
 	return u
 }
 
-func ExampleNewSortedSlice() {
+func ExampleNewSorted() {
 	slice := slices.NewSorted([]User{}, func(a, b User) bool {
 		return a.Name < b.Name
 	})
@@ -50,8 +50,8 @@ func ExampleNewSortedSlice() {
 	// [Ann Jane Wayne]
 }
 
-func ExampleNewSortedSliceOrdered() {
-	slice := slices.NewSortedSliceOrdered[string]()
+func ExampleNewSortedOrdered() {
+	slice := slices.NewSortedOrdered[string]()
 	slice.Add("f")
 	slice.Add("b")
 	slice.Add("e")

@@ -7,6 +7,8 @@ package slices
 import (
 	"fmt"
 	"testing"
+
+	"gopkg.in/typ.v3/internal/assert"
 )
 
 func TestFill(t *testing.T) {
@@ -271,15 +273,15 @@ func TestCountBy(t *testing.T) {
 	if got[0].Key != 'P' {
 		t.Errorf("want group[0].Key = 'P', got %q", got[0].Key)
 	}
-	assertComparable(t, "group[0]", 3, got[0].Count)
+	assert.Comparable(t, "group[0]", 3, got[0].Count)
 	if got[1].Key != 'H' {
 		t.Errorf("want group[1].Key = 'H', got %q", got[1].Key)
 	}
-	assertComparable(t, "group[1]", 2, got[1].Count)
+	assert.Comparable(t, "group[1]", 2, got[1].Count)
 	if got[2].Key != 'T' {
 		t.Errorf("want group[2].Key = 'T', got %q", got[2].Key)
 	}
-	assertComparable(t, "group[2]", 1, got[2].Count)
+	assert.Comparable(t, "group[2]", 1, got[2].Count)
 }
 
 func TestPairs(t *testing.T) {
@@ -292,7 +294,7 @@ func TestPairs(t *testing.T) {
 		"ab", "bc", "cd", "de", "ef", "fg",
 	}
 	for i := range got {
-		assertComparable(t, fmt.Sprintf("got[%d]", i), want[i], string(got[i][:]))
+		assert.Comparable(t, fmt.Sprintf("got[%d]", i), want[i], string(got[i][:]))
 	}
 }
 
@@ -309,7 +311,7 @@ func TestPairsFunc(t *testing.T) {
 		"ab", "bc", "cd", "de", "ef", "fg",
 	}
 	for i := range got {
-		assertComparable(t, fmt.Sprintf("got[%d]", i), want[i], string(got[i]))
+		assert.Comparable(t, fmt.Sprintf("got[%d]", i), want[i], string(got[i]))
 	}
 }
 
@@ -323,7 +325,7 @@ func TestWindowed(t *testing.T) {
 		"abc", "bcd", "cde", "def", "efg",
 	}
 	for i := range got {
-		assertComparable(t, fmt.Sprintf("got[%d]", i), want[i], string(got[i]))
+		assert.Comparable(t, fmt.Sprintf("got[%d]", i), want[i], string(got[i]))
 	}
 }
 
@@ -340,7 +342,7 @@ func TestWindowedFunc(t *testing.T) {
 		"abc", "bcd", "cde", "def", "efg",
 	}
 	for i := range got {
-		assertComparable(t, fmt.Sprintf("got[%d]", i), want[i], string(got[i]))
+		assert.Comparable(t, fmt.Sprintf("got[%d]", i), want[i], string(got[i]))
 	}
 }
 
@@ -354,7 +356,7 @@ func TestChunk(t *testing.T) {
 		"abc", "def", "g",
 	}
 	for i := range got {
-		assertComparable(t, fmt.Sprintf("got[%d]", i), want[i], string(got[i]))
+		assert.Comparable(t, fmt.Sprintf("got[%d]", i), want[i], string(got[i]))
 	}
 }
 
@@ -371,13 +373,7 @@ func TestChunkFunc(t *testing.T) {
 		"abc", "def", "g",
 	}
 	for i := range got {
-		assertComparable(t, fmt.Sprintf("got[%d]", i), want[i], string(got[i]))
-	}
-}
-
-func assertComparable[T comparable](t *testing.T, name string, want T, got T) {
-	if want != got {
-		t.Errorf(`%s: want "%v", got "%v"`, name, want, got)
+		assert.Comparable(t, fmt.Sprintf("got[%d]", i), want[i], string(got[i]))
 	}
 }
 

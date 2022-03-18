@@ -2,15 +2,17 @@
 //
 // SPDX-License-Identifier: MIT
 
-package typ
+package arrays
 
 import (
 	"fmt"
 	"strings"
+
+	"gopkg.in/typ.v3/pkg/slices"
 )
 
-// NewArray2D initializes a 2-dimensional array with all zero values.
-func NewArray2D[T any](width, height int) Array2D[T] {
+// New2D initializes a 2-dimensional array with all zero values.
+func New2D[T any](width, height int) Array2D[T] {
 	return Array2D[T]{
 		width:  width,
 		height: height,
@@ -18,10 +20,10 @@ func NewArray2D[T any](width, height int) Array2D[T] {
 	}
 }
 
-// NewArray2DFromValue initializes a 2-dimensional array with a value.
-func NewArray2DFromValue[T any](width, height int, value T) Array2D[T] {
+// New2DFilled initializes a 2-dimensional array with a value.
+func New2DFilled[T any](width, height int, value T) Array2D[T] {
 	slice := make([]T, width*height)
-	Fill(slice, value)
+	slices.Fill(slice, value)
 	return Array2D[T]{
 		width:  width,
 		height: height,
@@ -29,11 +31,11 @@ func NewArray2DFromValue[T any](width, height int, value T) Array2D[T] {
 	}
 }
 
-// NewArray2DFromSlice initializes a 2-dimensional array based on a jagged
+// New2DFromJagged initializes a 2-dimensional array based on a jagged
 // slice of rows of values. Values from the jagged slice that are out of bounds
 // are ignored.
-func NewArray2DFromSlice[J ~[]S, S ~[]E, E any](width, height int, jagged J) Array2D[E] {
-	arr := NewArray2D[E](width, height)
+func New2DFromJagged[J ~[]S, S ~[]E, E any](width, height int, jagged J) Array2D[E] {
+	arr := New2D[E](width, height)
 	for y, row := range jagged {
 		copy(arr.Row(y), row)
 	}
@@ -168,7 +170,7 @@ func (a Array2D[T]) Fill(x1, y1, x2, y2 int, value T) {
 		y1, y2 = y2, y1
 	}
 	firstRow := a.slice[x1+y1*a.height : 1+x2+y1*a.height]
-	Fill(firstRow, value)
+	slices.Fill(firstRow, value)
 	for y := y1 + 1; y <= y2; y++ {
 		copy(a.slice[x1+y*a.height:1+x2+y*a.height], firstRow)
 	}

@@ -2,17 +2,17 @@
 //
 // SPDX-License-Identifier: MIT
 
-package typ_test
+package arrays_test
 
 import (
 	"fmt"
 	"strings"
 
-	"gopkg.in/typ.v3"
+	"gopkg.in/typ.v3/pkg/arrays"
 )
 
 type Sudoku struct {
-	arr typ.Array2D[byte]
+	arr arrays.Array2D[byte]
 }
 
 func (s Sudoku) PrintBoard() {
@@ -41,7 +41,7 @@ func (s Sudoku) PrintBoard() {
 
 func ExampleArray2D() {
 	s := Sudoku{
-		arr: typ.NewArray2DFromSlice(9, 9, [][]byte{
+		arr: arrays.New2DFromJagged(9, 9, [][]byte{
 			{5, 3, 0, 0, 7, 0, 0, 0, 0},
 			{6, 0, 0, 1, 9, 5, 0, 0, 0},
 			{0, 9, 8, 0, 0, 0, 0, 6, 0},

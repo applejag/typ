@@ -2,12 +2,16 @@
 //
 // SPDX-License-Identifier: MIT
 
-package typ
+package arrays
 
-import "testing"
+import (
+	"testing"
+
+	"gopkg.in/typ.v3/internal/assert"
+)
 
 func TestArray2D_stringEmpty(t *testing.T) {
-	arr := NewArray2D[int](3, 3)
+	arr := New2D[int](3, 3)
 	got := arr.String()
 	want := "[[0 0 0] [0 0 0] [0 0 0]]"
 	if got != want {
@@ -16,7 +20,7 @@ func TestArray2D_stringEmpty(t *testing.T) {
 }
 
 func TestArray2D_stringValues(t *testing.T) {
-	arr := NewArray2D[int](3, 3)
+	arr := New2D[int](3, 3)
 	arr.Set(0, 0, 1)
 	arr.Set(1, 0, 2)
 	arr.Set(2, 0, 3)
@@ -34,7 +38,7 @@ func TestArray2D_stringValues(t *testing.T) {
 }
 
 func TestArray2D_fill(t *testing.T) {
-	arr := NewArray2D[int](64, 64)
+	arr := New2D[int](64, 64)
 	val := 42
 	arr.Fill(20, 25, 40, 38, val)
 	for x := 0; x < arr.Width(); x++ {
@@ -52,9 +56,9 @@ func TestArray2D_fill(t *testing.T) {
 }
 
 func TestArray2D_rowSpan(t *testing.T) {
-	arr := NewArray2D[int](5, 5)
+	arr := New2D[int](5, 5)
 	span := arr.RowSpan(1, 3, 2)
-	assertComparable(t, "len(span)", 3, len(span))
+	assert.Comparable(t, "len(span)", 3, len(span))
 	copy(span, []int{1, 2, 3})
 	for x := 0; x < arr.Width(); x++ {
 		for y := 0; y < arr.Height(); y++ {
@@ -71,9 +75,9 @@ func TestArray2D_rowSpan(t *testing.T) {
 }
 
 func TestArray2D_row(t *testing.T) {
-	arr := NewArray2D[int](5, 5)
+	arr := New2D[int](5, 5)
 	span := arr.Row(2)
-	assertComparable(t, "len(span)", 5, len(span))
+	assert.Comparable(t, "len(span)", 5, len(span))
 	copy(span, []int{1, 2, 3, 4, 5})
 	for x := 0; x < arr.Width(); x++ {
 		for y := 0; y < arr.Height(); y++ {
