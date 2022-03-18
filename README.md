@@ -115,7 +115,7 @@ func UsingAVLTree() {
 
 - `gopkg.in/typ.v3/pkg/chans`:
 
-  - `chans.Publisher[T]`: Publish-subscribe pattern (pubsub) using channels.
+  - `chans.PubSub[T]`: Publish-subscribe pattern using channels.
 
 - `gopkg.in/typ.v3/pkg/sets`:
 
