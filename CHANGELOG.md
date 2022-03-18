@@ -10,6 +10,26 @@ SPDX-License-Identifier: CC-BY-4.0
 
 This project tries to follow [SemVer 2.0.0](https://semver.org/).
 
+## v3.0.0 (WIP)
+
+- Changed location of types and functions to be package based. New packages:
+  (#31)
+
+  | Package      | Moved `typ` types                              |
+  |--------------|------------------------------------------------|
+  | `pkg/arrays` | `Array2D`                                      |
+  | `pkg/avl`    | `AVLTree`                                      |
+  | `pkg/chans`  | `RecvChan`, `SendChan`, `Chan`                 |
+  | `pkg/lists`  | `List`, `Queue`, `Ring`, `Stack`               |
+  | `pkg/maps`   | *only utility functions*                       |
+  | `pkg/sets`   | `Set`                                          |
+  | `pkg/slices` | `SortedSlice`                                  |
+  | `pkg/sync2`  | `AtomicValue`, `KeyedMutex`, `Pool`, `SyncMap` |
+
+- Removed all `MakeXOfX` utility funcitons. (#31)
+
+- Removed the `typ.Null` type. (#31)
+
 ## v2.0.0 (2022-02-19)
 
 - Added constraints:
