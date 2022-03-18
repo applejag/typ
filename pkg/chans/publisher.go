@@ -114,6 +114,24 @@ func (o *Publisher[T]) sendWaitGroup(ev T, sub chan T, timeout time.Duration, on
 	wg.Done()
 }
 
+// WithOnly returns a new publisher that only contains the given subscription
+// channel. Useful if you need to send events only to a single specific
+// subscription.
+func (o *Publisher[T]) WithOnly(sub <-chan T) *Publisher[T] {
+	o.mutex.RLock()
+	defer o.mutex.RUnlock()
+	clone := &Publisher[T]{
+		OnPubTimeout:    o.OnPubTimeout,
+		PubTimeoutAfter: o.PubTimeoutAfter,
+	}
+	for _, s := range o.subs {
+		if s == sub {
+			clone.subs = append(clone.subs, s)
+		}
+	}
+	return clone
+}
+
 // Sub subscribes to events in a newly created channel with no buffer.
 func (o *Publisher[T]) Sub() <-chan T {
 	o.mutex.Lock()
