@@ -120,7 +120,6 @@ func (o *PubSub[T]) sendWaitGroup(ev T, sub chan T, timeout time.Duration, onTim
 // subscription.
 func (o *PubSub[T]) WithOnly(sub <-chan T) *PubSub[T] {
 	o.mutex.RLock()
-	defer o.mutex.RUnlock()
 	clone := &PubSub[T]{
 		OnPubTimeout:    o.OnPubTimeout,
 		PubTimeoutAfter: o.PubTimeoutAfter,
@@ -130,6 +129,7 @@ func (o *PubSub[T]) WithOnly(sub <-chan T) *PubSub[T] {
 			clone.subs = append(clone.subs, s)
 		}
 	}
+	o.mutex.RUnlock()
 	return clone
 }
 
