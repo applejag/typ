@@ -4,17 +4,17 @@
 //
 // SPDX-License-Identifier: BSD-3-Clause
 
-package typ_test
+package lists_test
 
 import (
 	"fmt"
 
-	"gopkg.in/typ.v3"
+	"gopkg.in/typ.v3/pkg/lists"
 )
 
 func ExampleRing_Len() {
 	// Create a new ring of size 4
-	r := typ.NewRing[int](4)
+	r := lists.NewRing[int](4)
 
 	// Print out its length
 	fmt.Println(r.Len())
@@ -25,7 +25,7 @@ func ExampleRing_Len() {
 
 func ExampleRing_Next() {
 	// Create a new ring of size 5
-	r := typ.NewRing[int](5)
+	r := lists.NewRing[int](5)
 
 	// Get the length of the ring
 	n := r.Len()
@@ -52,7 +52,7 @@ func ExampleRing_Next() {
 
 func ExampleRing_Prev() {
 	// Create a new ring of size 5
-	r := typ.NewRing[int](5)
+	r := lists.NewRing[int](5)
 
 	// Get the length of the ring
 	n := r.Len()
@@ -79,7 +79,7 @@ func ExampleRing_Prev() {
 
 func ExampleRing_Do() {
 	// Create a new ring of size 5
-	r := typ.NewRing[int](5)
+	r := lists.NewRing[int](5)
 
 	// Get the length of the ring
 	n := r.Len()
@@ -105,7 +105,7 @@ func ExampleRing_Do() {
 
 func ExampleRing_Move() {
 	// Create a new ring of size 5
-	r := typ.NewRing[int](5)
+	r := lists.NewRing[int](5)
 
 	// Get the length of the ring
 	n := r.Len()
@@ -134,8 +134,8 @@ func ExampleRing_Move() {
 
 func ExampleRing_Link() {
 	// Create two rings, r and s, of size 2
-	r := typ.NewRing[int](2)
-	s := typ.NewRing[int](2)
+	r := lists.NewRing[int](2)
+	s := lists.NewRing[int](2)
 
 	// Get the length of the ring
 	lr := r.Len()
@@ -170,7 +170,7 @@ func ExampleRing_Link() {
 
 func ExampleRing_Unlink() {
 	// Create a new ring of size 6
-	r := typ.NewRing[int](6)
+	r := lists.NewRing[int](6)
 
 	// Get the length of the ring
 	n := r.Len()

@@ -2,7 +2,9 @@
 //
 // SPDX-License-Identifier: MIT
 
-package typ
+package lists
+
+import "gopkg.in/typ.v3"
 
 // Stack is a first-in-last-out collection.
 type Stack[T any] []T
@@ -11,7 +13,7 @@ type Stack[T any] []T
 // if the stack is empty.
 func (s *Stack[T]) Peek() (T, bool) {
 	if s == nil || len(*s) == 0 {
-		return Zero[T](), false
+		return typ.Zero[T](), false
 	}
 	slice := *s
 	lastVal := slice[len(slice)-1]
@@ -22,7 +24,7 @@ func (s *Stack[T]) Peek() (T, bool) {
 // is empty.
 func (s *Stack[T]) Pop() (T, bool) {
 	if s == nil || len(*s) == 0 {
-		return Zero[T](), false
+		return typ.Zero[T](), false
 	}
 	slice := *s
 	lastIdx := len(slice) - 1

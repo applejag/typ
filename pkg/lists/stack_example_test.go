@@ -2,12 +2,16 @@
 //
 // SPDX-License-Identifier: MIT
 
-package typ
+package lists_test
 
-import "fmt"
+import (
+	"fmt"
+
+	"gopkg.in/typ.v3/pkg/lists"
+)
 
 func ExampleStack() {
-	var s Stack[string]
+	var s lists.Stack[string]
 	s.Push("tripp")
 	s.Push("trapp")
 	s.Push("trull")

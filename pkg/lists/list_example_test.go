@@ -4,17 +4,17 @@
 //
 // SPDX-License-Identifier: BSD-3-Clause
 
-package typ_test
+package lists_test
 
 import (
 	"fmt"
 
-	"gopkg.in/typ.v3"
+	"gopkg.in/typ.v3/pkg/lists"
 )
 
 func ExampleList() {
 	// Create a new list and put some numbers in it.
-	l := typ.NewList[int]()
+	l := lists.New[int]()
 	e4 := l.PushBack(4)
 	e1 := l.PushFront(1)
 	l.InsertBefore(3, e4)

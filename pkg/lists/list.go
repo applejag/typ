@@ -4,7 +4,7 @@
 //
 // SPDX-License-Identifier: BSD-3-Clause
 
-package typ
+package lists
 
 // Element is an element of a linked list.
 type Element[T any] struct {
@@ -56,8 +56,8 @@ func (l *List[T]) Init() *List[T] {
 	return l
 }
 
-// NewList returns an initialized list.
-func NewList[T any]() *List[T] { return new(List[T]).Init() }
+// New returns an initialized list.
+func New[T any]() *List[T] { return new(List[T]).Init() }
 
 // Len returns the number of elements of list l.
 // The complexity is O(1).

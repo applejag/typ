@@ -2,12 +2,16 @@
 //
 // SPDX-License-Identifier: MIT
 
-package typ
+package lists_test
 
-import "fmt"
+import (
+	"fmt"
+
+	"gopkg.in/typ.v3/pkg/lists"
+)
 
 func ExampleQueue() {
-	var q Queue[string]
+	var q lists.Queue[string]
 	q.Enqueue("tripp")
 	q.Enqueue("trapp")
 	q.Enqueue("trull")

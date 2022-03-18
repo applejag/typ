@@ -2,7 +2,9 @@
 //
 // SPDX-License-Identifier: MIT
 
-package typ
+package lists
+
+import "gopkg.in/typ.v3"
 
 // Queue is a first-in-first-out collection.
 //
@@ -25,7 +27,7 @@ func (q *Queue[T]) Enqueue(value T) {
 func (q *Queue[T]) Dequeue() (T, bool) {
 	elem := q.list.Back()
 	if elem == nil {
-		return Zero[T](), false
+		return typ.Zero[T](), false
 	}
 	return q.list.Remove(elem), true
 }
@@ -34,7 +36,7 @@ func (q *Queue[T]) Dequeue() (T, bool) {
 func (q *Queue[T]) Peek() (T, bool) {
 	elem := q.list.Back()
 	if elem == nil {
-		return Zero[T](), false
+		return typ.Zero[T](), false
 	}
 	return elem.Value, true
 }
