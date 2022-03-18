@@ -18,8 +18,8 @@ func printMessages(prefix string, ch <-chan string, wg *sync.WaitGroup) {
 	wg.Done()
 }
 
-func ExamplePublisher() {
-	var pub chans.Publisher[string]
+func ExamplePubSub() {
+	var pub chans.PubSub[string]
 	var wg sync.WaitGroup
 
 	sub1 := pub.Sub()

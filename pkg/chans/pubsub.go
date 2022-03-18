@@ -16,9 +16,9 @@ var (
 	ErrSubscriptionNotInitalized = errors.New("subscription is not initialized")
 )
 
-// Publisher is a type that allows publishing an event which will be sent out
+// PubSub is a type that allows publishing an event which will be sent out
 // to all subscribed channels. A sort of "fan-out message queue".
-type Publisher[T any] struct {
+type PubSub[T any] struct {
 	OnPubTimeout    func(ev T)    // called if Pub or PubWait times out
 	PubTimeoutAfter time.Duration // times out Pub & PubWait, if positive
 
@@ -28,7 +28,7 @@ type Publisher[T any] struct {
 
 // Pub sends the event to all subscriptions in their own goroutines and returns
 // immediately without waiting for any of the channels to finish sending.
-func (o *Publisher[T]) Pub(ev T) {
+func (o *PubSub[T]) Pub(ev T) {
 	o.mutex.RLock()
 	for _, sub := range o.subs {
 		go o.send(ev, sub, o.PubTimeoutAfter, o.OnPubTimeout)
@@ -39,7 +39,7 @@ func (o *Publisher[T]) Pub(ev T) {
 // PubSlice sends a slice of events to all subscriptions in their own goroutines
 // and returns immediately without waiting for any of the channels to finish
 // sending.
-func (o *Publisher[T]) PubSlice(evs []T) {
+func (o *PubSub[T]) PubSlice(evs []T) {
 	o.mutex.RLock()
 	for _, ev := range evs {
 		for _, sub := range o.subs {
@@ -51,7 +51,7 @@ func (o *Publisher[T]) PubSlice(evs []T) {
 
 // PubWait blocks while sending the event to all subscriptions in their own
 // goroutines, and waits until all have received the message or timed out.
-func (o *Publisher[T]) PubWait(ev T) {
+func (o *PubSub[T]) PubWait(ev T) {
 	var wg sync.WaitGroup
 	o.mutex.RLock()
 	wg.Add(len(o.subs))
@@ -65,7 +65,7 @@ func (o *Publisher[T]) PubWait(ev T) {
 // PubSliceWait blocks while sending a slice of events to all subscriptions in
 // their own goroutines, and waits until all have received the message or
 // timed out.
-func (o *Publisher[T]) PubSliceWait(evs []T) {
+func (o *PubSub[T]) PubSliceWait(evs []T) {
 	var wg sync.WaitGroup
 	o.mutex.RLock()
 	wg.Add(len(o.subs) * len(evs))
@@ -81,7 +81,7 @@ func (o *Publisher[T]) PubSliceWait(evs []T) {
 // PubSync blocks while sending the event syncronously to all subscriptions
 // without starting a single goroutine. Useful in performance-critical use cases
 // where there are a low expected number of subscribers (0-3).
-func (o *Publisher[T]) PubSync(ev T) {
+func (o *PubSub[T]) PubSync(ev T) {
 	o.mutex.RLock()
 	for _, sub := range o.subs {
 		o.send(ev, sub, o.PubTimeoutAfter, o.OnPubTimeout)
@@ -93,7 +93,7 @@ func (o *Publisher[T]) PubSync(ev T) {
 // subscriptions without starting a single goroutine. Useful in
 // performance-critical use cases where there are a low expected number of
 // subscribers (0-3).
-func (o *Publisher[T]) PubSliceSync(evs []T) {
+func (o *PubSub[T]) PubSliceSync(evs []T) {
 	o.mutex.RLock()
 	for _, ev := range evs {
 		for _, sub := range o.subs {
@@ -103,13 +103,13 @@ func (o *Publisher[T]) PubSliceSync(evs []T) {
 	o.mutex.RUnlock()
 }
 
-func (o *Publisher[T]) send(ev T, sub chan T, timeout time.Duration, onTimeout func(T)) {
+func (o *PubSub[T]) send(ev T, sub chan T, timeout time.Duration, onTimeout func(T)) {
 	if !SendTimeout(sub, ev, timeout) && onTimeout != nil {
 		onTimeout(ev)
 	}
 }
 
-func (o *Publisher[T]) sendWaitGroup(ev T, sub chan T, timeout time.Duration, onTimeout func(T), wg *sync.WaitGroup) {
+func (o *PubSub[T]) sendWaitGroup(ev T, sub chan T, timeout time.Duration, onTimeout func(T), wg *sync.WaitGroup) {
 	o.send(ev, sub, timeout, onTimeout)
 	wg.Done()
 }
@@ -117,10 +117,10 @@ func (o *Publisher[T]) sendWaitGroup(ev T, sub chan T, timeout time.Duration, on
 // WithOnly returns a new publisher that only contains the given subscription
 // channel. Useful if you need to send events only to a single specific
 // subscription.
-func (o *Publisher[T]) WithOnly(sub <-chan T) *Publisher[T] {
+func (o *PubSub[T]) WithOnly(sub <-chan T) *PubSub[T] {
 	o.mutex.RLock()
 	defer o.mutex.RUnlock()
-	clone := &Publisher[T]{
+	clone := &PubSub[T]{
 		OnPubTimeout:    o.OnPubTimeout,
 		PubTimeoutAfter: o.PubTimeoutAfter,
 	}
@@ -133,7 +133,7 @@ func (o *Publisher[T]) WithOnly(sub <-chan T) *Publisher[T] {
 }
 
 // Sub subscribes to events in a newly created channel with no buffer.
-func (o *Publisher[T]) Sub() <-chan T {
+func (o *PubSub[T]) Sub() <-chan T {
 	o.mutex.Lock()
 	sub := make(chan T)
 	o.subs = append(o.subs, sub)
@@ -143,7 +143,7 @@ func (o *Publisher[T]) Sub() <-chan T {
 
 // SubBuf subscribes to events in a newly created channel with a specified
 // buffer size.
-func (o *Publisher[T]) SubBuf(size int) <-chan T {
+func (o *PubSub[T]) SubBuf(size int) <-chan T {
 	o.mutex.Lock()
 	sub := make(chan T, size)
 	o.subs = append(o.subs, sub)
@@ -152,7 +152,7 @@ func (o *Publisher[T]) SubBuf(size int) <-chan T {
 }
 
 // Unsub unsubscribes a previously subscribed channel.
-func (o *Publisher[T]) Unsub(sub <-chan T) error {
+func (o *PubSub[T]) Unsub(sub <-chan T) error {
 	if sub == nil {
 		return ErrSubscriptionNotInitalized
 	}
@@ -168,7 +168,7 @@ func (o *Publisher[T]) Unsub(sub <-chan T) error {
 }
 
 // UnsubAll unsubscribes all subscription channels, rendering them all useless.
-func (o *Publisher[T]) UnsubAll() error {
+func (o *PubSub[T]) UnsubAll() error {
 	o.mutex.Lock()
 	for _, ch := range o.subs {
 		close(ch)
@@ -178,7 +178,7 @@ func (o *Publisher[T]) UnsubAll() error {
 	return nil
 }
 
-func (o *Publisher[T]) subIndex(sub <-chan T) int {
+func (o *PubSub[T]) subIndex(sub <-chan T) int {
 	for i, ch := range o.subs {
 		if ch == sub {
 			return i
