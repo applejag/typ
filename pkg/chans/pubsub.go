@@ -21,6 +21,7 @@ var (
 type PubSub[T any] struct {
 	OnPubTimeout    func(ev T)    // called if Pub or PubWait times out
 	PubTimeoutAfter time.Duration // times out Pub & PubWait, if positive
+	DefaultBuffer   int
 
 	subs  []chan T
 	mutex sync.RWMutex
@@ -132,10 +133,11 @@ func (o *PubSub[T]) WithOnly(sub <-chan T) *PubSub[T] {
 	return clone
 }
 
-// Sub subscribes to events in a newly created channel with no buffer.
+// Sub subscribes to events in a newly created channel using the default buffer
+// size for this PubSub. If no default is configured, the buffer size will be 0.
 func (o *PubSub[T]) Sub() <-chan T {
 	o.mutex.Lock()
-	sub := make(chan T)
+	sub := make(chan T, o.DefaultBuffer)
 	o.subs = append(o.subs, sub)
 	o.mutex.Unlock()
 	return sub
