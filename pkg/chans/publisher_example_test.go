@@ -2,13 +2,13 @@
 //
 // SPDX-License-Identifier: MIT
 
-package typ_test
+package chans_test
 
 import (
 	"fmt"
 	"sync"
 
-	"gopkg.in/typ.v3"
+	"gopkg.in/typ.v3/pkg/chans"
 )
 
 func printMessages(prefix string, ch <-chan string, wg *sync.WaitGroup) {
@@ -19,7 +19,7 @@ func printMessages(prefix string, ch <-chan string, wg *sync.WaitGroup) {
 }
 
 func ExamplePublisher() {
-	var pub typ.Publisher[string]
+	var pub chans.Publisher[string]
 	var wg sync.WaitGroup
 
 	sub1 := pub.Sub()
