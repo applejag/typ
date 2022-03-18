@@ -4,7 +4,7 @@
 //
 // SPDX-License-Identifier: BSD-3-Clause
 
-package typ_test
+package sync2_test
 
 import (
 	"math/rand"
@@ -15,7 +15,7 @@ import (
 	"testing"
 	"testing/quick"
 
-	"gopkg.in/typ.v3"
+	"gopkg.in/typ.v3/pkg/sync2"
 )
 
 type mapOp string
@@ -94,7 +94,7 @@ func applyCalls(m mapInterface[string, string], calls []mapCall) (results []mapR
 }
 
 func applyMap(calls []mapCall) ([]mapResult[string], map[string]string) {
-	return applyCalls(new(typ.SyncMap[string, string]), calls)
+	return applyCalls(new(sync2.Map[string, string]), calls)
 }
 
 func applyRWMutexMap(calls []mapCall) ([]mapResult[string], map[string]string) {

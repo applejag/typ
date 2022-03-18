@@ -4,7 +4,7 @@
 //
 // SPDX-License-Identifier: BSD-3-Clause
 
-package typ_test
+package sync2_test
 
 import (
 	"fmt"
@@ -12,7 +12,7 @@ import (
 	"sync/atomic"
 	"testing"
 
-	"gopkg.in/typ.v3"
+	"gopkg.in/typ.v3/pkg/sync2"
 )
 
 type bench[K comparable, V any] struct {
@@ -21,7 +21,7 @@ type bench[K comparable, V any] struct {
 }
 
 func benchMap[K comparable, V any](b *testing.B, bench bench[K, V]) {
-	for _, m := range [...]mapInterface[K, V]{&DeepCopyMap[K, V]{}, &RWMutexMap[K, V]{}, &typ.SyncMap[K, V]{}} {
+	for _, m := range [...]mapInterface[K, V]{&DeepCopyMap[K, V]{}, &RWMutexMap[K, V]{}, &sync2.Map[K, V]{}} {
 		b.Run(fmt.Sprintf("%T", m), func(b *testing.B) {
 			m = reflect.New(reflect.TypeOf(m).Elem()).Interface().(mapInterface[K, V])
 			if bench.setup != nil {

@@ -2,7 +2,7 @@
 //
 // SPDX-License-Identifier: MIT
 
-package typ
+package sync2
 
 import "sync"
 
@@ -21,7 +21,7 @@ type KeyedLocker[T comparable] interface {
 //
 // A KeyedMutex must not be copied after first use.
 type KeyedMutex[T comparable] struct {
-	m SyncMap[T, *sync.Mutex]
+	m Map[T, *sync.Mutex]
 }
 
 func (km *KeyedMutex[T]) LockKey(key T) {
@@ -52,7 +52,7 @@ func (km *KeyedMutex[T]) ClearKey(key T) {
 //
 // A KeyedRWMutex must not be copied after first use.
 type KeyedRWMutex[T comparable] struct {
-	m SyncMap[T, *sync.RWMutex]
+	m Map[T, *sync.RWMutex]
 }
 
 func (km *KeyedRWMutex[T]) LockKey(key T) {

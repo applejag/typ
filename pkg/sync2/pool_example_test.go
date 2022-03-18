@@ -2,7 +2,7 @@
 //
 // SPDX-License-Identifier: MIT
 
-package typ_test
+package sync2_test
 
 import (
 	"bytes"
@@ -10,10 +10,10 @@ import (
 	"os"
 	"time"
 
-	"gopkg.in/typ.v3"
+	"gopkg.in/typ.v3/pkg/sync2"
 )
 
-var bufPool = typ.Pool[*bytes.Buffer]{
+var bufPool = sync2.Pool[*bytes.Buffer]{
 	New: func() *bytes.Buffer {
 		// The Pool's New function should generally only return pointer
 		// types, since a pointer can be put into the return interface

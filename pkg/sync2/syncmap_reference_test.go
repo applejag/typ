@@ -4,12 +4,13 @@
 //
 // SPDX-License-Identifier: BSD-3-Clause
 
-package typ_test
+package sync2_test
 
 import (
 	"sync"
 
 	"gopkg.in/typ.v3"
+	"gopkg.in/typ.v3/pkg/sync2"
 )
 
 // This file contains reference map implementations for unit-tests.
@@ -102,7 +103,7 @@ func (m *RWMutexMap[K, V]) Range(f func(key K, value V) (shouldContinue bool)) {
 // acquiring the Mutex in Load.
 type DeepCopyMap[K comparable, V any] struct {
 	mu    sync.Mutex
-	clean typ.AtomicValue[map[K]V]
+	clean sync2.AtomicValue[map[K]V]
 }
 
 func (m *DeepCopyMap[K, V]) Load(key K) (value V, ok bool) {

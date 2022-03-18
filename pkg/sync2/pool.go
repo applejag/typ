@@ -2,7 +2,7 @@
 //
 // SPDX-License-Identifier: MIT
 
-package typ
+package sync2
 
 import "sync"
 

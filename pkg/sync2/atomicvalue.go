@@ -2,9 +2,13 @@
 //
 // SPDX-License-Identifier: MIT
 
-package typ
+package sync2
 
-import "sync/atomic"
+import (
+	"sync/atomic"
+
+	"gopkg.in/typ.v3"
+)
 
 // AtomicValue is a wrapper around sync/atomic.Value from the Go stdlib.
 //
@@ -25,7 +29,7 @@ func (v *AtomicValue[T]) CompareAndSwap(old, new T) (swapped bool) {
 func (v *AtomicValue[T]) Load() (val T) {
 	x := v.atom.Load()
 	if x == nil {
-		return Zero[T]()
+		return typ.Zero[T]()
 	}
 	return x.(T)
 }
@@ -44,7 +48,7 @@ func (v *AtomicValue[T]) Store(val T) {
 func (v *AtomicValue[T]) Swap(new T) (old T) {
 	x := v.atom.Swap(new)
 	if x == nil {
-		return Zero[T]()
+		return typ.Zero[T]()
 	}
 	return x.(T)
 }
