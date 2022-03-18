@@ -2,7 +2,7 @@
 //
 // SPDX-License-Identifier: MIT
 
-package typ
+package maps
 
 // ContainsValue checks if a value exists inside a map.
 func ContainsValue[M ~map[K]V, K comparable, V comparable](m M, value V) bool {
@@ -14,8 +14,8 @@ func ContainsValue[M ~map[K]V, K comparable, V comparable](m M, value V) bool {
 	return false
 }
 
-// CloneMap returns a shallow copy of a map.
-func CloneMap[M ~map[K]V, K comparable, V any](m M) M {
+// Clone returns a shallow copy of a map.
+func Clone[M ~map[K]V, K comparable, V any](m M) M {
 	newMap := make(M, len(m))
 	for k, v := range m {
 		newMap[k] = v
@@ -23,8 +23,8 @@ func CloneMap[M ~map[K]V, K comparable, V any](m M) M {
 	return newMap
 }
 
-// ClearMap will delete all key-value pairs from a map, rendering it empty.
-func ClearMap[M ~map[K]V, K comparable, V any](m M) {
+// Clear will delete all key-value pairs from a map, rendering it empty.
+func Clear[M ~map[K]V, K comparable, V any](m M) {
 	// Relies on the compiler optimization introduced in Go v1.11
 	// https://go.dev/doc/go1.11#performance-compiler
 	for k := range m {
