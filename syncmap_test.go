@@ -15,7 +15,7 @@ import (
 	"testing"
 	"testing/quick"
 
-	"gopkg.in/typ.v2"
+	"gopkg.in/typ.v3"
 )
 
 type mapOp string

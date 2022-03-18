@@ -19,7 +19,7 @@ import (
 	"strconv"
 	"time"
 
-	"gopkg.in/typ.v2/internal/convert"
+	"gopkg.in/typ.v3/internal/convert"
 )
 
 var nullBytes = []byte("null")

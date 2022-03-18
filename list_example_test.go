@@ -9,7 +9,7 @@ package typ_test
 import (
 	"fmt"
 
-	"gopkg.in/typ.v2"
+	"gopkg.in/typ.v3"
 )
 
 func ExampleList() {
