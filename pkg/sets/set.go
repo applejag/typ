@@ -2,15 +2,15 @@
 //
 // SPDX-License-Identifier: MIT
 
-package typ
+package sets
 
 import (
 	"fmt"
 	"strings"
 )
 
-// NewSetOfSlice returns a Set with all values from a slice added to it.
-func NewSetOfSlice[S ~[]E, E comparable](slice S) Set[E] {
+// NewFromSlice returns a Set with all values from a slice added to it.
+func NewFromSlice[S ~[]E, E comparable](slice S) Set[E] {
 	var set Set[E]
 	for _, v := range slice {
 		set.Add(v)
@@ -18,8 +18,8 @@ func NewSetOfSlice[S ~[]E, E comparable](slice S) Set[E] {
 	return set
 }
 
-// NewSetOfKeys returns a Set with all keys from a map added to it.
-func NewSetOfKeys[M ~map[K]V, K comparable, V any](m M) Set[K] {
+// NewFromKeys returns a Set with all keys from a map added to it.
+func NewFromKeys[M ~map[K]V, K comparable, V any](m M) Set[K] {
 	var set Set[K]
 	for k := range m {
 		set.Add(k)
@@ -27,8 +27,8 @@ func NewSetOfKeys[M ~map[K]V, K comparable, V any](m M) Set[K] {
 	return set
 }
 
-// NewSetOfValues returns a Set with all values from a map added to it.
-func NewSetOfValues[M ~map[K]V, K comparable, V comparable](m M) Set[V] {
+// NewFromValues returns a Set with all values from a map added to it.
+func NewFromValues[M ~map[K]V, K comparable, V comparable](m M) Set[V] {
 	var set Set[V]
 	for _, v := range m {
 		set.Add(v)
@@ -218,18 +218,18 @@ func (s Set[T]) SymDiff(other Set[T]) Set[T] {
 // 	{1 2 3} × {a b c} = {1a 1b 1c 2a 2b 2c 3a 3b 3c}
 // 	{a b c} × {1 2 3} = {a1 a2 a3 b1 b2 b3 c1 c2 c3}
 // 	{1a 1b 1c 2a 2b 2c 3a 3b 3c} != {a1 a2 a3 b1 b2 b3 c1 c2 c3}
-func CartesianProduct[TA comparable, TB comparable](a Set[TA], b Set[TB]) Set[SetProduct[TA, TB]] {
-	result := make(Set[SetProduct[TA, TB]])
+func CartesianProduct[TA comparable, TB comparable](a Set[TA], b Set[TB]) Set[Product[TA, TB]] {
+	result := make(Set[Product[TA, TB]])
 	for valueA := range a {
 		for valueB := range b {
-			result.Add(SetProduct[TA, TB]{valueA, valueB})
+			result.Add(Product[TA, TB]{valueA, valueB})
 		}
 	}
 	return result
 }
 
-// SetProduct is the resulting type from a Cartesian product operation.
-type SetProduct[TA comparable, TB comparable] struct {
+// Product is the resulting type from a Cartesian product operation.
+type Product[TA comparable, TB comparable] struct {
 	A TA
 	B TB
 }

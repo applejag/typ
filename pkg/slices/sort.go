@@ -2,14 +2,16 @@
 //
 // SPDX-License-Identifier: MIT
 
-package typ
+package slices
 
 import (
 	"math/rand"
 	"sort"
+
+	"gopkg.in/typ.v3"
 )
 
-type sortOrdered[T Ordered] []T
+type sortOrdered[T typ.Ordered] []T
 
 func (s sortOrdered[T]) Len() int {
 	return len(s)
@@ -41,7 +43,7 @@ func (s sortLess[T]) Less(i, j int) bool {
 }
 
 // Sort will sort a slice using the default less-than operator.
-func Sort[S ~[]E, E Ordered](slice S) {
+func Sort[S ~[]E, E typ.Ordered](slice S) {
 	sort.Sort(sortOrdered[E](slice))
 }
 
@@ -52,7 +54,7 @@ func SortFunc[S ~[]E, E any](slice S, less func(a, b E) bool) {
 
 // SortDesc will sort a slice using the default less-than operator in
 // descending order.
-func SortDesc[S ~[]E, E Ordered](slice S) {
+func SortDesc[S ~[]E, E typ.Ordered](slice S) {
 	sort.Sort(sort.Reverse(sortOrdered[E](slice)))
 }
 
@@ -99,24 +101,24 @@ func ShuffleRand[S ~[]E, E any](slice S, rand *rand.Rand) {
 	})
 }
 
-// Search performs a binary search to find the index of a value in a sorted
-// slice of ordered values. The index of the first match is returned, or the
-// index where it insert the value if the value is not present.
+// BinarySearch performs a binary search to find the index of a value in a
+// sorted slice of ordered values. The index of the first match is returned, or
+// the index where it insert the value if the value is not present.
 // The slice must be sorted in ascending order.
-func Search[S ~[]E, E Ordered](slice S, value E) int {
+func BinarySearch[S ~[]E, E typ.Ordered](slice S, value E) int {
 	return sort.Search(len(slice), func(i int) bool {
 		return slice[i] >= value
 	})
 }
 
-// SearchFunc performs a binary search to find the index of a value in a sorted
-// slice of ordered values. The index of the first match is returned, or the
-// index where it insert the value if the value is not present.
+// BinarySearchFunc performs a binary search to find the index of a value in a
+// sorted slice of ordered values. The index of the first match is returned, or
+// the index where it insert the value if the value is not present.
 // The slice must be sorted in ascending order.
 //
 // The less function should return true if the given value is less than the
 // sought value.
-func SearchFunc[S ~[]E, E any](slice S, less func(a E) bool) int {
+func BinarySearchFunc[S ~[]E, E any](slice S, less func(a E) bool) int {
 	return sort.Search(len(slice), func(i int) bool {
 		return !less(slice[i])
 	})

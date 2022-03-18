@@ -2,12 +2,12 @@
 //
 // SPDX-License-Identifier: MIT
 
-package typ_test
+package slices_test
 
 import (
 	"fmt"
 
-	"gopkg.in/typ.v3"
+	"gopkg.in/typ.v3/pkg/slices"
 )
 
 type User struct {
@@ -28,7 +28,7 @@ func (u User) AsAdmin() User {
 }
 
 func ExampleNewSortedSlice() {
-	slice := typ.NewSortedSlice([]User{}, func(a, b User) bool {
+	slice := slices.NewSorted([]User{}, func(a, b User) bool {
 		return a.Name < b.Name
 	})
 	johnDoe := User{Name: "John"}
@@ -51,7 +51,7 @@ func ExampleNewSortedSlice() {
 }
 
 func ExampleNewSortedSliceOrdered() {
-	slice := typ.NewSortedSliceOrdered[string]()
+	slice := slices.NewSortedSliceOrdered[string]()
 	slice.Add("f")
 	slice.Add("b")
 	slice.Add("e")

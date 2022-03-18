@@ -2,16 +2,16 @@
 //
 // SPDX-License-Identifier: MIT
 
-package typ_test
+package sets_test
 
 import (
 	"fmt"
 
-	"gopkg.in/typ.v3"
+	"gopkg.in/typ.v3/pkg/sets"
 )
 
 func ExampleSet() {
-	set := make(typ.Set[string])
+	set := make(sets.Set[string])
 	set.Add("A")
 	set.Add("B")
 	set.Add("C")
@@ -27,13 +27,13 @@ func ExampleSet() {
 }
 
 func ExampleSet_setOperations() {
-	set1 := make(typ.Set[string])
+	set1 := make(sets.Set[string])
 	set1.Add("A")
 	set1.Add("B")
 	set1.Add("C")
 	fmt.Println("set1:", set1) // {A B C}
 
-	set2 := make(typ.Set[string])
+	set2 := make(sets.Set[string])
 	set2.Add("B")
 	set2.Add("C")
 	set2.Add("D")

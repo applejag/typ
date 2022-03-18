@@ -2,14 +2,16 @@
 //
 // SPDX-License-Identifier: MIT
 
-package typ
+package slices
 
 import (
 	"fmt"
 	"sort"
+
+	"gopkg.in/typ.v3"
 )
 
-// NewSortedSlice returns a new sorted slice based on a slice of values and a
+// NewSorted returns a new sorted slice based on a slice of values and a
 // custom less function that is used to keep values sorted.
 // The values are sorted on insertion.
 //
@@ -20,47 +22,47 @@ import (
 // less function cannot properly distinguish between two elements, then any of
 // the equivalent elements may be the one being removed. The SortedSlice does
 // not keep track of collision detection.
-func NewSortedSlice[S ~[]E, E comparable](values S, less func(a, b E) bool) SortedSlice[E] {
+func NewSorted[S ~[]E, E comparable](values S, less func(a, b E) bool) Sorted[E] {
 	slice := make([]E, len(values))
 	copy(slice, values)
 	sort.SliceStable(slice, func(i, j int) bool {
 		return less(slice[i], slice[j])
 	})
-	return SortedSlice[E]{slice, less}
+	return Sorted[E]{slice, less}
 }
 
 // NewSortedSliceOrdered returns a new sorted slice based on a slice of values.
 // Only ordered types are allowed. The values are sorted on insertion.
-func NewSortedSliceOrdered[T Ordered](values ...T) SortedSlice[T] {
-	return NewSortedSlice(values, Less[T])
+func NewSortedSliceOrdered[T typ.Ordered](values ...T) Sorted[T] {
+	return NewSorted(values, typ.Less[T])
 }
 
-// SortedSlice is a slice of ordered values. The slice is always sorted thanks
+// Sorted is a slice of ordered values. The slice is always sorted thanks
 // to only inserting values in a sorted order.
-type SortedSlice[T comparable] struct {
+type Sorted[T comparable] struct {
 	slice []T
 	less  func(a, b T) bool
 }
 
-func (s SortedSlice[T]) String() string {
+func (s Sorted[T]) String() string {
 	return fmt.Sprint(s.slice)
 }
 
-func (s *SortedSlice[T]) Get(index int) T {
+func (s *Sorted[T]) Get(index int) T {
 	if index < 0 || index >= s.Len() {
 		panic(fmt.Sprintf("sortedslice: index out of range [%d] with length %d", index, s.Len()))
 	}
 	return s.slice[index]
 }
 
-func (s *SortedSlice[T]) Len() int {
+func (s *Sorted[T]) Len() int {
 	if s == nil {
 		return 0
 	}
 	return len(s.slice)
 }
 
-func (s *SortedSlice[T]) Add(value T) int {
+func (s *Sorted[T]) Add(value T) int {
 	if s == nil {
 		panic("sortedslice: tried to add to nil sortedslice")
 	}
@@ -69,24 +71,24 @@ func (s *SortedSlice[T]) Add(value T) int {
 	return index
 }
 
-func (s *SortedSlice[T]) RemoveAt(index int) {
+func (s *Sorted[T]) RemoveAt(index int) {
 	if index < 0 || index >= s.Len() {
 		panic(fmt.Sprintf("sortedslice: index out of range [%d] with length %d", index, s.Len()))
 	}
 	Remove(&s.slice, index)
 }
 
-func (s *SortedSlice[T]) Remove(value T) int {
+func (s *Sorted[T]) Remove(value T) int {
 	index := s.Index(value)
 	Remove(&s.slice, index)
 	return index
 }
 
-func (s *SortedSlice[T]) Contains(value T) bool {
+func (s *Sorted[T]) Contains(value T) bool {
 	return s.Index(value) != -1
 }
 
-func (s *SortedSlice[T]) Index(value T) int {
+func (s *Sorted[T]) Index(value T) int {
 	index := s.search(value)
 	if index < 0 || index >= s.Len() || s.slice[index] != value {
 		return -1
@@ -94,7 +96,7 @@ func (s *SortedSlice[T]) Index(value T) int {
 	return index
 }
 
-func (s *SortedSlice[T]) search(value T) int {
+func (s *Sorted[T]) search(value T) int {
 	if s.less == nil {
 		panic("sortedslice: not initialized")
 	}

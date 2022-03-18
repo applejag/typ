@@ -2,7 +2,12 @@
 //
 // SPDX-License-Identifier: MIT
 
-package typ
+package slices
+
+import (
+	"gopkg.in/typ.v3"
+	"gopkg.in/typ.v3/pkg/sets"
+)
 
 // Fill populates a whole slice with the same value using exponential copy.
 func Fill[S ~[]E, E any](slice S, value E) {
@@ -176,7 +181,7 @@ func ContainsFunc[S ~[]E, E any](slice S, value E, equals func(a, b E) bool) boo
 // equivalent to passing an empty slice.
 func TryGet[S ~[]E, E any](slice S, index int) (E, bool) {
 	if index < 0 || index >= len(slice) {
-		return Zero[E](), false
+		return typ.Zero[E](), false
 	}
 	return slice[index], true
 }
@@ -186,7 +191,7 @@ func TryGet[S ~[]E, E any](slice S, index int) (E, bool) {
 // equivalent to passing an empty slice.
 func SafeGet[S ~[]E, E any](slice S, index int) E {
 	if index < 0 || index >= len(slice) {
-		return Zero[E]()
+		return typ.Zero[E]()
 	}
 	return slice[index]
 }
@@ -437,13 +442,13 @@ func ChunkFunc[S ~[]E, E any](slice S, size int, callback func(chunk S)) {
 // Except returns a new slice for all items that are not found in the slice of
 // items to exclude.
 func Except[S ~[]E, E comparable](slice S, exclude S) S {
-	set := NewSetOfSlice[S, E](exclude)
+	set := sets.NewFromSlice(exclude)
 	return ExceptSet(slice, set)
 }
 
 // ExceptSet returns a new slice for all items that are not found in the set of
 // items to exclude.
-func ExceptSet[S ~[]E, E comparable](slice S, exclude Set[E]) S {
+func ExceptSet[S ~[]E, E comparable](slice S, exclude sets.Set[E]) S {
 	result := make(S, 0, len(slice))
 	for _, v := range slice {
 		if !exclude.Has(v) {
@@ -459,15 +464,15 @@ func Last[S ~[]E, E any](slice S) E {
 	return slice[len(slice)-1]
 }
 
-// CloneSlice returns a shallow copy of a slice.
-func CloneSlice[S ~[]E, E any](slice S) S {
+// Clone returns a shallow copy of a slice.
+func Clone[S ~[]E, E any](slice S) S {
 	newSlice := make(S, len(slice))
 	copy(newSlice, slice)
 	return newSlice
 }
 
-// GrowSlice will add n number of values to the end of the slice.
-func GrowSlice[S ~[]E, E any](slice S, n int) S {
+// Grow will add n number of values to the end of the slice.
+func Grow[S ~[]E, E any](slice S, n int) S {
 	// Relies on the compiler optimization introduced in Go v1.11
 	// https://go.dev/doc/go1.11#performance-compiler
 	return append(slice, make(S, n)...)
