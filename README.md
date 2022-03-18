@@ -273,10 +273,6 @@ This project is primarily licensed under the MIT license:
 - Some Go code in this project is forked from Go's source code, which is
   licensed under the 3-Clause BSD license: [LICENSES/BSD-3-Clause.txt](LICENSES/BSD-3-Clause.txt)
 
-- Some Go code in this project is forked from Volatile Tech's source code
-  (<https://github.com/volatiletech/null>), which is licensed under the
-  2-Clause BSD license: [LICENSES/BSD-2-Clause.txt](LICENSES/BSD-2-Clause.txt)
-
 - Documentation is licensed under the Creative Commons Attribution 4.0
   International (CC-BY-4.0) license: [LICENSES](LICENSES/CC-BY-4.0.txt)
 

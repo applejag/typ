@@ -31,7 +31,7 @@ func NewSorted[S ~[]E, E comparable](values S, less func(a, b E) bool) Sorted[E]
 	return Sorted[E]{slice, less}
 }
 
-// NewSortedSliceOrdered returns a new sorted slice based on a slice of values.
+// NewSortedOrdered returns a new sorted slice based on a slice of values.
 // Only ordered types are allowed. The values are sorted on insertion.
 func NewSortedOrdered[T typ.Ordered](values ...T) Sorted[T] {
 	return NewSorted(values, typ.Less[T])
