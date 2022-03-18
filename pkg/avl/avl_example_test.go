@@ -2,16 +2,17 @@
 //
 // SPDX-License-Identifier: MIT
 
-package typ_test
+package avl_test
 
 import (
 	"fmt"
 
 	"gopkg.in/typ.v3"
+	"gopkg.in/typ.v3/pkg/avl"
 )
 
-func ExampleNewAVLTreeOrdered() {
-	tree := typ.NewAVLTreeOrdered[string]()
+func ExampleNewOrdered() {
+	tree := avl.NewOrdered[string]()
 
 	// Unordered input
 	tree.Add("E")
@@ -27,14 +28,14 @@ func ExampleNewAVLTreeOrdered() {
 	// 5 [A B C D E]
 }
 
-func ExampleNewAVLTree() {
+func ExampleNew() {
 	type Name struct {
 		First string
 		Last  string
 	}
 
 	// Sort first on first name, then on last name
-	tree := typ.NewAVLTree(func(a, b Name) int {
+	tree := avl.New(func(a, b Name) int {
 		v := typ.Compare(a.First, b.First)
 		if v == 0 {
 			v = typ.Compare(a.Last, b.Last)

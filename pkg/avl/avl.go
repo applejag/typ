@@ -2,56 +2,58 @@
 //
 // SPDX-License-Identifier: MIT
 
-package typ
+package avl
 
 import (
 	"fmt"
+
+	"gopkg.in/typ.v3"
 )
 
-// NewAVLTree creates a new AVL tree using a comparator function that is
+// New creates a new AVL tree using a comparator function that is
 // is expected to return  0 if a == b, -1 if a < b, and +1 if a > b.
-func NewAVLTree[T comparable](compare func(a, b T) int) AVLTree[T] {
-	return AVLTree[T]{
+func New[T comparable](compare func(a, b T) int) Tree[T] {
+	return Tree[T]{
 		compare: compare,
 	}
 }
 
-// NewAVLTreeOrdered creates a new AVL tree using a default comparator function
+// NewOrdered creates a new AVL tree using a default comparator function
 // for any ordered type (ints, uints, floats, strings).
-func NewAVLTreeOrdered[T Ordered]() AVLTree[T] {
-	return NewAVLTree(Compare[T])
+func NewOrdered[T typ.Ordered]() Tree[T] {
+	return New(typ.Compare[T])
 }
 
-// AVLTree is a binary search tree (BST) for ordered Go types
+// Tree is a binary search tree (BST) for ordered Go types
 // (numbers & strings), implemented as an AVL tree
 // (Adelson-Velsky and Landis tree), a type of self-balancing BST. This
 // guarantees O(log n) operations on insertion, searching, and deletion.
-type AVLTree[T comparable] struct {
+type Tree[T comparable] struct {
 	compare func(a, b T) int
-	root    *avlNode[T]
+	root    *node[T]
 	count   int
 }
 
-func (n AVLTree[T]) String() string {
+func (n Tree[T]) String() string {
 	return fmt.Sprint(n.SliceInOrder())
 }
 
 // Clone will return a copy of this tree, with a new set of nodes. The values
 // are copied as-is, so no pointers inside your value type gets a deep clone.
-func (n *AVLTree[T]) Clone() AVLTree[T] {
-	var clone AVLTree[T]
+func (n *Tree[T]) Clone() Tree[T] {
+	var clone Tree[T]
 	n.WalkPreOrder(clone.Add)
 	return clone
 }
 
 // Len returns the number of nodes in this tree.
-func (n *AVLTree[T]) Len() int {
+func (n *Tree[T]) Len() int {
 	return n.count
 }
 
 // Contains checks if a value exists in this tree by iterating the binary
 // search tree.
-func (n *AVLTree[T]) Contains(value T) bool {
+func (n *Tree[T]) Contains(value T) bool {
 	if n.root == nil {
 		return false
 	}
@@ -60,9 +62,9 @@ func (n *AVLTree[T]) Contains(value T) bool {
 
 // Add will add another value to this tree. Duplicate values are allowed and
 // are not dismissed.
-func (n *AVLTree[T]) Add(value T) {
+func (n *Tree[T]) Add(value T) {
 	if n.root == nil {
-		n.root = &avlNode[T]{
+		n.root = &node[T]{
 			value: value,
 		}
 	} else {
@@ -72,7 +74,7 @@ func (n *AVLTree[T]) Add(value T) {
 }
 
 // Remove will try to remove the first occurrence of a value from the tree.
-func (n *AVLTree[T]) Remove(value T) bool {
+func (n *Tree[T]) Remove(value T) bool {
 	if n.root == nil {
 		return false
 	}
@@ -83,7 +85,7 @@ func (n *AVLTree[T]) Remove(value T) bool {
 }
 
 // Clear will reset this tree to an empty tree.
-func (n *AVLTree[T]) Clear() {
+func (n *Tree[T]) Clear() {
 	n.root = nil
 	n.count = 0
 }
@@ -93,7 +95,7 @@ func (n *AVLTree[T]) Clear() {
 //
 // This is useful when copying binary search trees, as inserting back in this
 // order will guarantee the clone will have the exact same layout.
-func (n *AVLTree[T]) WalkPreOrder(walker func(value T)) {
+func (n *Tree[T]) WalkPreOrder(walker func(value T)) {
 	if n.root == nil {
 		return
 	}
@@ -105,7 +107,7 @@ func (n *AVLTree[T]) WalkPreOrder(walker func(value T)) {
 //
 // This is useful when reading a tree's values in order, as this guarantees
 // iterating them in a sorted order.
-func (n *AVLTree[T]) WalkInOrder(walker func(value T)) {
+func (n *Tree[T]) WalkInOrder(walker func(value T)) {
 	if n.root == nil {
 		return
 	}
@@ -117,7 +119,7 @@ func (n *AVLTree[T]) WalkInOrder(walker func(value T)) {
 //
 // This is useful when deleting values from a tree, as this guarantees to always
 // delete leaf nodes.
-func (n *AVLTree[T]) WalkPostOrder(walker func(value T)) {
+func (n *Tree[T]) WalkPostOrder(walker func(value T)) {
 	if n.root == nil {
 		return
 	}
@@ -126,24 +128,24 @@ func (n *AVLTree[T]) WalkPostOrder(walker func(value T)) {
 
 // SlicePreOrder returns a slice of values by walking the tree in pre-order.
 // See WalkPreOrder for more details.
-func (n *AVLTree[T]) SlicePreOrder() []T {
+func (n *Tree[T]) SlicePreOrder() []T {
 	return n.slice(n.WalkPreOrder)
 }
 
 // SliceInOrder returns a slice of values by walking the tree in in-order.
 // This returns all values in sorted order.
 // See WalkInOrder for more details.
-func (n *AVLTree[T]) SliceInOrder() []T {
+func (n *Tree[T]) SliceInOrder() []T {
 	return n.slice(n.WalkInOrder)
 }
 
 // SlicePostOrder returns a slice of values by walking the tree in post-order.
 // See WalkPostOrder for more details.
-func (n *AVLTree[T]) SlicePostOrder() []T {
+func (n *Tree[T]) SlicePostOrder() []T {
 	return n.slice(n.WalkPostOrder)
 }
 
-func (n *AVLTree[T]) slice(f func(f func(value T))) []T {
+func (n *Tree[T]) slice(f func(f func(value T))) []T {
 	slice := make([]T, 0, n.count)
 	f(func(v T) {
 		slice = append(slice, v)
@@ -159,18 +161,18 @@ const (
 	balanceLeftHeavy  balanceFactor = -1
 )
 
-type avlNode[T comparable] struct {
+type node[T comparable] struct {
 	value  T
-	left   *avlNode[T]
-	right  *avlNode[T]
+	left   *node[T]
+	right  *node[T]
 	height int
 }
 
-func (n *avlNode[T]) String() string {
+func (n *node[T]) String() string {
 	return fmt.Sprint(n.value)
 }
 
-func (n *avlNode[T]) walkPreOrder(f func(v T)) {
+func (n *node[T]) walkPreOrder(f func(v T)) {
 	f(n.value)
 	if n.left != nil {
 		n.left.walkPreOrder(f)
@@ -180,7 +182,7 @@ func (n *avlNode[T]) walkPreOrder(f func(v T)) {
 	}
 }
 
-func (n *avlNode[T]) walkInOrder(f func(v T)) {
+func (n *node[T]) walkInOrder(f func(v T)) {
 	if n.left != nil {
 		n.left.walkInOrder(f)
 	}
@@ -190,7 +192,7 @@ func (n *avlNode[T]) walkInOrder(f func(v T)) {
 	}
 }
 
-func (n *avlNode[T]) walkPostOrder(f func(v T)) {
+func (n *node[T]) walkPostOrder(f func(v T)) {
 	if n.left != nil {
 		n.left.walkPostOrder(f)
 	}
@@ -200,11 +202,11 @@ func (n *avlNode[T]) walkPostOrder(f func(v T)) {
 	f(n.value)
 }
 
-func (n *avlNode[T]) contains(value T, compare func(a, b T) int) bool {
+func (n *node[T]) contains(value T, compare func(a, b T) int) bool {
 	return n.find(value, compare) != nil
 }
 
-func (n *avlNode[T]) find(value T, compare func(a, b T) int) *avlNode[T] {
+func (n *node[T]) find(value T, compare func(a, b T) int) *node[T] {
 	current := n
 	for {
 		switch {
@@ -220,7 +222,7 @@ func (n *avlNode[T]) find(value T, compare func(a, b T) int) *avlNode[T] {
 	}
 }
 
-func (n *avlNode[T]) remove(value T, compare func(a, b T) int) (*avlNode[T], bool) {
+func (n *node[T]) remove(value T, compare func(a, b T) int) (*node[T], bool) {
 	if n.value == value {
 		switch {
 		case n.left == nil && n.right == nil:
@@ -257,7 +259,7 @@ func (n *avlNode[T]) remove(value T, compare func(a, b T) int) (*avlNode[T], boo
 	return n, false
 }
 
-func (n *avlNode[T]) popLeftMost() (child, leftMost *avlNode[T]) {
+func (n *node[T]) popLeftMost() (child, leftMost *node[T]) {
 	if n.left == nil {
 		// Found leftmost node
 		return n.right, n
@@ -268,10 +270,10 @@ func (n *avlNode[T]) popLeftMost() (child, leftMost *avlNode[T]) {
 	return n, popped
 }
 
-func (n *avlNode[T]) add(value T, compare func(a, b T) int) *avlNode[T] {
+func (n *node[T]) add(value T, compare func(a, b T) int) *node[T] {
 	if compare(value, n.value) < 0 {
 		if n.left == nil {
-			n.left = &avlNode[T]{
+			n.left = &node[T]{
 				value: value,
 			}
 		} else {
@@ -279,7 +281,7 @@ func (n *avlNode[T]) add(value T, compare func(a, b T) int) *avlNode[T] {
 		}
 	} else {
 		if n.right == nil {
-			n.right = &avlNode[T]{
+			n.right = &node[T]{
 				value: value,
 			}
 		} else {
@@ -289,7 +291,7 @@ func (n *avlNode[T]) add(value T, compare func(a, b T) int) *avlNode[T] {
 	return n.rebalance()
 }
 
-func (n *avlNode[T]) rebalance() *avlNode[T] {
+func (n *node[T]) rebalance() *node[T] {
 	if n.balance() == balanceRightHeavy {
 		if n.right != nil && n.right.balance() == balanceLeftHeavy {
 			return n.rotateLeftRight()
@@ -304,7 +306,7 @@ func (n *avlNode[T]) rebalance() *avlNode[T] {
 	return n
 }
 
-func (n *avlNode[T]) balance() balanceFactor {
+func (n *node[T]) balance() balanceFactor {
 	leftHeight := n.leftHeight()
 	rightHeight := n.rightHeight()
 	if leftHeight-rightHeight > 1 {
@@ -316,21 +318,21 @@ func (n *avlNode[T]) balance() balanceFactor {
 	return balanceBalanced
 }
 
-func (n *avlNode[T]) leftHeight() int {
+func (n *node[T]) leftHeight() int {
 	if n.left == nil {
 		return 0
 	}
 	return n.left.height
 }
 
-func (n *avlNode[T]) rightHeight() int {
+func (n *node[T]) rightHeight() int {
 	if n.right == nil {
 		return 0
 	}
 	return n.right.height
 }
 
-func (n *avlNode[T]) calcHeight() int {
+func (n *node[T]) calcHeight() int {
 	switch {
 	case n.left == nil && n.right == nil:
 		return 0
@@ -339,11 +341,11 @@ func (n *avlNode[T]) calcHeight() int {
 	case n.right == nil:
 		return 1 + n.leftHeight()
 	default:
-		return 1 + Max(n.leftHeight(), n.rightHeight())
+		return 1 + typ.Max(n.leftHeight(), n.rightHeight())
 	}
 }
 
-func (n *avlNode[T]) rotateLeft() *avlNode[T] {
+func (n *node[T]) rotateLeft() *node[T] {
 	prevRoot := *n
 	newRoot := prevRoot.right
 	prevRoot.right = newRoot.left
@@ -356,7 +358,7 @@ func (n *avlNode[T]) rotateLeft() *avlNode[T] {
 	return newRoot
 }
 
-func (n *avlNode[T]) rotateRight() *avlNode[T] {
+func (n *node[T]) rotateRight() *node[T] {
 	prevRoot := *n
 	newRoot := prevRoot.left
 	prevRoot.left = newRoot.right
@@ -369,12 +371,12 @@ func (n *avlNode[T]) rotateRight() *avlNode[T] {
 	return newRoot
 }
 
-func (n *avlNode[T]) rotateLeftRight() *avlNode[T] {
+func (n *node[T]) rotateLeftRight() *node[T] {
 	n.right = n.right.rotateRight()
 	return n.rotateLeft()
 }
 
-func (n *avlNode[T]) rotateRightLeft() *avlNode[T] {
+func (n *node[T]) rotateRightLeft() *node[T] {
 	n.left = n.left.rotateLeft()
 	return n.rotateRight()
 }

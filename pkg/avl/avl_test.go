@@ -2,14 +2,14 @@
 //
 // SPDX-License-Identifier: MIT
 
-package typ
+package avl
 
 import (
 	"testing"
 	"unicode/utf8"
 )
 
-type intNode = avlNode[int]
+type intNode = node[int]
 
 func TestAVLNodeRotRight(t *testing.T) {
 	/*
@@ -191,7 +191,7 @@ func FuzzOrderedTree_AddRemove(f *testing.F) {
 		f.Add(tc)
 	}
 	f.Fuzz(func(t *testing.T, str string) {
-		tree := NewAVLTreeOrdered[rune]()
+		tree := NewOrdered[rune]()
 		t.Logf("using runes: %q", str)
 		strLen := utf8.RuneCountInString(str)
 		for _, r := range str {
@@ -218,11 +218,11 @@ func FuzzOrderedTree_AddRemove(f *testing.F) {
 	})
 }
 
-func assertAVLNode[T comparable](t *testing.T, want, got *avlNode[T]) {
+func assertAVLNode[T comparable](t *testing.T, want, got *node[T]) {
 	assertAVLNodeRec(t, want, got, "root")
 }
 
-func assertAVLNodeRec[T comparable](t *testing.T, want, got *avlNode[T], path string) {
+func assertAVLNodeRec[T comparable](t *testing.T, want, got *node[T], path string) {
 	if got.value != want.value {
 		t.Errorf("want %[1]s.value==%[2]v, got %[1]s.value==%[3]v", path, want.value, got.value)
 	}
