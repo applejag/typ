@@ -78,7 +78,7 @@ func RecvQueued[C Receiver[V], V any](ch C, maxValues int) []V {
 		case v := <-ch:
 			buffer = append(buffer, v)
 		default:
-			break
+			return buffer
 		}
 	}
 	return buffer
@@ -94,8 +94,9 @@ func RecvQueuedFull[C Receiver[V], B ~[]V, V any](ch C, buf B) int {
 		select {
 		case v := <-ch:
 			buf[index] = v
+			index++
 		default:
-			break
+			return index
 		}
 	}
 	return index
