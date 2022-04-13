@@ -10,6 +10,15 @@ SPDX-License-Identifier: CC-BY-4.0
 
 This project tries to follow [SemVer 2.0.0](https://semver.org/).
 
+## v3.1.0 (2022-04-13)
+
+- Added `sync2.Once1`, `sync2.Once2`, and `sync2.Once3`, that are wrappers
+  around the built-in `sync.Once` but keep track of the return values. (b458670)
+
+## v3.0.1 (2022-03-30)
+
+- Fixed `chans.RecvQueued` bugs. (cf747e4)
+
 ## v3.0.0 (2022-03-18)
 
 - Changed location of types and functions to be package based. New packages:
