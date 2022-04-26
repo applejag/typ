@@ -74,6 +74,19 @@ func TestSet_SetOperations(t *testing.T) {
 
 	numAdded2 := setAClone.AddSet(setB)
 	assert.Equal(t, 0, numAdded2, "add set added count excludes existing")
+
+	var slice1 []string
+	setAClone.Range(func(value string) bool {
+		slice1 = append(slice1, value)
+		return true
+	})
+	assert.Len(t, slice1, len(setAClone.Slice()), "range works, no interrupt")
+	var slice2 []string
+	setAClone.Range(func(value string) bool {
+		slice2 = append(slice2, value)
+		return len(slice2) != 2
+	})
+	assert.Len(t, slice2, 2, "range works, interrupt at length=2")
 }
 
 func TestSet_String(t *testing.T) {

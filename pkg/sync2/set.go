@@ -89,6 +89,14 @@ type Set[T comparable] interface {
 	// the order of the operands. In other words:
 	// 	A.SymDiff(B) == B.SymDiff(A)
 	SymDiff(set Set[T]) Set[T]
+	// Range calls f sequentially for each value present in the set.
+	// If f returns false, range stops the iteration.
+	//
+	// Order is not guaranteed to be the same between executions.
+	//
+	// Methods that modify the set should not be used in the passed in function,
+	// as it will cause a deadlock.
+	Range(f func(value T) bool)
 
 	lock()
 	rLock()
@@ -209,6 +217,14 @@ func (s set[T]) SymDiff(other Set[T]) Set[T] {
 	return &set[T]{
 		s:  union,
 		mu: &sync.RWMutex{},
+	}
+}
+
+func (s set[T]) Range(f func(value T) bool) {
+	for value := range s.s {
+		if ok := f(value); !ok {
+			return
+		}
 	}
 }
 
