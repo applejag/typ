@@ -14,9 +14,10 @@ func ExampleSet() {
 	set.Add("B")
 	set.Add("C")
 
-	for _, value := range set.Slice() {
+	set.Range(func(value string) bool {
 		fmt.Println("Value:", value)
-	}
+		return true
+	})
 
 	// Unordered output:
 	// Value: A
