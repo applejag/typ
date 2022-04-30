@@ -1,281 +1,223 @@
 package sync2
 
 import (
-	"sync"
+	"fmt"
+	"strings"
 
 	"gopkg.in/typ.v3/pkg/sets"
 )
 
-// NewSet creates a new empty sync set.
-func NewSet[T comparable]() Set[T] {
-	return set[T]{
-		s:  make(sets.Set[T]),
-		mu: &sync.RWMutex{},
+// NewSetFromSlice returns a Set with all values from a slice added to it.
+func NewSetFromSlice[S ~[]E, E comparable](slice S) sets.Set[E] {
+	var set Set[E]
+	for _, v := range slice {
+		set.Add(v)
 	}
+	return &set
 }
 
-// WrapSet creates a new SyncSet that uses the provided set as its underlying
-// set. I.e., modifications to the SyncSet/the underlying set will be reflected
-// in the other.
-func WrapSet[T comparable](toWrap sets.Set[T]) Set[T] {
-	return set[T]{
-		s:  toWrap,
-		mu: &sync.RWMutex{},
+// NewSetFromKeys returns a Set with all keys from a map added to it.
+func NewSetFromKeys[M ~map[K]V, K comparable, V any](m M) sets.Set[K] {
+	var set Set[K]
+	for k := range m {
+		set.Add(k)
 	}
+	return &set
 }
 
-// Set is an interface for thread-safe sets.
-type Set[T comparable] interface {
-	// String converts this set to its string representation.
-	String() string
-	// Has returns true if the value exists in the set.
-	Has(value T) bool
-	// Add will add an element to the set, and return true if it was added
-	// or false if the value already existed in the set.
-	Add(value T) bool
-	// AddSet will add all element found in specified set to this set, and
-	// return the number of values that was added.
-	AddSet(set Set[T]) int
-	// Remove will remove an element from the set, and return true if it was removed
-	// or false if no such value existed in the set.
-	Remove(value T) bool
-	// RemoveSet will remove all element found in specified set from this set, and
-	// return the number of values that was removed.
-	RemoveSet(set Set[T]) int
-	// Clone returns a copy of the set.
-	Clone() Set[T]
-	// Slice returns a new slice of all values in the set.
-	Slice() []T
-	// Intersect performs an "intersection" on the sets and returns a new set.
-	// An intersection is a set of all elements that appear in both sets. In
-	// mathmatics it's denoted as:
-	// 	A ∩ B
-	// Example:
-	// 	{1 2 3} ∩ {3 4 5} = {3}
-	// This operation is commutative, meaning you will get the same result no matter
-	// the order of the operands. In other words:
-	// 	A.Intersect(B) == B.Intersect(A)
-	Intersect(set Set[T]) Set[T]
-	// Union performs a "union" on the sets and returns a new set.
-	// A union is a set of all elements that appear in either set. In mathmatics
-	// it's denoted as:
-	// 	A ∪ B
-	// Example:
-	// 	{1 2 3} ∪ {3 4 5} = {1 2 3 4 5}
-	// This operation is commutative, meaning you will get the same result no matter
-	// the order of the operands. In other words:
-	// 	A.Union(B) == B.Union(A)
-	Union(set Set[T]) Set[T]
-	// SetDiff performs a "set difference" on the sets and returns a new set.
-	// A set difference resembles a subtraction, where the result is a set of all
-	// elements that appears in the first set but not in the second. In mathmatics
-	// it's denoted as:
-	// 	A \ B
-	// Example:
-	// 	{1 2 3} \ {3 4 5} = {1 2}
-	// This operation is noncommutative, meaning you will get different results
-	// depending on the order of the operands. In other words:
-	// 	A.SetDiff(B) != B.SetDiff(A)
-	SetDiff(set Set[T]) Set[T]
-	// SymDiff performs a "symmetric difference" on the sets and returns a new set.
-	// A symmetric difference is the set of all elements that appear in either of
-	// the sets, but not both. In mathmatics it's commonly denoted as either:
-	// 	A △ B
-	// or
-	// 	A ⊖ B
-	// Example:
-	// 	{1 2 3} ⊖ {3 4 5} = {1 2 4 5}
-	// This operation is commutative, meaning you will get the same result no matter
-	// the order of the operands. In other words:
-	// 	A.SymDiff(B) == B.SymDiff(A)
-	SymDiff(set Set[T]) Set[T]
-	// Range calls f sequentially for each value present in the set.
-	// If f returns false, range stops the iteration.
-	//
-	// Order is not guaranteed to be the same between executions.
-	//
-	// Methods that modify the set should not be used in the passed in function,
-	// as it will cause a deadlock.
-	Range(f func(value T) bool)
-
-	lock()
-	rLock()
-	unlock()
-	rUnlock()
-	underlying() sets.Set[T]
-}
-
-// Set is a wrapper for gopkg.in/typ.v3/pkg/sets.Set that is safe to use in
-// a multithreaded environment.
-type set[T comparable] struct {
-	s  sets.Set[T]
-	mu *sync.RWMutex
-}
-
-func (s set[T]) String() string {
-	s.rLock()
-	str := s.s.String()
-	s.rUnlock()
-	return str
-}
-
-func (s set[T]) Has(value T) bool {
-	s.rLock()
-	ok := s.s.Has(value)
-	s.rUnlock()
-	return ok
-}
-
-func (s set[T]) Add(value T) bool {
-	s.lock()
-	ok := s.s.Add(value)
-	s.unlock()
-	return ok
-}
-
-func (s set[T]) AddSet(set Set[T]) int {
-	set.rLock()
-	s.lock()
-	numAdded := s.s.AddSet(set.underlying())
-	s.unlock()
-	set.rUnlock()
-	return numAdded
-}
-
-func (s set[T]) Remove(value T) bool {
-	s.lock()
-	ok := s.s.Remove(value)
-	s.unlock()
-	return ok
-}
-
-func (s set[T]) RemoveSet(set Set[T]) int {
-	set.rLock()
-	s.lock()
-	numRemoved := s.s.RemoveSet(set.underlying())
-	s.unlock()
-	set.rUnlock()
-	return numRemoved
-}
-
-func (s set[T]) Clone() Set[T] {
-	s.rLock()
-	clone := WrapSet(s.s.Clone())
-	s.rUnlock()
-	return clone
-}
-
-func (s set[T]) Slice() []T {
-	s.rLock()
-	slice := s.s.Slice()
-	s.rUnlock()
-	return slice
-}
-
-func (s set[T]) Intersect(other Set[T]) Set[T] {
-	s.rLock()
-	other.rLock()
-	intersection := s.s.Intersect(other.underlying())
-	other.rUnlock()
-	s.rUnlock()
-	return set[T]{
-		s:  intersection,
-		mu: &sync.RWMutex{},
+// NewSetFromValues returns a Set with all values from a map added to it.
+func NewSetFromValues[M ~map[K]V, K comparable, V comparable](m M) sets.Set[V] {
+	var set Set[V]
+	for _, v := range m {
+		set.Add(v)
 	}
+	return &set
 }
 
-func (s set[T]) Union(other Set[T]) Set[T] {
-	s.rLock()
-	other.rLock()
-	union := s.s.Union(other.underlying())
-	other.rUnlock()
-	s.rUnlock()
-	return set[T]{
-		s:  union,
-		mu: &sync.RWMutex{},
-	}
+// Set holds a collection of values with no duplicates. Its methods are based
+// on the mathematical branch of set theory, and its implementation is using a
+// Map[T, struct{}].
+type Set[T comparable] struct {
+	m Map[T, struct{}]
 }
 
-func (s set[T]) SetDiff(other Set[T]) Set[T] {
-	s.rLock()
-	other.rLock()
-	setDiff := s.s.SetDiff(other.underlying())
-	other.rUnlock()
-	s.rUnlock()
-	return set[T]{
-		s:  setDiff,
-		mu: &sync.RWMutex{},
-	}
-}
+// assert that Set implements sets.Set interface.
+var _ sets.Set[int] = &Set[int]{}
 
-func (s set[T]) SymDiff(other Set[T]) Set[T] {
-	s.rLock()
-	other.rLock()
-	union := s.s.SymDiff(other.underlying())
-	other.rUnlock()
-	s.rUnlock()
-	return &set[T]{
-		s:  union,
-		mu: &sync.RWMutex{},
-	}
-}
-
-func (s set[T]) Range(f func(value T) bool) {
-	for value := range s.s {
-		if ok := f(value); !ok {
-			return
+// String converts this set to its string representation.
+func (s *Set[T]) String() string {
+	var sb strings.Builder
+	sb.WriteByte('{')
+	addDelim := false
+	s.Range(func(value T) bool {
+		if addDelim {
+			sb.WriteByte(' ')
+		} else {
+			addDelim = true
 		}
+		fmt.Fprint(&sb, value)
+		return true
+	})
+	sb.WriteByte('}')
+	return sb.String()
+}
+
+// Has returns true if the value exists in the set.
+func (s *Set[T]) Has(value T) bool {
+	_, has := s.m.Load(value)
+	return has
+}
+
+// Add will add an element to the set, and return true if it was added
+// or false if the value already existed in the set.
+func (s *Set[T]) Add(value T) bool {
+	if s.Has(value) {
+		return false
 	}
+	s.m.Store(value, struct{}{})
+	return true
 }
 
-func (s set[T]) lock() {
-	s.mu.Lock()
+// AddSet will add all element found in specified set to this set, and
+// return the number of values that was added.
+func (s *Set[T]) AddSet(set sets.Set[T]) int {
+	var added int
+	set.Range(func(value T) bool {
+		if s.Add(value) {
+			added++
+		}
+		return true
+	})
+	return added
 }
 
-func (s set[T]) rLock() {
-	s.mu.RLock()
+// Remove will remove an element from the set, and return true if it was removed
+// or false if no such value existed in the set.
+func (s *Set[T]) Remove(value T) bool {
+	if !s.Has(value) {
+		return false
+	}
+	s.m.Delete(value)
+	return true
 }
 
-func (s set[T]) unlock() {
-	s.mu.Unlock()
+// RemoveSet will remove all element found in specified set from this set, and
+// return the number of values that was removed.
+func (s *Set[T]) RemoveSet(set sets.Set[T]) int {
+	var removed int
+	set.Range(func(value T) bool {
+		if s.Remove(value) {
+			removed++
+		}
+		return true
+	})
+	return removed
 }
 
-func (s set[T]) rUnlock() {
-	s.mu.RUnlock()
+// Clone returns a copy of the set.
+func (s *Set[T]) Clone() sets.Set[T] {
+	var clone Set[T]
+	clone.AddSet(s)
+	return &clone
 }
 
-func (s set[T]) underlying() sets.Set[T] {
-	return s.s
+// Slice returns a new slice of all values in the set.
+func (s *Set[T]) Slice() []T {
+	result := make([]T, 0)
+	s.m.Range(func(key T, _ struct{}) bool {
+		result = append(result, key)
+		return true
+	})
+	return result
 }
 
-// CartesianProduct performs a "Cartesian product" on two sets and returns a new
-// set. A Cartesian product of two sets is a set of all possible combinations
-// between two sets. In mathmatics it's denoted as:
-// 	A × B
+// Intersect performs an "intersection" on the sets and returns a new set.
+// An intersection is a set of all elements that appear in both sets. In
+// mathematics it's denoted as:
+// 	A ∩ B
 // Example:
-// 	{1 2 3} × {a b c} = {1a 1b 1c 2a 2b 2c 3a 3b 3c}
+// 	{1 2 3} ∩ {3 4 5} = {3}
+// This operation is commutative, meaning you will get the same result no matter
+// the order of the operands. In other words:
+// 	A.Intersect(B) == B.Intersect(A)
+func (s *Set[T]) Intersect(other sets.Set[T]) sets.Set[T] {
+	var result Set[T]
+	s.Range(func(value T) bool {
+		if other.Has(value) {
+			result.Add(value)
+		}
+		return true
+	})
+	return &result
+}
+
+// Union performs a "union" on the sets and returns a new set.
+// A union is a set of all elements that appear in either set. In mathematics
+// it's denoted as:
+// 	A ∪ B
+// Example:
+// 	{1 2 3} ∪ {3 4 5} = {1 2 3 4 5}
+// This operation is commutative, meaning you will get the same result no matter
+// the order of the operands. In other words:
+// 	A.Union(B) == B.Union(A)
+func (s *Set[T]) Union(other sets.Set[T]) sets.Set[T] {
+	result := s.Clone()
+	result.AddSet(other)
+	return result
+}
+
+// SetDiff performs a "set difference" on the sets and returns a new set.
+// A set difference resembles a subtraction, where the result is a set of all
+// elements that appears in the first set but not in the second. In mathematics
+// it's denoted as:
+// 	A \ B
+// Example:
+// 	{1 2 3} \ {3 4 5} = {1 2}
 // This operation is noncommutative, meaning you will get different results
 // depending on the order of the operands. In other words:
-// 	A.CartesianProduct(B) != B.CartesianProduct(A)
-// This noncommutative attribute of the Cartesian product operation is due to
-// the pairs being in reverse order if you reverse the order of the operands.
-// Example:
-// 	{1 2 3} × {a b c} = {1a 1b 1c 2a 2b 2c 3a 3b 3c}
-// 	{a b c} × {1 2 3} = {a1 a2 a3 b1 b2 b3 c1 c2 c3}
-// 	{1a 1b 1c 2a 2b 2c 3a 3b 3c} != {a1 a2 a3 b1 b2 b3 c1 c2 c3}
-func CartesianProduct[TA comparable, TB comparable](a Set[TA], b Set[TB]) Set[Product[TA, TB]] {
-	result := make(sets.Set[Product[TA, TB]])
-	a.rLock()
-	b.rLock()
-	for valueA := range a.underlying() {
-		for valueB := range b.underlying() {
-			result.Add(Product[TA, TB]{valueA, valueB})
+// 	A.SetDiff(B) != B.SetDiff(A)
+func (s *Set[T]) SetDiff(other sets.Set[T]) sets.Set[T] {
+	var result Set[T]
+	s.Range(func(v T) bool {
+		if !other.Has(v) {
+			result.Add(v)
 		}
-	}
-	b.rUnlock()
-	a.rUnlock()
-	return WrapSet(result)
+		return true
+	})
+	return &result
 }
 
-// Product is the resulting type from a Cartesian product operation.
-type Product[TA comparable, TB comparable] sets.Product[TA, TB]
+// SymDiff performs a "symmetric difference" on the sets and returns a new set.
+// A symmetric difference is the set of all elements that appear in either of
+// the sets, but not both. In mathematics it's commonly denoted as either:
+// 	A △ B
+// or
+// 	A ⊖ B
+// Example:
+// 	{1 2 3} ⊖ {3 4 5} = {1 2 4 5}
+// This operation is commutative, meaning you will get the same result no matter
+// the order of the operands. In other words:
+// 	A.SymDiff(B) == B.SymDiff(A)
+func (s *Set[T]) SymDiff(other sets.Set[T]) sets.Set[T] {
+	result := s.SetDiff(other)
+	other.Range(func(v T) bool {
+		if !s.Has(v) {
+			result.Add(v)
+		}
+		return true
+	})
+	return result
+}
+
+// Range calls f sequentially for each value present in the set.
+// If f returns false, range stops the iteration.
+//
+// Order is not guaranteed to be the same between executions.
+//
+// Methods that modify the set should not be used in the passed in function,
+// as it will cause a deadlock.
+func (s *Set[T]) Range(f func(value T) bool) {
+	s.m.Range(func(v T, _ struct{}) bool {
+		return f(v)
+	})
+}

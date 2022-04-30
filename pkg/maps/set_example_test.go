@@ -1,15 +1,16 @@
-package sync2_test
+package maps_test
 
 import (
 	"fmt"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
-	"gopkg.in/typ.v3/pkg/sync2"
+	"gopkg.in/typ.v3/pkg/maps"
+	"gopkg.in/typ.v3/pkg/sets"
 )
 
 func ExampleSet() {
-	set := sync2.NewSet[string]()
+	set := make(maps.Set[string], 0)
 	set.Add("A")
 	set.Add("B")
 	set.Add("C")
@@ -26,13 +27,13 @@ func ExampleSet() {
 }
 
 func ExampleSet_setOperations() {
-	set1 := sync2.NewSet[string]()
+	set1 := make(maps.Set[string], 0)
 	set1.Add("A")
 	set1.Add("B")
 	set1.Add("C")
 	fmt.Println("set1:", set1) // {A B C}
 
-	set2 := sync2.NewSet[string]()
+	set2 := make(maps.Set[string], 0)
 	set2.Add("B")
 	set2.Add("C")
 	set2.Add("D")
@@ -91,7 +92,7 @@ func TestSet_SetOperations(t *testing.T) {
 }
 
 func TestSet_String(t *testing.T) {
-	set1 := sync2.NewSet[string]()
+	set1 := make(maps.Set[string], 0)
 	set1.Add("A")
 	assert.Equal(t, "{A}", set1.String(), "one value")
 
@@ -104,18 +105,18 @@ func Test_CartesianProduct(t *testing.T) {
 	setA := newSetA()
 	setB := newSetB()
 
-	setAB := sync2.CartesianProduct(setA, setB)
+	setAB := maps.NewSetFromKeys(sets.CartesianProduct(setA, setB))
 
-	expected := []sync2.Product[string, string]{
-		{"A", "B"},
-		{"A", "C"},
-		{"A", "D"},
-		{"B", "B"},
-		{"B", "C"},
-		{"B", "D"},
-		{"C", "B"},
-		{"C", "C"},
-		{"C", "D"},
+	expected := []sets.Product[string, string]{
+		{A: "A", B: "B"},
+		{A: "A", B: "C"},
+		{A: "A", B: "D"},
+		{A: "B", B: "B"},
+		{A: "B", B: "C"},
+		{A: "B", B: "D"},
+		{A: "C", B: "B"},
+		{A: "C", B: "C"},
+		{A: "C", B: "D"},
 	}
 
 	assert.Len(t, setAB.Slice(), len(setA.Slice())*len(setB.Slice()), "length is product of sets' length")
@@ -124,16 +125,16 @@ func Test_CartesianProduct(t *testing.T) {
 	}
 }
 
-func newSetA() sync2.Set[string] {
-	setA := sync2.NewSet[string]()
+func newSetA() sets.Set[string] {
+	setA := make(maps.Set[string], 0)
 	setA.Add("A")
 	setA.Add("B")
 	setA.Add("C")
 	return setA
 }
 
-func newSetB() sync2.Set[string] {
-	setB := sync2.NewSet[string]()
+func newSetB() sets.Set[string] {
+	setB := make(maps.Set[string], 0)
 	setB.Add("B")
 	setB.Add("C")
 	setB.Add("D")

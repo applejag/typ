@@ -8,7 +8,7 @@ package slices
 
 import (
 	"gopkg.in/typ.v3"
-	"gopkg.in/typ.v3/pkg/sets"
+	"gopkg.in/typ.v3/pkg/maps"
 )
 
 // Fill populates a whole slice with the same value using exponential copy.
@@ -444,13 +444,13 @@ func ChunkFunc[S ~[]E, E any](slice S, size int, callback func(chunk S)) {
 // Except returns a new slice for all items that are not found in the slice of
 // items to exclude.
 func Except[S ~[]E, E comparable](slice S, exclude S) S {
-	set := sets.NewFromSlice(exclude)
+	set := maps.NewSetFromSlice(exclude)
 	return ExceptSet(slice, set)
 }
 
 // ExceptSet returns a new slice for all items that are not found in the set of
 // items to exclude.
-func ExceptSet[S ~[]E, E comparable](slice S, exclude sets.Set[E]) S {
+func ExceptSet[S ~[]E, E comparable](slice S, exclude maps.Set[E]) S {
 	result := make(S, 0, len(slice))
 	for _, v := range slice {
 		if !exclude.Has(v) {
