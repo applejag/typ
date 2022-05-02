@@ -16,7 +16,7 @@ This project tries to follow [SemVer 2.0.0](https://semver.org/).
 
   - Changed the location of the `sets.Set` struct to `maps.Set`.
 
-- Added `sync2.Set`, a thread-safe implementation of `sets.Set`. (#32)
+- Added `sync2.Set`, a thread-safe implementation of `sets.Set`. (#32, thanks @Alexamakans)
 
 - Added more utility functions to `gopkg.in/typ/pkg/maps`:
 
