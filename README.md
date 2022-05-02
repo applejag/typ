@@ -120,6 +120,10 @@ func UsingAVLTree() {
 
   - `chans.PubSub[T]`: Publish-subscribe pattern using channels.
 
+- `gopkg.in/typ.v3/pkg/maps`:
+
+  - `maps.Bimap[K,V]`: Bi-directional map.
+
 - `gopkg.in/typ.v3/pkg/sets`:
 
   - `sets.Set[T]`: Set, based on set theory.
