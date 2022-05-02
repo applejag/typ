@@ -7,14 +7,14 @@
 	lint-fix lint-md-fix
 
 test:
-	go1.18beta1 test ./...
+	go test ./...
 
 tidy:
-	go1.18beta1 mod tidy
+	go mod tidy
 
 deps:
-	go1.18beta1 install github.com/mgechev/revive@latest
-	go1.18beta1 install golang.org/x/tools/cmd/goimports@latest
+	go install github.com/mgechev/revive@latest
+	go install golang.org/x/tools/cmd/goimports@latest
 	python3 -m pip install --upgrade --user reuse
 	npm install
 

@@ -25,6 +25,8 @@ This project tries to follow [SemVer 2.0.0](https://semver.org/).
   - Added `maps.Keys`. (#33)
   - Added `maps.Values`. (#33)
 
+- Added `maps.Bimap`, a bi-directional map. (#34)
+
 ## v3.1.0 (2022-04-13)
 
 - Added `sync2.Once1`, `sync2.Once2`, and `sync2.Once3`, that are wrappers
