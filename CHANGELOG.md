@@ -18,7 +18,9 @@ This project tries to follow [SemVer 2.0.0](https://semver.org/).
 
 - Added `sync2.Set`, a thread-safe implementation of `sets.Set`. (#32)
 
-- Added `maps.HasKey`.
+- Added `maps.HasKey`. (d65e1b9)
+
+- Added `maps.Bimap`, a bi-directional map. (#34)
 
 ## v3.1.0 (2022-04-13)
 
