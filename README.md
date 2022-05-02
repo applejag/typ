@@ -8,7 +8,7 @@ SPDX-License-Identifier: CC-BY-4.0
 
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/6b0289f204c044c2911a53c67a4833d9)](https://app.codacy.com/gh/go-typ/typ?utm_source=github.com&utm_medium=referral&utm_content=go-typ/typ&utm_campaign=Badge_Grade_Settings)
 [![REUSE status](https://api.reuse.software/badge/github.com/go-typ/typ)](https://api.reuse.software/info/github.com/go-typ/typ)
-[![Go Reference](https://pkg.go.dev/badge/gopkg.in/typ.v3.svg)](https://pkg.go.dev/gopkg.in/typ.v3)
+[![Go Reference](https://pkg.go.dev/badge/gopkg.in/typ.v4.svg)](https://pkg.go.dev/gopkg.in/typ.v4)
 
 Generic types and functions that are missing from Go, including sets, trees,
 linked lists, etc.
@@ -41,15 +41,15 @@ Requires Go v1.18rc1 or later as the code makes heavy use of generics.
 ## Installation and usage
 
 ```sh
-go get -u gopkg.in/typ.v3
+go get -u gopkg.in/typ.v4
 ```
 
 ```go
 import (
 	"fmt"
 
-	"gopkg.in/typ.v3/pkg/avl"
-	"gopkg.in/typ.v3/pkg/sets"
+	"gopkg.in/typ.v4/avl"
+	"gopkg.in/typ.v4/sets"
 )
 
 func UsingSets() {
@@ -90,11 +90,11 @@ func UsingAVLTree() {
 
 <!-- lint disable maximum-line-length -->
 
-- `gopkg.in/typ.v3/pkg/arrays`:
+- `gopkg.in/typ.v4/arrays`:
 
   - `arrays.Array2D[T]`: 2-dimensional array.
 
-- `gopkg.in/typ.v3/pkg/sync2`:
+- `gopkg.in/typ.v4/sync2`:
 
   - `sync2.AtomicValue[T]`: Atomic value store, wrapper around [`sync/atomic.Value`](https://pkg.go.dev/sync/atomic#Value).
   - `sync2.KeyedMutex[T]`: Mutual exclusive lock on a per-key basis.
@@ -105,30 +105,30 @@ func UsingAVLTree() {
   - `sync2.Once3[R1,R2,R3]`: Run action once, and tracks return values, wrapper around [`sync.Once`](https://pkg.go.dev/sync#Once).
   - `sync2.Pool[T]`: Object pool, wrapper around [`sync.Pool`](https://pkg.go.dev/sync#Pool).
 
-- `gopkg.in/typ.v3/pkg/lists`:
+- `gopkg.in/typ.v4/lists`:
 
   - `lists.List[T]`: Linked list, forked from [`container/list`](https://pkg.go.dev/container/list).
   - `lists.Queue[T]`: First-in-first-out collection.
   - `lists.Ring[T]`: Circular list, forked from [`container/ring`](https://pkg.go.dev/container/ring).
   - `lists.Stack[T]`: First-in-last-out collection.
 
-- `gopkg.in/typ.v3/pkg/avl`:
+- `gopkg.in/typ.v4/avl`:
 
   - `avl.Tree[T]`: AVL-tree (auto-balancing binary search tree) implementation.
 
-- `gopkg.in/typ.v3/pkg/chans`:
+- `gopkg.in/typ.v4/chans`:
 
   - `chans.PubSub[T]`: Publish-subscribe pattern using channels.
 
-- `gopkg.in/typ.v3/pkg/maps`:
+- `gopkg.in/typ.v4/maps`:
 
   - `maps.Bimap[K,V]`: Bi-directional map.
 
-- `gopkg.in/typ.v3/pkg/sets`:
+- `gopkg.in/typ.v4/sets`:
 
   - `sets.Set[T]`: Set, based on set theory.
 
-- `gopkg.in/typ.v3/pkg/slices`:
+- `gopkg.in/typ.v4/slices`:
 
   - `slices.Sorted[T]`: Always-sorted slice. Requires custom `less` function.
 

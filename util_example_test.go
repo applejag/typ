@@ -7,7 +7,7 @@ package typ_test
 import (
 	"fmt"
 
-	"gopkg.in/typ.v3"
+	"gopkg.in/typ.v4"
 )
 
 func ExampleCoal() {
