@@ -32,3 +32,9 @@ func Clear[M ~map[K]V, K comparable, V any](m M) {
 		delete(m, k)
 	}
 }
+
+// HasKey returns true if the given map has a value on the given key.
+func HasKey[M ~map[K]V, K comparable, V any](m M, key K) bool {
+	_, ok := m[key]
+	return ok
+}

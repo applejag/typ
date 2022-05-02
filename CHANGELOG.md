@@ -10,6 +10,10 @@ SPDX-License-Identifier: CC-BY-4.0
 
 This project tries to follow [SemVer 2.0.0](https://semver.org/).
 
+## v3.2.0 (WIP)
+
+- Added `maps.HasKey`.
+
 ## v3.1.0 (2022-04-13)
 
 - Added `sync2.Once1`, `sync2.Once2`, and `sync2.Once3`, that are wrappers
