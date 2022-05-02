@@ -20,10 +20,10 @@ func Comparable[T comparable](t *testing.T, name string, want T, got T) {
 // ElementsMatch asserts that two slices of strings contain the same values,
 // with no regard to the ordering.
 func ElementsMatch[S ~[]string](t *testing.T, want, got S) {
-	var wantClone S
+	wantClone := make(S, len(want))
 	copy(wantClone, want)
 	sort.Strings(wantClone)
-	var gotClone S
+	gotClone := make(S, len(got))
 	copy(gotClone, got)
 	sort.Strings(gotClone)
 
