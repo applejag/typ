@@ -100,6 +100,7 @@ func UsingAVLTree() {
   - `sync2.KeyedMutex[T]`: Mutual exclusive lock on a per-key basis.
   - `sync2.KeyedRWMutex[T]`: Mutual exclusive reader/writer lock on a per-key basis.
   - `sync2.Map[K,V]`: Concurrent map, forked from [`sync.Map`](https://pkg.go.dev/sync#Map).
+  - `sync2.Set[V]`: Concurrent set, based on `sync2.Map`.
   - `sync2.Once1[R1]`: Run action once, and tracks return values, wrapper around [`sync.Once`](https://pkg.go.dev/sync#Once).
   - `sync2.Once2[R1,R2]`: Run action once, and tracks return values, wrapper around [`sync.Once`](https://pkg.go.dev/sync#Once).
   - `sync2.Once3[R1,R2,R3]`: Run action once, and tracks return values, wrapper around [`sync.Once`](https://pkg.go.dev/sync#Once).
@@ -122,11 +123,12 @@ func UsingAVLTree() {
 
 - `gopkg.in/typ.v4/maps`:
 
+  - `maps.Set[V]`: Set of distinct values, based on set theory.
   - `maps.Bimap[K,V]`: Bi-directional map.
 
 - `gopkg.in/typ.v4/sets`:
 
-  - `sets.Set[T]`: Set, based on set theory.
+  - `sets.Set[T]`: Generic set interface, implemented by `sync2.Set` and `maps.Set`
 
 - `gopkg.in/typ.v4/slices`:
 
