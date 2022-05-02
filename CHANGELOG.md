@@ -16,7 +16,7 @@ This project tries to follow [SemVer 2.0.0](https://semver.org/).
 
   - Changed the location of the `sets.Set` struct to `maps.Set`.
 
-- Added `sync2.Set`, a thread-safe implementation of `sets.Set`. (#32)
+- Added `sync2.Set`, a thread-safe implementation of `sets.Set`. (#32, thanks @Alexamakans)
 
 - Added more utility functions to `gopkg.in/typ/pkg/maps`:
 
@@ -26,6 +26,20 @@ This project tries to follow [SemVer 2.0.0](https://semver.org/).
   - Added `maps.Values`. (#33)
 
 - Added `maps.Bimap`, a bi-directional map. (#34)
+
+- Changed v3 to v4 and moved all sub-packages by removing the intermediate `/pkg/`: (#35)
+
+  | Before                       | After                    |
+  | ---------------------------- | ------------------------ |
+  | `gopkg.in/typ.v3`            | `gopkg.in/typ.v4`        |
+  | `gopkg.in/typ.v3/pkg/arrays` | `gopkg.in/typ.v4/arrays` |
+  | `gopkg.in/typ.v3/pkg/avl`    | `gopkg.in/typ.v4/avl`    |
+  | `gopkg.in/typ.v3/pkg/chans`  | `gopkg.in/typ.v4/chans`  |
+  | `gopkg.in/typ.v3/pkg/lists`  | `gopkg.in/typ.v4/lists`  |
+  | `gopkg.in/typ.v3/pkg/maps`   | `gopkg.in/typ.v4/maps`   |
+  | `gopkg.in/typ.v3/pkg/sets`   | `gopkg.in/typ.v4/sets`   |
+  | `gopkg.in/typ.v3/pkg/slices` | `gopkg.in/typ.v4/slices` |
+  | `gopkg.in/typ.v3/pkg/sync2`  | `gopkg.in/typ.v4/sync2`  |
 
 ## v3.1.0 (2022-04-13)
 
