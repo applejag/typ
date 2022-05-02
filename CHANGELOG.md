@@ -18,7 +18,12 @@ This project tries to follow [SemVer 2.0.0](https://semver.org/).
 
 - Added `sync2.Set`, a thread-safe implementation of `sets.Set`. (#32)
 
-- Added `maps.HasKey`. (d65e1b9)
+- Added more utility functions to `gopkg.in/typ/pkg/maps`:
+
+  - Added `maps.HasKey`. (d65e1b9)
+  - Added `maps.KeyOf`. (#33)
+  - Added `maps.Keys`. (#33)
+  - Added `maps.Values`. (#33)
 
 - Added `maps.Bimap`, a bi-directional map. (#34)
 
