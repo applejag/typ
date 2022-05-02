@@ -10,7 +10,13 @@ SPDX-License-Identifier: CC-BY-4.0
 
 This project tries to follow [SemVer 2.0.0](https://semver.org/).
 
-## v3.2.0 (WIP)
+## v4.0.0 (WIP)
+
+- Added interface `sets.Set`. (#32)
+
+  - Changed the location of the `sets.Set` struct to `maps.Set`.
+
+- Added `sync2.Set`, a thread-safe implementation of `sets.Set`. (#32)
 
 - Added `maps.HasKey`.
 

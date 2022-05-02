@@ -8,6 +8,7 @@ package slices
 
 import (
 	"gopkg.in/typ.v3"
+	"gopkg.in/typ.v3/pkg/maps"
 	"gopkg.in/typ.v3/pkg/sets"
 )
 
@@ -444,7 +445,7 @@ func ChunkFunc[S ~[]E, E any](slice S, size int, callback func(chunk S)) {
 // Except returns a new slice for all items that are not found in the slice of
 // items to exclude.
 func Except[S ~[]E, E comparable](slice S, exclude S) S {
-	set := sets.NewFromSlice(exclude)
+	set := maps.NewSetFromSlice(exclude)
 	return ExceptSet(slice, set)
 }
 

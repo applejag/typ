@@ -1,36 +1,38 @@
+// SPDX-FileCopyrightText: 2022 Per Alexander Fougner
 // SPDX-FileCopyrightText: 2022 Kalle Fagerberg
 //
 // SPDX-License-Identifier: MIT
 
-// Package sets contains a Set implementation, based on the built in map type.
-package sets
+package maps
 
 import (
 	"fmt"
 	"strings"
+
+	"gopkg.in/typ.v3/pkg/sets"
 )
 
-// NewFromSlice returns a Set with all values from a slice added to it.
-func NewFromSlice[S ~[]E, E comparable](slice S) Set[E] {
-	var set Set[E]
+// NewSetFromSlice returns a Set with all values from a slice added to it.
+func NewSetFromSlice[S ~[]E, E comparable](slice S) sets.Set[E] {
+	set := make(Set[E], 0)
 	for _, v := range slice {
 		set.Add(v)
 	}
 	return set
 }
 
-// NewFromKeys returns a Set with all keys from a map added to it.
-func NewFromKeys[M ~map[K]V, K comparable, V any](m M) Set[K] {
-	var set Set[K]
+// NewSetFromKeys returns a Set with all keys from a map added to it.
+func NewSetFromKeys[M ~map[K]V, K comparable, V any](m M) sets.Set[K] {
+	set := make(Set[K], 0)
 	for k := range m {
 		set.Add(k)
 	}
 	return set
 }
 
-// NewFromValues returns a Set with all values from a map added to it.
-func NewFromValues[M ~map[K]V, K comparable, V comparable](m M) Set[V] {
-	var set Set[V]
+// NewSetFromValues returns a Set with all values from a map added to it.
+func NewSetFromValues[M ~map[K]V, K comparable, V comparable](m M) sets.Set[V] {
+	set := make(Set[V], 0)
 	for _, v := range m {
 		set.Add(v)
 	}
@@ -38,7 +40,7 @@ func NewFromValues[M ~map[K]V, K comparable, V comparable](m M) Set[V] {
 }
 
 // Set holds a collection of values with no duplicates. Its methods are based
-// on the mathmatical branch of set theory, and its implementation is using a
+// on the mathematical branch of set theory, and its implementation is using a
 // Go map[T]struct{}.
 type Set[T comparable] map[T]struct{}
 
@@ -77,13 +79,14 @@ func (s Set[T]) Add(value T) bool {
 
 // AddSet will add all element found in specified set to this set, and
 // return the number of values that was added.
-func (s Set[T]) AddSet(set Set[T]) int {
+func (s Set[T]) AddSet(set sets.Set[T]) int {
 	var added int
-	for v := range set {
-		if s.Add(v) {
+	set.Range(func(value T) bool {
+		if s.Add(value) {
 			added++
 		}
-	}
+		return true
+	})
 	return added
 }
 
@@ -99,18 +102,19 @@ func (s Set[T]) Remove(value T) bool {
 
 // RemoveSet will remove all element found in specified set from this set, and
 // return the number of values that was removed.
-func (s Set[T]) RemoveSet(set Set[T]) int {
+func (s Set[T]) RemoveSet(set sets.Set[T]) int {
 	var removed int
-	for v := range set {
-		if s.Remove(v) {
+	set.Range(func(value T) bool {
+		if s.Remove(value) {
 			removed++
 		}
-	}
+		return true
+	})
 	return removed
 }
 
 // Clone returns a copy of the set.
-func (s Set[T]) Clone() Set[T] {
+func (s Set[T]) Clone() sets.Set[T] {
 	clone := make(Set[T])
 	for v := range s {
 		clone.Add(v)
@@ -129,14 +133,14 @@ func (s Set[T]) Slice() []T {
 
 // Intersect performs an "intersection" on the sets and returns a new set.
 // An intersection is a set of all elements that appear in both sets. In
-// mathmatics it's denoted as:
+// mathematics it's denoted as:
 // 	A ∩ B
 // Example:
 // 	{1 2 3} ∩ {3 4 5} = {3}
 // This operation is commutative, meaning you will get the same result no matter
 // the order of the operands. In other words:
 // 	A.Intersect(B) == B.Intersect(A)
-func (s Set[T]) Intersect(other Set[T]) Set[T] {
+func (s Set[T]) Intersect(other sets.Set[T]) sets.Set[T] {
 	result := make(Set[T])
 	for v := range s {
 		if other.Has(v) {
@@ -147,7 +151,7 @@ func (s Set[T]) Intersect(other Set[T]) Set[T] {
 }
 
 // Union performs a "union" on the sets and returns a new set.
-// A union is a set of all elements that appear in either set. In mathmatics
+// A union is a set of all elements that appear in either set. In mathematics
 // it's denoted as:
 // 	A ∪ B
 // Example:
@@ -155,17 +159,15 @@ func (s Set[T]) Intersect(other Set[T]) Set[T] {
 // This operation is commutative, meaning you will get the same result no matter
 // the order of the operands. In other words:
 // 	A.Union(B) == B.Union(A)
-func (s Set[T]) Union(other Set[T]) Set[T] {
+func (s Set[T]) Union(other sets.Set[T]) sets.Set[T] {
 	result := s.Clone()
-	for v := range other {
-		result.Add(v)
-	}
+	result.AddSet(other)
 	return result
 }
 
 // SetDiff performs a "set difference" on the sets and returns a new set.
 // A set difference resembles a subtraction, where the result is a set of all
-// elements that appears in the first set but not in the second. In mathmatics
+// elements that appears in the first set but not in the second. In mathematics
 // it's denoted as:
 // 	A \ B
 // Example:
@@ -173,7 +175,7 @@ func (s Set[T]) Union(other Set[T]) Set[T] {
 // This operation is noncommutative, meaning you will get different results
 // depending on the order of the operands. In other words:
 // 	A.SetDiff(B) != B.SetDiff(A)
-func (s Set[T]) SetDiff(other Set[T]) Set[T] {
+func (s Set[T]) SetDiff(other sets.Set[T]) sets.Set[T] {
 	result := make(Set[T])
 	for v := range s {
 		if !other.Has(v) {
@@ -185,7 +187,7 @@ func (s Set[T]) SetDiff(other Set[T]) Set[T] {
 
 // SymDiff performs a "symmetric difference" on the sets and returns a new set.
 // A symmetric difference is the set of all elements that appear in either of
-// the sets, but not both. In mathmatics it's commonly denoted as either:
+// the sets, but not both. In mathematics it's commonly denoted as either:
 // 	A △ B
 // or
 // 	A ⊖ B
@@ -194,43 +196,25 @@ func (s Set[T]) SetDiff(other Set[T]) Set[T] {
 // This operation is commutative, meaning you will get the same result no matter
 // the order of the operands. In other words:
 // 	A.SymDiff(B) == B.SymDiff(A)
-func (s Set[T]) SymDiff(other Set[T]) Set[T] {
+func (s Set[T]) SymDiff(other sets.Set[T]) sets.Set[T] {
 	result := s.SetDiff(other)
-	for v := range other {
-		if !s.Has(v) {
-			result.Add(v)
+	other.Range(func(value T) bool {
+		if !s.Has(value) {
+			result.Add(value)
 		}
-	}
+		return true
+	})
 	return result
 }
 
-// CartesianProduct performs a "Cartesian product" on two sets and returns a new
-// set. A Cartesian product of two sets is a set of all possible combinations
-// between two sets. In mathmatics it's denoted as:
-// 	A × B
-// Example:
-// 	{1 2 3} × {a b c} = {1a 1b 1c 2a 2b 2c 3a 3b 3c}
-// This operation is noncommutative, meaning you will get different results
-// depending on the order of the operands. In other words:
-// 	A.CartesianProduct(B) != B.CartesianProduct(A)
-// This noncommutative attribute of the Cartesian product operation is due to
-// the pairs being in reverse order if you reverse the order of the operands.
-// Example:
-// 	{1 2 3} × {a b c} = {1a 1b 1c 2a 2b 2c 3a 3b 3c}
-// 	{a b c} × {1 2 3} = {a1 a2 a3 b1 b2 b3 c1 c2 c3}
-// 	{1a 1b 1c 2a 2b 2c 3a 3b 3c} != {a1 a2 a3 b1 b2 b3 c1 c2 c3}
-func CartesianProduct[TA comparable, TB comparable](a Set[TA], b Set[TB]) Set[Product[TA, TB]] {
-	result := make(Set[Product[TA, TB]])
-	for valueA := range a {
-		for valueB := range b {
-			result.Add(Product[TA, TB]{valueA, valueB})
+// Range calls f sequentially for each value present in the set.
+// If f returns false, range stops the iteration.
+//
+// Order is not guaranteed to be the same between executions.
+func (s Set[T]) Range(f func(value T) bool) {
+	for v := range s {
+		if !f(v) {
+			break
 		}
 	}
-	return result
-}
-
-// Product is the resulting type from a Cartesian product operation.
-type Product[TA comparable, TB comparable] struct {
-	A TA
-	B TB
 }

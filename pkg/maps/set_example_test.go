@@ -1,24 +1,19 @@
+// SPDX-FileCopyrightText: 2022 Per Alexander Fougner
 // SPDX-FileCopyrightText: 2022 Kalle Fagerberg
 //
 // SPDX-License-Identifier: MIT
-
-package sets_test
+package maps_test
 
 import (
 	"fmt"
-
-	"gopkg.in/typ.v3/pkg/sets"
 )
 
 func ExampleSet() {
-	set := make(sets.Set[string])
-	set.Add("A")
-	set.Add("B")
-	set.Add("C")
-
-	for value := range set {
+	set := newSetABC()
+	set.Range(func(value string) bool {
 		fmt.Println("Value:", value)
-	}
+		return true
+	})
 
 	// Unordered output:
 	// Value: A
@@ -27,16 +22,10 @@ func ExampleSet() {
 }
 
 func ExampleSet_setOperations() {
-	set1 := make(sets.Set[string])
-	set1.Add("A")
-	set1.Add("B")
-	set1.Add("C")
+	set1 := newSetABC()
 	fmt.Println("set1:", set1) // {A B C}
 
-	set2 := make(sets.Set[string])
-	set2.Add("B")
-	set2.Add("C")
-	set2.Add("D")
+	set2 := newSetBCD()
 	fmt.Println("set2:", set2) // {B C D}
 
 	fmt.Println("union:", set1.Union(set2))         // {A B C D}
