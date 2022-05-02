@@ -14,9 +14,11 @@ This project tries to follow [SemVer 2.0.0](https://semver.org/).
 
 - Added interface `sets.Set`. (#32)
 
-  - Changed location of the old `sets.Set` to `maps.Set`.
+  - Changed the location of the `sets.Set` struct to `maps.Set`.
 
 - Added `sync2.Set`, a thread-safe implementation of `sets.Set`. (#32)
+
+- Added `maps.HasKey`.
 
 ## v3.1.0 (2022-04-13)
 
