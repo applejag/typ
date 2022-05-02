@@ -49,17 +49,17 @@ import (
 	"fmt"
 
 	"gopkg.in/typ.v4/avl"
-	"gopkg.in/typ.v4/sets"
+	"gopkg.in/typ.v4/maps"
 )
 
 func UsingSets() {
-	set1 := make(sets.Set[string])
+	set1 := make(maps.Set[string])
 	set1.Add("A")
 	set1.Add("B")
 	set1.Add("C")
 	fmt.Println("set1:", set1) // {A B C}
 
-	set2 := make(sets.Set[string])
+	set2 := make(maps.Set[string])
 	set2.Add("B")
 	set2.Add("C")
 	set2.Add("D")
@@ -123,8 +123,8 @@ func UsingAVLTree() {
 
 - `gopkg.in/typ.v4/maps`:
 
-  - `maps.Set[V]`: Set of distinct values, based on set theory.
   - `maps.Bimap[K,V]`: Bi-directional map.
+  - `maps.Set[V]`: Set of distinct values, based on set theory.
 
 - `gopkg.in/typ.v4/sets`:
 
