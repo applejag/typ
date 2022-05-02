@@ -9,6 +9,7 @@ package slices
 import (
 	"gopkg.in/typ.v3"
 	"gopkg.in/typ.v3/pkg/maps"
+	"gopkg.in/typ.v3/pkg/sets"
 )
 
 // Fill populates a whole slice with the same value using exponential copy.
@@ -450,7 +451,7 @@ func Except[S ~[]E, E comparable](slice S, exclude S) S {
 
 // ExceptSet returns a new slice for all items that are not found in the set of
 // items to exclude.
-func ExceptSet[S ~[]E, E comparable](slice S, exclude maps.Set[E]) S {
+func ExceptSet[S ~[]E, E comparable](slice S, exclude sets.Set[E]) S {
 	result := make(S, 0, len(slice))
 	for _, v := range slice {
 		if !exclude.Has(v) {

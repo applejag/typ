@@ -1,3 +1,4 @@
+// SPDX-FileCopyrightText: 2022 Per Alexander Fougner
 // SPDX-FileCopyrightText: 2022 Kalle Fagerberg
 //
 // SPDX-License-Identifier: MIT
@@ -22,7 +23,7 @@ type Set[T comparable] interface {
 	// RemoveSet will remove all element found in specified set from this set, and
 	// return the number of values that was removed.
 	RemoveSet(set Set[T]) int
-	// Clone returns a copy of the set.
+	// Clone returns a copy of the set.epi
 	Clone() Set[T]
 	// Slice returns a new slice of all values in the set.
 	Slice() []T
@@ -80,8 +81,11 @@ type Set[T comparable] interface {
 }
 
 // CartesianProduct performs a "Cartesian product" on two sets and returns a
-// new set. A Cartesian product of two sets is a set of all possible combinations
-// between two sets. In mathematics it's denoted as:
+// slice. A Cartesian product of two sets is a set of all possible
+// combinations between two sets. This implementation differs slightly from
+// that definition, since the returned slice may contain duplicates.
+//
+// In mathematics it's denoted as:
 // 	A × B
 // Example:
 // 	{1 2 3} × {a b c} = {1a 1b 1c 2a 2b 2c 3a 3b 3c}
@@ -94,11 +98,11 @@ type Set[T comparable] interface {
 // 	{1 2 3} × {a b c} = {1a 1b 1c 2a 2b 2c 3a 3b 3c}
 // 	{a b c} × {1 2 3} = {a1 a2 a3 b1 b2 b3 c1 c2 c3}
 // 	{1a 1b 1c 2a 2b 2c 3a 3b 3c} != {a1 a2 a3 b1 b2 b3 c1 c2 c3}
-func CartesianProduct[TA, TB comparable](a Set[TA], b Set[TB]) map[Product[TA, TB]]struct{} {
-	result := make(map[Product[TA, TB]]struct{}, 0)
+func CartesianProduct[TA, TB comparable](a Set[TA], b Set[TB]) []Product[TA, TB] {
+	var result []Product[TA, TB]
 	a.Range(func(valueA TA) bool {
 		b.Range(func(valueB TB) bool {
-			result[Product[TA, TB]{valueA, valueB}] = struct{}{}
+			result = append(result, Product[TA, TB]{valueA, valueB})
 			return true
 		})
 		return true

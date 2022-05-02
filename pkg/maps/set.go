@@ -1,3 +1,4 @@
+// SPDX-FileCopyrightText: 2022 Per Alexander Fougner
 // SPDX-FileCopyrightText: 2022 Kalle Fagerberg
 //
 // SPDX-License-Identifier: MIT
@@ -12,7 +13,7 @@ import (
 )
 
 // NewSetFromSlice returns a Set with all values from a slice added to it.
-func NewSetFromSlice[S ~[]E, E comparable](slice S) Set[E] {
+func NewSetFromSlice[S ~[]E, E comparable](slice S) sets.Set[E] {
 	set := make(Set[E], 0)
 	for _, v := range slice {
 		set.Add(v)
@@ -21,7 +22,7 @@ func NewSetFromSlice[S ~[]E, E comparable](slice S) Set[E] {
 }
 
 // NewSetFromKeys returns a Set with all keys from a map added to it.
-func NewSetFromKeys[M ~map[K]V, K comparable, V any](m M) Set[K] {
+func NewSetFromKeys[M ~map[K]V, K comparable, V any](m M) sets.Set[K] {
 	set := make(Set[K], 0)
 	for k := range m {
 		set.Add(k)
@@ -30,7 +31,7 @@ func NewSetFromKeys[M ~map[K]V, K comparable, V any](m M) Set[K] {
 }
 
 // NewSetFromValues returns a Set with all values from a map added to it.
-func NewSetFromValues[M ~map[K]V, K comparable, V comparable](m M) Set[V] {
+func NewSetFromValues[M ~map[K]V, K comparable, V comparable](m M) sets.Set[V] {
 	set := make(Set[V], 0)
 	for _, v := range m {
 		set.Add(v)

@@ -12,11 +12,11 @@ This project tries to follow [SemVer 2.0.0](https://semver.org/).
 
 ## v4.0.0 (WIP)
 
-- Added interface `sets.Set`. (#?)
+- Added interface `sets.Set`. (#32)
 
   - Changed location of the old `sets.Set` to `maps.Set`.
 
-- Added `sync2.Set`, a thread-safe implementation of `sets.Set`.
+- Added `sync2.Set`, a thread-safe implementation of `sets.Set`. (#32)
 
 ## v3.1.0 (2022-04-13)
 

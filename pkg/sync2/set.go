@@ -1,3 +1,8 @@
+// SPDX-FileCopyrightText: 2022 Per Alexander Fougner
+// SPDX-FileCopyrightText: 2022 Kalle Fagerberg
+//
+// SPDX-License-Identifier: MIT
+
 package sync2
 
 import (
@@ -71,11 +76,8 @@ func (s *Set[T]) Has(value T) bool {
 // Add will add an element to the set, and return true if it was added
 // or false if the value already existed in the set.
 func (s *Set[T]) Add(value T) bool {
-	if s.Has(value) {
-		return false
-	}
-	s.m.Store(value, struct{}{})
-	return true
+	_, loaded := s.m.LoadOrStore(value, struct{}{})
+	return !loaded
 }
 
 // AddSet will add all element found in specified set to this set, and
@@ -94,11 +96,8 @@ func (s *Set[T]) AddSet(set sets.Set[T]) int {
 // Remove will remove an element from the set, and return true if it was removed
 // or false if no such value existed in the set.
 func (s *Set[T]) Remove(value T) bool {
-	if !s.Has(value) {
-		return false
-	}
-	s.m.Delete(value)
-	return true
+	_, loaded := s.m.LoadAndDelete(value)
+	return loaded
 }
 
 // RemoveSet will remove all element found in specified set from this set, and
@@ -123,7 +122,7 @@ func (s *Set[T]) Clone() sets.Set[T] {
 
 // Slice returns a new slice of all values in the set.
 func (s *Set[T]) Slice() []T {
-	result := make([]T, 0)
+	var result []T
 	s.m.Range(func(key T, _ struct{}) bool {
 		result = append(result, key)
 		return true
