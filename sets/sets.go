@@ -9,6 +9,8 @@ package sets
 type Set[T comparable] interface {
 	// String converts this set to its string representation.
 	String() string
+	// Len returns the number of elements in this set.
+	Len() int
 	// Has returns true if the value exists in the set.
 	Has(value T) bool
 	// Add will add an element to the set, and return true if it was added

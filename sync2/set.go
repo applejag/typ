@@ -67,6 +67,16 @@ func (s *Set[T]) String() string {
 	return sb.String()
 }
 
+// Len returns the number of elements in this set.
+func (s *Set[T]) Len() int {
+	var count int
+	s.Range(func(T) bool {
+		count++
+		return true
+	})
+	return count
+}
+
 // Has returns true if the value exists in the set.
 func (s *Set[T]) Has(value T) bool {
 	_, has := s.m.Load(value)
