@@ -10,6 +10,10 @@ SPDX-License-Identifier: CC-BY-4.0
 
 This project tries to follow [SemVer 2.0.0](https://semver.org/).
 
+## v4.1.0 (WIP)
+
+- Added `sets.Set.Len()`. (88ca4a1)
+
 ## v4.0.0 (2022-05-02)
 
 - Added interface `sets.Set`. (#32)
