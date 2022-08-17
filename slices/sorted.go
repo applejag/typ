@@ -23,25 +23,48 @@ import (
 // the equivalent elements may be the one being removed. The SortedSlice does
 // not keep track of collision detection.
 func NewSorted[S ~[]E, E comparable](values S, less func(a, b E) bool) Sorted[E] {
+	slice := makeSortedSlice(values, less)
+	return Sorted[E]{slice, typ.CompareFuncFromComparable(less)}
+}
+
+// NewSortedOrdered returns a new sorted slice based on a slice of values.
+// Only ordered types are allowed. The values are sorted on insertion.
+func NewSortedOrdered[S ~[]E, E typ.Ordered](values S) Sorted[E] {
+	return NewSorted(values, typ.Less[E])
+}
+
+// NewSortedCompare returns a new sorted slice based on a slice of values and
+// a custom compare function.
+func NewSortedCompare[S ~[]E, E any](values S, compare func(a, b E) int) Sorted[E] {
+	slice := makeSortedSlice(values, func(a, b E) bool {
+		return compare(a, b) < 0
+	})
+	return Sorted[E]{slice, compare}
+}
+
+// NewSortedFunc returns a new sorted slice based on a slice of values and a
+// key extractor function.
+func NewSortedFunc[S ~[]E, E any, K typ.Ordered](values S, key func(a E) K) Sorted[E] {
+	slice := makeSortedSlice(values, func(a, b E) bool {
+		return key(a) < key(b)
+	})
+	return Sorted[E]{slice, typ.CompareFuncFromKey(key)}
+}
+
+func makeSortedSlice[S ~[]E, E any](values S, less func(a, b E) bool) S {
 	slice := make([]E, len(values))
 	copy(slice, values)
 	sort.SliceStable(slice, func(i, j int) bool {
 		return less(slice[i], slice[j])
 	})
-	return Sorted[E]{slice, less}
-}
-
-// NewSortedOrdered returns a new sorted slice based on a slice of values.
-// Only ordered types are allowed. The values are sorted on insertion.
-func NewSortedOrdered[T typ.Ordered](values ...T) Sorted[T] {
-	return NewSorted(values, typ.Less[T])
+	return slice
 }
 
 // Sorted is a slice of ordered values. The slice is always sorted thanks
 // to only inserting values in a sorted order.
-type Sorted[T comparable] struct {
-	slice []T
-	less  func(a, b T) bool
+type Sorted[T any] struct {
+	slice   []T
+	compare func(a, b T) int
 }
 
 func (s Sorted[T]) String() string {
@@ -90,17 +113,17 @@ func (s *Sorted[T]) Contains(value T) bool {
 
 func (s *Sorted[T]) Index(value T) int {
 	index := s.search(value)
-	if index < 0 || index >= s.Len() || s.slice[index] != value {
+	if index < 0 || index >= s.Len() || s.compare(s.slice[index], value) != 0 {
 		return -1
 	}
 	return index
 }
 
 func (s *Sorted[T]) search(value T) int {
-	if s.less == nil {
+	if s.compare == nil {
 		panic("sortedslice: not initialized")
 	}
 	return sort.Search(len(s.slice), func(i int) bool {
-		return !s.less(s.slice[i], value)
+		return s.compare(s.slice[i], value) >= 0
 	})
 }

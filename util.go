@@ -21,6 +21,47 @@ func Less[T Ordered](a, b T) bool {
 	return a < b
 }
 
+// CompareFuncFromKey returns a new function that can compare two objects
+// by extracting some ordered key from the type.
+func CompareFuncFromKey[T any, K Ordered](key func(a T) K) func(a, b T) int {
+	return func(a, b T) int {
+		return Compare(key(a), key(b))
+	}
+}
+
+// CompareFuncFromComparable returns a new function that can compare two objects
+// by using the type's comparison operation.
+func CompareFuncFromComparable[T comparable](less func(a, b T) bool) func(a, b T) int {
+	return func(a, b T) int {
+		if a == b {
+			return 0
+		}
+		if less(a, b) {
+			return -1
+		}
+		return 1
+	}
+}
+
+// CompareFuncFromLess returns a new function that can compare two objects
+// by flipping the less function.
+func CompareFuncFromLess[T any](less func(a, b T) bool) func(a, b T) int {
+	return func(a, b T) int {
+		if less(a, b) {
+			return -1
+		}
+		if less(b, a) {
+			return 1
+		}
+		return 0
+	}
+}
+
+// Equal returns true if the first argument is equal to the second.
+func Equal[T comparable](a, b T) bool {
+	return a == b
+}
+
 // Zero returns the zero value for a given type.
 func Zero[T any]() T {
 	var zero T
