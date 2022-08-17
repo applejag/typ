@@ -10,7 +10,7 @@ SPDX-License-Identifier: CC-BY-4.0
 
 This project tries to follow [SemVer 2.0.0](https://semver.org/).
 
-## v4.2.0 (WIP)
+## v4.2.0 (2022-08-17)
 
 - Changed so `slices.Sorted[T]`'s generic type can be `any`, where before it
   required it to be `comparable`. Use the new `slices.NewSortedFunc` or
