@@ -15,7 +15,7 @@ import (
 
 // New creates a new AVL tree using a comparator function that is
 // is expected to return  0 if a == b, -1 if a < b, and +1 if a > b.
-func New[T comparable](compare func(a, b T) int) Tree[T] {
+func New[T any](compare func(a, b T) int) Tree[T] {
 	return Tree[T]{
 		compare: compare,
 	}
@@ -27,11 +27,17 @@ func NewOrdered[T typ.Ordered]() Tree[T] {
 	return New(typ.Compare[T])
 }
 
+// NewFunc creates a new AVL tree using a key-extractor that should return the
+// key used when comparing and to check equality.
+func NewFunc[T any, K typ.Ordered](key func(value T) K) Tree[T] {
+	return New(typ.CompareFuncFromKey(key))
+}
+
 // Tree is a binary search tree (BST) for ordered Go types
 // (numbers & strings), implemented as an AVL tree
 // (Adelson-Velsky and Landis tree), a type of self-balancing BST. This
 // guarantees O(log n) operations on insertion, searching, and deletion.
-type Tree[T comparable] struct {
+type Tree[T any] struct {
 	compare func(a, b T) int
 	root    *node[T]
 	count   int
@@ -164,7 +170,7 @@ const (
 	balanceLeftHeavy  balanceFactor = -1
 )
 
-type node[T comparable] struct {
+type node[T any] struct {
 	value  T
 	left   *node[T]
 	right  *node[T]
@@ -212,10 +218,11 @@ func (n *node[T]) contains(value T, compare func(a, b T) int) bool {
 func (n *node[T]) find(value T, compare func(a, b T) int) *node[T] {
 	current := n
 	for {
+		cmp := compare(value, current.value)
 		switch {
-		case current.value == value:
+		case cmp == 0:
 			return current
-		case current.left != nil && compare(value, current.value) < 0:
+		case current.left != nil && cmp < 0:
 			current = current.left
 		case current.right != nil:
 			current = current.right
@@ -226,7 +233,8 @@ func (n *node[T]) find(value T, compare func(a, b T) int) *node[T] {
 }
 
 func (n *node[T]) remove(value T, compare func(a, b T) int) (*node[T], bool) {
-	if n.value == value {
+	cmp := compare(value, n.value)
+	if cmp == 0 {
 		switch {
 		case n.left == nil && n.right == nil:
 			// Leaf node. No special behavior needed
@@ -246,7 +254,7 @@ func (n *node[T]) remove(value T, compare func(a, b T) int) (*node[T], bool) {
 			return leftMost.rebalance(), true
 		}
 	}
-	if n.left != nil && compare(value, n.value) < 0 {
+	if n.left != nil && cmp < 0 {
 		if newNode, ok := n.left.remove(value, compare); ok {
 			n.left = newNode
 			n.height = n.calcHeight()
