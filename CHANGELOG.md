@@ -74,7 +74,7 @@ This project tries to follow [SemVer 2.0.0](https://semver.org/).
   | `pkg/avl`    | `AVLTree`                                      |
   | `pkg/chans`  | `RecvChan`, `SendChan`, `Chan`                 |
   | `pkg/lists`  | `List`, `Queue`, `Ring`, `Stack`               |
-  | `pkg/maps`   | *only utility functions*                       |
+  | `pkg/maps`   | _only utility functions_                       |
   | `pkg/sets`   | `Set`                                          |
   | `pkg/slices` | `SortedSlice`                                  |
   | `pkg/sync2`  | `AtomicValue`, `KeyedMutex`, `Pool`, `SyncMap` |
