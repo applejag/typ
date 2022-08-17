@@ -16,6 +16,9 @@ This project tries to follow [SemVer 2.0.0](https://semver.org/).
   required it to be `comparable`. Use the new `slices.NewSortedFunc` or
   `slices.NewSortedCompare` constructors to make use of this. (133cd39)
 
+- Changed so `avl.Tree[T]`'s generic type can be `any`. This was mostly
+  supported already, but now the type is correctly propagated. (d2ffd60)
+
 ## v4.1.0 (2022-05-04)
 
 - Added `sets.Set.Len()`. (88ca4a1)
