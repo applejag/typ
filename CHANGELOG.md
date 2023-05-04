@@ -10,6 +10,10 @@ SPDX-License-Identifier: CC-BY-4.0
 
 This project tries to follow [SemVer 2.0.0](https://semver.org/).
 
+## v4.3.0 (WIP)
+
+- Added `sync2.Map.Len()` method. (#38)
+
 ## v4.2.0 (2022-08-17)
 
 - Changed so `slices.Sorted[T]`'s generic type can be `any`, where before it
