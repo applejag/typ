@@ -120,9 +120,9 @@ func TestMapMatchesDeepCopy(t *testing.T) {
 func TestConcurrentRange(t *testing.T) {
 	const mapSize = 1 << 10
 
-	m := new(sync.Map)
+	m := new(sync2.Map[int64, int64])
 	for n := int64(1); n <= mapSize; n++ {
-		m.Store(n, int64(n))
+		m.Store(n, n)
 	}
 
 	done := make(chan struct{})
@@ -160,8 +160,7 @@ func TestConcurrentRange(t *testing.T) {
 	for n := iters; n > 0; n-- {
 		seen := make(map[int64]bool, mapSize)
 
-		m.Range(func(ki, vi interface{}) bool {
-			k, v := ki.(int64), vi.(int64)
+		m.Range(func(k, v int64) bool {
 			if v%k != 0 {
 				t.Fatalf("while Storing multiples of %v, Range saw value %v", k, v)
 			}
@@ -179,12 +178,12 @@ func TestConcurrentRange(t *testing.T) {
 }
 
 func TestIssue40999(t *testing.T) {
-	var m sync.Map
+	var m sync2.Map[*int, string]
 
 	// Since the miss-counting in missLocked (via Delete)
 	// compares the miss count with len(m.dirty),
 	// add an initial entry to bias len(m.dirty) above the miss count.
-	m.Store(nil, struct{}{})
+	m.Store(nil, "")
 
 	var finalized uint32
 
@@ -195,8 +194,71 @@ func TestIssue40999(t *testing.T) {
 		runtime.SetFinalizer(p, func(*int) {
 			atomic.AddUint32(&finalized, 1)
 		})
-		m.Store(p, struct{}{})
+		m.Store(p, "foo")
 		m.Delete(p)
 		runtime.GC()
 	}
+}
+
+func TestConcurrentLen(t *testing.T) {
+	const mapSize = 1 << 10
+
+	m := new(sync2.Map[int64, int64])
+	for n := int64(1); n <= mapSize; n++ {
+		m.Store(n, n)
+	}
+
+	done := make(chan struct{})
+	var wg sync.WaitGroup
+	defer func() {
+		close(done)
+		wg.Wait()
+	}()
+	for g := int64(runtime.GOMAXPROCS(0)); g > 0; g-- {
+		r := rand.New(rand.NewSource(g))
+		wg.Add(1)
+		go func(g int64) {
+			defer wg.Done()
+			for i := int64(0); ; i++ {
+				select {
+				case <-done:
+					return
+				default:
+				}
+				for n := int64(1); n < mapSize; n++ {
+					if r.Int63n(mapSize) == 0 {
+						m.Store(n, n*i*g)
+					} else {
+						m.Load(n)
+					}
+				}
+			}
+		}(g)
+	}
+
+	iters := 1 << 10
+	if testing.Short() {
+		iters = 16
+	}
+	for n := iters; n > 0; n-- {
+		length := m.Len()
+
+		if length != mapSize {
+			t.Fatalf("Len returned %v length of %v-element Map", length, mapSize)
+		}
+	}
+}
+
+func TestNestedLen(t *testing.T) {
+	// Ensure the Map.Len does not cause deadlock, due to possible
+	// nested mutex locking using the same mutex.
+	var m sync2.Map[int64, int64]
+	m.Store(1, 123)
+	m.Store(2, 351)
+	m.Store(3, 519)
+
+	m.Range(func(key, value int64) bool {
+		t.Logf("key: %d, value: %d, len: %d", key, value, m.Len())
+		return true
+	})
 }
