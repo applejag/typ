@@ -391,3 +391,17 @@ func (m *entry[T]) tryExpungeLocked() (isExpunged bool) {
 	}
 	return p == expunged
 }
+
+// Len returns the number of elements in this map.
+//
+// Due to the implementation complexity of the [sync.Map] structure, this
+// method is just a convenient wrapper around [Map.Range], so this is far less
+// formant than the built-in len() on a regular Go map.
+func (m *Map[K, V]) Len() int {
+	var length int
+	m.Range(func(K, V) bool {
+		length++
+		return true
+	})
+	return length
+}
