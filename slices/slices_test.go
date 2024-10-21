@@ -188,6 +188,70 @@ func TestRemoveSlice(t *testing.T) {
 	}
 }
 
+func TestFold(t *testing.T) {
+	testCases := []struct {
+		name  string
+		slice []string
+		seed  string
+		want  string
+	}{
+		{
+			name:  "values",
+			slice: []string{"a", "b", "c"},
+			seed:  "",
+			want:  "abc",
+		},
+		{
+			name:  "nil",
+			slice: nil,
+			seed:  "seed",
+			want:  "seed",
+		},
+	}
+	for _, tc := range testCases {
+		t.Run(tc.name, func(t *testing.T) {
+			gotStr := Fold(tc.slice, tc.seed, func(state string, seed string) string {
+				return state + seed
+			})
+			if gotStr != tc.want {
+				t.Errorf("want %q, got %q", tc.want, gotStr)
+			}
+		})
+	}
+}
+
+func TestFoldReverse(t *testing.T) {
+	testCases := []struct {
+		name  string
+		slice []string
+		seed  string
+		want  string
+	}{
+		{
+			name:  "values",
+			slice: []string{"a", "b", "c"},
+			seed:  "",
+			want:  "cba",
+		},
+		{
+			name:  "nil",
+			slice: nil,
+			seed:  "seed",
+			want:  "seed",
+		},
+	}
+	for _, tc := range testCases {
+		t.Run(tc.name, func(t *testing.T) {
+			gotStr := FoldReverse(tc.slice, tc.seed, func(state string, seed string) string {
+				return state + seed
+			})
+			if gotStr != tc.want {
+				t.Errorf("want %q, got %q", tc.want, gotStr)
+			}
+		})
+	}
+}
+
 func TestConcat(t *testing.T) {
 	testCases := []struct {
 		a    string
