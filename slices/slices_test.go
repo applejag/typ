@@ -202,7 +202,7 @@ func TestFold(t *testing.T) {
 			want:  "abc",
 		},
 		{
-			name:  "nil",
+			name:  "nil slice",
 			slice: nil,
 			seed:  "seed",
 			want:  "seed",
@@ -234,7 +234,7 @@ func TestFoldReverse(t *testing.T) {
 			want:  "cba",
 		},
 		{
-			name:  "nil",
+			name:  "nil slice",
 			slice: nil,
 			seed:  "seed",
 			want:  "seed",
