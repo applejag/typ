@@ -272,7 +272,7 @@ func Filter[S ~[]E, E any](slice S, match func(value E) bool) S {
 func Fold[S ~[]E, State, E any](slice S, seed State, acc func(state State, value E) State) State {
 	state := seed
 	for _, v := range slice {
-		seed = acc(state, v)
+		state = acc(state, v)
 	}
 	return state
 }
@@ -282,8 +282,8 @@ func Fold[S ~[]E, State, E any](slice S, seed State, acc func(state State, value
 // seed value as-is if the slice is empty.
 func FoldReverse[S ~[]E, State, E any](slice S, seed State, acc func(state State, value E) State) State {
 	state := seed
-	for i := len(slice) - 1; i >= 0; i++ {
-		seed = acc(state, slice[i])
+	for i := len(slice) - 1; i >= 0; i-- {
+		state = acc(state, slice[i])
 	}
 	return state
 }

@@ -10,6 +10,10 @@ SPDX-License-Identifier: CC-BY-4.0
 
 This project tries to follow [SemVer 2.0.0](https://semver.org/).
 
+## v4.3.1 (WIP)
+
+- Fixed `slices.Fold` and `slices.FoldReverse` bugs. (#39)
+
 ## v4.3.0 (2023-05-04)
 
 - Added `sync2.Map.Len()` method. (#38)
