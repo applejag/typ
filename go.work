@@ -1,0 +1,10 @@
+// SPDX-FileCopyrightText: 2025 Kalle Fagerberg
+//
+// SPDX-License-Identifier: CC0-1.0
+
+go 1.23
+
+use (
+	.
+	./sync2/internal/go_1_23
+)
